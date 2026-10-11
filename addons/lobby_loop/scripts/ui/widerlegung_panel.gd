@@ -45,13 +45,13 @@ var _end_button: Button
 
 func _ready() -> void:
 	visible = false
-	set_anchors_preset(PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.05, 0.06, 0.09, 0.95)
 	add_theme_stylebox_override("panel", style)
 
 	var center := CenterContainer.new()
-	center.set_anchors_preset(PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(center)
 
 	var panel := PanelContainer.new()

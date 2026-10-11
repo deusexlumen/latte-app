@@ -53,7 +53,7 @@ func _ready() -> void:
 func _build_ui() -> void:
 	_background = ColorRect.new()
 	_background.color = Color(0.078, 0.09, 0.114)
-	_background.set_anchors_preset(PRESET_FULL_RECT)
+	_background.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(_background)
 
 	_title_label = Label.new()
@@ -121,13 +121,13 @@ func _build_perma_screen() -> PanelContainer:
 	screen.name = "PermaDeathScreen"
 	# Erst bei Perma-Death zeigen. Ohne diese Zeile begann jedes Spiel mit "Mandat verloren".
 	screen.visible = false
-	screen.set_anchors_preset(PRESET_FULL_RECT)
+	screen.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.02, 0.02, 0.03, 0.97)
 	screen.add_theme_stylebox_override("panel", style)
 
 	var center := CenterContainer.new()
-	center.set_anchors_preset(PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	screen.add_child(center)
 
 	var column := VBoxContainer.new()

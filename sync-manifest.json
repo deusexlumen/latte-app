@@ -1,6 +1,6 @@
 {
   "source": "repos",
-  "synced_at": "2026-10-12T03:12:25.084Z",
+  "synced_at": "2026-10-11T18:48:35.191Z",
   "games": [
     {
       "name": "dame",
@@ -9,7 +9,7 @@
     },
     {
       "name": "lobby_loop",
-      "ref": "60b54271394b8fae1eba0333df7b256e08314c1a",
+      "ref": "d4eca2795f01113a0140d04eb71870631b77c676",
       "files": 123
     }
   ]

@@ -7,13 +7,13 @@ extends Control
 
 
 func _ready() -> void:
-	set_anchors_preset(PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	var bg := ColorRect.new()
 	bg.color = Color(0.09, 0.08, 0.07)
-	bg.set_anchors_preset(PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(bg)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 	add_child(center)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 6)
