@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://akte/akte.gd" id="1"]
+
+[node name="Akte" type="Control"]
+script = ExtResource("1")

@@ -19,6 +19,7 @@ GameState="*res://addons/lobby_loop/scripts/autoload/GameState.gd"
 ApiClient="*res://addons/lobby_loop/scripts/autoload/ApiClient.gd"
 FallbackDb="*res://addons/lobby_loop/scripts/autoload/FallbackDb.gd"
 DiceRoller="*res://addons/lobby_loop/scripts/autoload/DiceRoller.gd"
+FlurButton="*res://app/flur_button.gd"
 
 [display]
 
