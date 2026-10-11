@@ -25,6 +25,18 @@ func _ready() -> void:
 	_button.offset_top = -30
 	_button.offset_bottom = -4
 	_button.pressed.connect(go_to_flur)
+	# Eigenes Aussehen: DAME setzt ein globales Theme (root.theme), das den Knopf sonst unsichtbar macht.
+	_button.theme = Theme.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.12, 0.12, 0.14, 0.9)
+	style.border_color = Color(0.62, 0.48, 0.2)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(4)
+	for state in ["normal", "hover", "pressed", "focus"]:
+		_button.add_theme_stylebox_override(state, style)
+	_button.add_theme_color_override("font_color", Color(0.95, 0.88, 0.6))
+	_button.add_theme_color_override("font_hover_color", Color(1, 0.95, 0.75))
+	_button.add_theme_font_size_override("font_size", 14)
 	add_child(_button)
 
 
