@@ -9,3 +9,10 @@
   **Gefundene Fehler:** Panels in Lobby-Loop klebten oben links (`set_anchors_preset` ohne Offsets) — in Lobby-Loop behoben (Commit d4eca27) und gesynct. DAMEs globales Theme machte den Flur-Knopf unsichtbar — eigenes Aussehen.
   **Bekannt:** DAME setzt `root.theme` app-weit, das verändert auch Lobby-Loops Schrift. DAMEs Einstellungsseite kehrt zu DAMEs Menü zurück, nicht zum Flur („Zum Flur" bleibt verfügbar).
   **Offen (LO):** installierbare Web-App auf dem Handy prüfen; GitHub-Repo anlegen nur auf Anfrage; vor eigenen Änderungen an Spiel-Code in latte `sync-manifest.json` auf `"source": "latte-app"` setzen.
+
+- [x] **2026-10-12 — Nachprüfung Phase 3 (Rückweg, Wiedereintritt, Testspuren):**
+  **Rückweg-Knopf** jetzt unten rechts (gemessen frei: Lobby-Inventar unten links, DAME-Hand unten Mitte), ausgeblendet im Flur, am DAME-Tisch und solange in Lobby-Loop ein Dialog offen ist; Esc ebenso.
+  **Wiedereintritt:** Flur → Karriere → Flur → Karriere meldete `already connected` (Würfel-Signal). In Lobby-Loop behoben (Commit f48b8fc), Regressionstest dort, Fluss-Test `tools/reentry_smoke.gd` hier (jede ERROR-Zeile zählt).
+  **Testspuren:** Headless läuft keine Migration mehr; Fluss-Test schreibt nur Testdateien. Vorher hatten Testläufe die echte Migration samt Marker ausgelöst und einen Spielstand angelegt; beides entfernt, `app_userdata/Latte` enthält nur Testdateien. Die echte Migration passiert beim ersten richtigen Start.
+  **Quellen fest:** DAME aus Branch `feat/online-webrtc` (enthält main plus Online-Test), Lobby-Loop aus `master`.
+  **Stand:** DAME 9574/15 + FLOW_OK, Latte-Fluss OK, Lobby-Loop 141/141, Latte 13/13.

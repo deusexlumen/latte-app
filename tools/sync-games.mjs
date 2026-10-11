@@ -5,7 +5,7 @@
 // LAST_VALIDATED: 2026-10-12
 //
 // Regeln:
-// - Eigener Code kommt aus dem letzten Commit der Quelle (git archive), nie aus dem Arbeitsverzeichnis.
+// - Eigener Code kommt aus dem letzten Commit des festgelegten Branches (git archive), nie aus dem Arbeitsverzeichnis.
 // - Fremd-Addons (GUT, godot-sqlite, webrtc) kommen aus dem Arbeitsverzeichnis, weil ihre Binärdateien
 //   nicht versioniert sind. Sie landen unverändert unter addons/<name>/ und werden nie umgeschrieben.
 // - Jeder res://-Pfad wird über die Pfadtabelle umgeschrieben (längster Präfix zuerst).
@@ -29,6 +29,9 @@ export const GAMES = [
   {
     name: 'dame',
     repo: join(PROJECTS, 'Dame-Card-Game'),
+    // Fest benannter Branch statt HEAD: Ein Branchwechsel im DAME-Repo soll latte nicht still verändern.
+    // feat/online-webrtc enthält main (gemergt) plus Online-Test.
+    branch: 'feat/online-webrtc',
     sub: 'godot',
     // Längster Präfix zuerst. DAMEs Dienste und i18n werden zum gemeinsamen Kern (amt_core).
     map: [
@@ -42,6 +45,7 @@ export const GAMES = [
   {
     name: 'lobby_loop',
     repo: join(PROJECTS, 'point and pen'),
+    branch: 'master',
     sub: '',
     map: [['res://', 'res://addons/lobby_loop/']],
     exclude: [
@@ -89,7 +93,7 @@ function ext(p) {
 }
 
 function syncGame(game) {
-  const ref = execFileSync('git', ['-C', game.repo, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const ref = execFileSync('git', ['-C', game.repo, 'rev-parse', game.branch], { encoding: 'utf8' }).trim();
   const tmp = mkdtempSync(join(tmpdir(), `latte-${game.name}-`));
   const tar = join(tmp, 'src.tar');
   execFileSync('git', ['-C', game.repo, 'archive', '--format=tar', '-o', tar, ref, ...(game.sub ? [game.sub] : [])]);
@@ -120,7 +124,7 @@ function syncGame(game) {
     });
   }
   rmSync(tmp, { recursive: true, force: true });
-  return { name: game.name, ref, files };
+  return { name: game.name, branch: game.branch, ref, files };
 }
 
 function main() {
@@ -131,7 +135,7 @@ function main() {
   const results = GAMES.map(syncGame);
   const manifest = { source: 'repos', synced_at: new Date().toISOString(), games: results };
   writeFileSync(join(ROOT, 'sync-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
-  for (const r of results) console.log(`${r.name}: ${r.files} Dateien aus ${r.ref.slice(0, 7)}`);
+  for (const r of results) console.log(`${r.name}: ${r.files} Dateien aus ${r.branch} @ ${r.ref.slice(0, 7)}`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

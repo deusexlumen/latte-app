@@ -21,6 +21,10 @@ func _ready() -> void:
 	# Im Browser gibt es keine fremden App-Ordner (jede Origin hat ihren eigenen Speicher).
 	if OS.has_feature("web"):
 		return
+	# Headless heißt Testlauf oder Export: Die echte Migration soll erst beim ersten richtigen Start passieren,
+	# sonst setzt schon ein Testlauf den Einmal-Marker und spätere Spielstände kämen nie herüber.
+	if DisplayServer.get_name() == "headless":
+		return
 	report = migrate(OS.get_user_data_dir(), OS.get_user_data_dir().get_base_dir())
 
 

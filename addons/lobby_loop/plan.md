@@ -3554,12 +3554,22 @@ Danach Pull Request gegen `master`. Erst wenn dieses Tor erreicht ist, beginnt P
 6. Flur des Amts als Startszene mit drei Türen: Karriere, Hörsaal (Widerlegung einzeln, Lehre wählbar), Hinterzimmer.
 7. Karriere-Akte: ein Abschnitt je Spiel (Format ADR 0005 erweitern).
 
-**Stand 12.10.2026, Spike (M1) erledigt:** Web-Export (nothreads, PWA) **39 MB**, läuft in Chromium/WebGL2, Widerlegung offline spielbar. SQLite läuft im Web nicht ohne dlink-Templates; `FallbackDb` liest dort direkt `content/*.json`. Proxy sendet CORS (`GM_CORS_ORIGINS`). Gefundene Web-Fehler (Emojis, Wurfanzeige, Perma-Death-Schirm beim Start) behoben. M2–7 warten laut Tor auf die Abnahme von Phase 2.
+**Stand 12.10.2026: Phase 3 umgesetzt in `../latte-app` (lokal, kein GitHub-Repo):**
+- [x] M1 Spike (siehe unten)
+- [x] M2 Repo `latte-app`, Godot 4.7.2, GL Compatibility
+- [x] M3 `addons/amt_core/` = DAMEs Dienste + `i18n.gd` (Abweichung: DAMEs Checks laufen in latte gegen amt_core statt im alten Repo, siehe latte `SESSION_NOTES.md`)
+- [x] M4 `addons/dame/` und `addons/lobby_loop/` per `tools/sync-games.mjs` aus den alten Repos; alte Repos bleiben Quelle
+- [x] M5 ein Spielstand (`SaveManager` über `JsonStore`, Migration alter App-Daten)
+- [x] M6 Flur mit drei Türen (Karriere, Hörsaal, Hinterzimmer), dazu Akte und Einstellungen
+- [x] M7 Akte mit einem Abschnitt je Spiel (`LatteAkte`)
+- Tor: [x] alle Tests im gemeinsamen Repo grün (DAME **9574 Checks / 15 Suites** + FLOW_OK, Lobby-Loop 140/140, latte 13/13), [x] ein Spielstand/Profil/Einstellungsseite, [x] Web-Build **49 MB**, [ ] installierbare Web-App auf dem Handy prüfen (LO).
+
+**Spike (M1) erledigt:** Web-Export (nothreads, PWA) **39 MB**, läuft in Chromium/WebGL2, Widerlegung offline spielbar. SQLite läuft im Web nicht ohne dlink-Templates; `FallbackDb` liest dort direkt `content/*.json`. Proxy sendet CORS (`GM_CORS_ORIGINS`). Gefundene Web-Fehler (Emojis, Wurfanzeige, Perma-Death-Schirm beim Start) behoben. M2–7 warten laut Tor auf die Abnahme von Phase 2.
 
 **Tor (Spec):**
-- [ ] Alle Tests beider Projekte im gemeinsamen Repo grün (DAME: 565 Checks)
-- [ ] Ein Spielstand, ein Profil, eine Einstellungsseite für alle drei Spiele
-- [ ] Web-Build unter 70 MB, läuft als installierbare Web-App
+- [x] Alle Tests beider Projekte im gemeinsamen Repo grün (DAME: 9574 Checks, der Wert 565 war veraltet)
+- [x] Ein Spielstand, ein Profil, eine Einstellungsseite für alle drei Spiele
+- [~] Web-Build unter 70 MB (49 MB, läuft in Chromium); installierbar auf dem Handy noch zu prüfen
 
 ---
 

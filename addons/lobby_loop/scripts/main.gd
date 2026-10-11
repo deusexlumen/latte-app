@@ -199,7 +199,10 @@ func _connect_signals() -> void:
 	_inventory_bar.case_file_toggled.connect(_case_file.toggle)
 	_overlay.action_finished.connect(func() -> void: SaveManager.autosave())
 	# Würfe landen in der Run-Statistik (Akten-Grundlage).
-	DiceRoller.roll_performed.connect(GameState.record_roll)
+	# Autoload an Autoload: überlebt diese Szene. Wird main.tscn erneut geladen (z. B. aus dem Flur
+	# der latte-app), darf die Verbindung nicht doppelt entstehen.
+	if not DiceRoller.roll_performed.is_connected(GameState.record_roll):
+		DiceRoller.roll_performed.connect(GameState.record_roll)
 
 
 # ---------------------------------------------------------------- Raum

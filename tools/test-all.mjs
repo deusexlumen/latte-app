@@ -9,6 +9,8 @@ const bin = process.env.GODOT_BIN ?? 'C:/Users/Buxe/tools/Godot/Godot_v4.7.2-sta
 const runs = [
   { name: 'DAME', args: ['--headless', '--path', '.', 'res://addons/dame/tests/run_all.tscn'], ok: /ALL_TESTS_OK checks=(\d+) suites=(\d+)/ },
   { name: 'DAME-Fluss', args: ['--headless', '--path', '.', '--script', 'res://addons/dame/tools/flow_smoke.gd'], ok: /FLOW_OK/ },
+  // Szenenfluss der App: jede ERROR-Zeile zählt (außer den üblichen Meldungen beim Beenden).
+  { name: 'Latte-Fluss', args: ['--headless', '--path', '.', '--script', 'res://tools/reentry_smoke.gd'], ok: /REENTRY_OK/, strict: true },
   { name: 'Lobby-Loop', args: ['--headless', '--path', '.', '-s', 'addons/gut/gut_cmdln.gd', '-gdir=res://addons/lobby_loop/test/gut', '-gexit'], ok: /Passing Tests\s+(\d+)/, fail: /Failing Tests\s+\d+/ },
   { name: 'Latte', args: ['--headless', '--path', '.', '-s', 'addons/gut/gut_cmdln.gd', '-gdir=res://test', '-gexit'], ok: /Passing Tests\s+(\d+)/, fail: /Failing Tests\s+\d+/ },
 ];
@@ -17,7 +19,9 @@ let failed = false;
 for (const r of runs) {
   const p = spawnSync(bin, r.args, { encoding: 'utf8' });
   const out = `${p.stdout}${p.stderr}`;
-  const errors = out.split(/\r?\n/).filter((l) => /SCRIPT ERROR|Parse Error/.test(l));
+  const errors = out.split(/\r?\n/).filter((l) =>
+    /SCRIPT ERROR|Parse Error/.test(l) ||
+    (r.strict && /^ERROR:/.test(l) && !/still in use at exit|leaked at exit/.test(l)));
   const m = out.match(r.ok);
   const bad = !m || errors.length > 0 || (r.fail && r.fail.test(out));
   console.log(`${bad ? 'FAIL' : 'OK  '} ${r.name}: ${m ? m[0] : 'kein Erfolgsmarker'}${errors.length ? ` (${errors.length} Skriptfehler)` : ''}`);
