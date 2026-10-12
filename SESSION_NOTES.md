@@ -16,3 +16,11 @@
   **Testspuren:** Headless läuft keine Migration mehr; Fluss-Test schreibt nur Testdateien. Vorher hatten Testläufe die echte Migration samt Marker ausgelöst und einen Spielstand angelegt; beides entfernt, `app_userdata/Latte` enthält nur Testdateien. Die echte Migration passiert beim ersten richtigen Start.
   **Quellen fest:** DAME aus Branch `feat/online-webrtc` (enthält main plus Online-Test), Lobby-Loop aus `master`.
   **Stand:** DAME 9574/15 + FLOW_OK, Latte-Fluss OK, Lobby-Loop 141/141, Latte 13/13.
+
+- [x] **2026-10-12 — Phase 4 umgesetzt (LO: „so wie du sagst"):** Entscheidungen: Amts-Look als zusätzliche Kosmetik, Casino wählbar; Verknüpfung als eigener latte-Code, alte Repos bleiben Quelle.
+  **DAME-Repo (a84f2db, Branch feat/online-webrtc):** Kategorie Raum (Casino / Amtsstube: Linoleum, graue Wände, Aktenschränke mit Ordnern statt Bar), Kartenrücken „Akte" (Aktenzeichen, Eingangsstempel), Tischfilz Amtsgrün, Signal `App.match_finished`, `I18n.de_overrides`. 9591 Checks.
+  **Lobby-Loop (08f14db, bbf1766):** `MinigameContract.register_external` (ohne Gastgeber startet nichts), Item-Feld `once` (Eingeforderter Gefallen +2, einmal), Tür zum Hinterzimmer in der Aufsichtsratssitzung, Proxy kennt `dame`. 145 Tests.
+  **latte (`app/hinterzimmer.gd`):** Karriere-Partie gegen 3 KI (mittel), Ergebnis nach Vertrag (Sieg: Disziplin +1 und „Notiz aus dem Hinterzimmer", Niederlage −1), danach zurück in die Karriere. Online- und freie Partien zählen nie. Chips heißen Gefälligkeiten. Amtsstube + Akte-Rücken beim ersten echten Start geschenkt. Akte: „Gefallen einfordern" für 100 Gefälligkeiten.
+  **Nicht umgesetzt:** „Figuren als Beamte" bräuchte neue 3D-Kleidung/Texturen (Kunst-Assets), nicht per Code machbar.
+  **Bekannt:** Führt eine verlorene Hinterzimmer-Partie zum Perma-Death, wird der Stand korrekt zurückgesetzt, der „Mandat verloren"-Schirm erscheint aber nicht (die Karriere-Szene ist während der Partie nicht geladen).
+  **Tests:** DAME 9591/15 + FLOW_OK, Latte-Fluss (inkl. Karriere → DAME-Tisch → Karriere), Lobby-Loop 145, Latte 21. Headless schreibt die App nie in echte Spielstände.
