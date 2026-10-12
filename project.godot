@@ -12,8 +12,9 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [autoload]
 
+Migration="*res://app/migration.gd"
 App="*res://addons/dame/scripts/app.gd"
-SaveManager="*res://addons/lobby_loop/scripts/autoload/SaveManager.gd"
+SaveManager="*res://app/save_manager.gd"
 GameState="*res://addons/lobby_loop/scripts/autoload/GameState.gd"
 ApiClient="*res://addons/lobby_loop/scripts/autoload/ApiClient.gd"
 FallbackDb="*res://addons/lobby_loop/scripts/autoload/FallbackDb.gd"
