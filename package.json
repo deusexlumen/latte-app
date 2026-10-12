@@ -1,0 +1,10 @@
+{
+  "name": "latte-app",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "sync": "node tools/sync-games.mjs",
+    "test": "node --test tools/*.test.mjs && node tools/test-all.mjs"
+  }
+}

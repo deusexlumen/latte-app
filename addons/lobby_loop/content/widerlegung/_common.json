@@ -1,0 +1,133 @@
+{
+  "order": [
+    "akademie",
+    "amt",
+    "erfurt",
+    "division7b",
+    "spiel"
+  ],
+  "rhetorik": {
+    "autoritaet": {
+      "name": "Autorität",
+      "icon": "🏛️",
+      "tele": "beschlagnahmt eine Karte",
+      "rule": "Die markierte Karte wird beim nächsten Herzschlag beschlagnahmt, wenn du sie bis dahin nicht wirfst."
+    },
+    "knappheit": {
+      "name": "Knappheit",
+      "icon": "⏳",
+      "tele": "kürzt die Redezeit",
+      "rule": "Beim nächsten Herzschlag verlierst du einen Wurf."
+    },
+    "sozial": {
+      "name": "Sozialer Beweis",
+      "icon": "👏",
+      "tele": "zieht einen Stützbalken ein",
+      "rule": "Beim nächsten Herzschlag steigt die Tragfähigkeit um 1."
+    },
+    "anstrich": {
+      "name": "Anstrich",
+      "icon": "🖌️",
+      "tele": "überstreicht eine Ausnahme",
+      "rule": "Beim nächsten Herzschlag wird die jüngste Ausnahme braun überstrichen und wiegt nur noch 1 statt 3."
+    }
+  },
+  "kniffe": [
+    {
+      "id": "laterne",
+      "icon": "🏮",
+      "name": "Laterne",
+      "quote": "„Ich suche einen Menschen.“",
+      "rule": "Zeigt vor jedem Wurf, wie der Gegner nachbessern würde.",
+      "active": false
+    },
+    {
+      "id": "fass",
+      "icon": "🛢️",
+      "name": "Die Tonne",
+      "quote": "Wohnung, Werkstatt, Weltanschauung.",
+      "rule": "Einmal je Instanz: ganze Hand zurück in den Sack, neu ziehen. Kostet keinen Wurf.",
+      "active": true
+    },
+    {
+      "id": "huhn2",
+      "icon": "🐔",
+      "name": "Zweites Huhn",
+      "quote": "Man nimmt immer eins mehr mit.",
+      "rule": "Jede Instanz: +1 Wurf.",
+      "active": false
+    },
+    {
+      "id": "sonne",
+      "icon": "☀️",
+      "name": "Geh mir aus der Sonne",
+      "quote": "„Nur ein wenig zur Seite, bitte.“",
+      "rule": "Der erste Herzschlag jeder Instanz verpufft.",
+      "active": false
+    },
+    {
+      "id": "uniform",
+      "icon": "🪖",
+      "name": "Trödler-Uniform",
+      "quote": "„Das sind meine Papiere.“ Köpenick, 1906.",
+      "rule": "Einmal je Instanz: Dein nächstes Gegenbeispiel erzwingt eine Ausnahme statt einer Ergänzung.",
+      "active": true
+    },
+    {
+      "id": "inspektion",
+      "icon": "🔦",
+      "name": "Lizenz zur Boden-Inspektion",
+      "quote": "Wer den Blick senkt, sieht die Risse.",
+      "rule": "Jede Instanz: Tragfähigkeit −1.",
+      "active": false
+    },
+    {
+      "id": "dudelsack",
+      "icon": "🎺",
+      "name": "Dudelsack",
+      "quote": "Mad Jack, Vågsøy 1941. Niemand hatte eine Vorschrift dafür.",
+      "rule": "Dein erstes Gegenbeispiel jeder Instanz legt +1 Last zusätzlich auf den Boden.",
+      "active": false
+    },
+    {
+      "id": "bettwaermer",
+      "icon": "🍳",
+      "name": "Dexters Bettwärmer",
+      "quote": "In die Karibik verschifft. Mit Gewinn.",
+      "rule": "Einmal je Instanz: ziehe 2 zusätzliche Karten.",
+      "active": true
+    }
+  ],
+  "raenge": [
+    {
+      "min": 0,
+      "name": "Bedenkenträger",
+      "text": "Hat die Lehren gelesen, abgeheftet und für tragfähig befunden."
+    },
+    {
+      "min": 45,
+      "name": "Zaungast der Vernunft",
+      "text": "Hat gesehen, dass der Boden knarzt. Hat es nicht laut gesagt."
+    },
+    {
+      "min": 70,
+      "name": "Huhnwerfer",
+      "text": "Wirft, was die Wirklichkeit hergibt. Trifft gelegentlich."
+    },
+    {
+      "min": 88,
+      "name": "Kyniker",
+      "text": "Lässt Lehren unter ihrem eigenen Gewicht einstürzen."
+    },
+    {
+      "min": 102,
+      "name": "Kyniker 1. Klasse",
+      "text": "Ganze Institutionen liegen in der Sickergrube. Er sitzt in der Sonne."
+    },
+    {
+      "min": 114,
+      "name": "Hof-Diogenes",
+      "text": "Alexander wäre gern er. Er wäre gern niemand."
+    }
+  ]
+}

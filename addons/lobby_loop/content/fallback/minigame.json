@@ -1,0 +1,121 @@
+{
+  "rounds": [
+    {
+      "accusation": "Herr Zeuge, stimmt es, dass Sie die Baugenehmigung für Ihren Schwager eigenhändig und zackig unterschrieben haben?",
+      "phrases": [
+        "Das war ein Versehen der Verwaltung, ich unterschreibe alles, was mir unter die Tür durchgeht.",
+        "Ich kenne meinen Schwager nicht persönlich, nur geschäftlich und bei Familienfesten.",
+        "Familie ist im Kommunalrecht definitionsgemäß kein verwaltungsrechtlicher Begriff."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Belegen lässt sich, dass der neue Fahrradweg exakt an drei Ihrer Grundstücke vorbeiführt. Zufall?",
+      "phrases": [
+        "Der Fahrradweg folgt einer Vision, keine Karte.",
+        "Ich besitze gar keine Grundstücke, nur langfristige Flächenbindungen.",
+        "Der Radweg ist ein Sieg der Verkehrswende und wurde von einer unabhängigen Gremium-Enquete getragen."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "In Ihrem schwarzen Koffer fanden sich fünfstellige 'Beratungshonorare'. Ohne Rechnung. Ohne Beratung?",
+      "phrases": [
+        "Die Honorare waren so rein, dass eine Rechnung sie beschmutzt hätte.",
+        "Ich kann mich an keinen Koffer erinnern, ich erinnere mich generell schlecht an schwarze Objekte.",
+        "Transparenz ist im Lobbyregister vorgesehen, und Vorgesehenes ist im Wesentlichen erledigt."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Sie haben ein Protokoll des Ausschusses geschreddert. Während der Sitzung. Vor laufender Kamera.",
+      "phrases": [
+        "Der Schredder hat das Protokoll selbstständig und ohne meine Kenntnis zerfetzt.",
+        "Das geschredderte Dokument war kein Original, sondern eine besonders verdächtige Kopie.",
+        "Altaktenvernichtung ist eine verwaltungsinterne Routine, für die der Ausschuss kein Mandat benötigt."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Ihr Verein erhielt kurz nach Ihrem Amtsantritt eine Spende in Höhe Ihrer genauen Kontostandlücke. Erklären Sie das.",
+      "phrases": [
+        "Die Spende war ein Zeichen allgemeiner Wertschätzung und hat mit meinem Konto rein gar nichts zu tun.",
+        "Vereinsspenden sind Ehrensache, und Ehrensachen prüft man bekanntlich nicht nach.",
+        "Parteispenden sind gesetzlich gedeckelt, und Vereinsspenden sind eine andere Gesetzesseite."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Zeuge, Sie haben unter Eid ausgesagt, Sie seien an jenem Abend 'irgendwo'. Wo genau war das 'irgendwo'?",
+      "phrases": [
+        "'Irgenwo' ist ein Ort mit einer langen Verwaltungstradition, jeder Kommunalpolitiker kennt ihn.",
+        "Ich war an besagtem Abend emotional abwesend, das lässt sich protokollieren.",
+        "Zeugen dürfen sich an nichts erinnern, solange die Erinnerung nicht verfestigt ist; das ist Aktenlage."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Man sieht Sie auf dem Foto deutlich, wie Sie dem Bürgermeister einen Umschlag übergeben. Was war darin?",
+      "phrases": [
+        "Ein Umschlag kann alles enthalten, außer Beweisen.",
+        "Der Bürgermeister und ich tauschen seit Jahren leere Umschläge aus, rein freundschaftlich.",
+        "Fotografien sind Auslegungssache; ein Umschlag ist behördlich genehmigungsfähig und damit unverdächtig."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Auf der Pressekonferenz haben Sie eine Frage zur Kaffeekasse beantwortet, die niemand gestellt hat. Warum?",
+      "phrases": [
+        "Ich habe nur vorgebeugt, und Vorsorge ist in der Verwaltung oberstes Gebot.",
+        "Die Frage stand im Raum, sie war nur noch nicht ausgesprochen — ich höre weiter als andere.",
+        "Pressekonferenzen leben von Antizipation; wer die ungestellte Frage beantwortet, kontrolliert die gestellte."
+      ],
+      "correct_index": 0
+    },
+    {
+      "accusation": "Ihre Fraktion hat einstimmig für Transparenz gestimmt. Die Sitzung war nicht beschlussfähig. Erklären Sie das.",
+      "phrases": [
+        "Einstimmigkeit ist ein Prinzip, keine Anwesenheitsfrage.",
+        "Wir stimmen immer im Geiste ab, das ist unsere verfahrensrechtliche Stärke.",
+        "Nichtbeschlussfähigkeit schützt vor vorschnellen Beschlüssen und damit vor Rechenschaft — das ist System, kein Fehler."
+      ],
+      "correct_index": 1
+    },
+    {
+      "accusation": "Sie sitzen im Aufsichtsrat einer Firma, die Sie als Ausschussmitglied überwachen. Kein Problem?",
+      "phrases": [
+        "Kontrolle und Verwaltung sind bei mir personell getrennt — je nach Stimmungslage.",
+        "Ich überwache die Firma tagsüber und verwaltete sie abends, das ist eine klare zeitliche Trennung.",
+        "Ehrenamtliche Mandatskumulierung ist zulässig, solange die Ehre größer ist als das Amt — und das prüfe ich selbst."
+      ],
+      "correct_index": 2
+    },
+    {
+      "accusation": "Ihr Wahlprogramm verspricht gleichzeitig Steuersenkungen und den Ausbau aller Dienste. Wie geht das?",
+      "phrases": [
+        "Das geht über Effizienz, und Effizienz ist das, was passiert, wenn man nicht hinschaut.",
+        "Wir finanzieren beides durch Einsparungen, die wir nach der Wahl konkretisieren werden, konkret natürlich nicht.",
+        "Ein Wahlprogramm ist ein Versprechen, und Versprechen sind bekanntlich nicht teil des Haushalts."
+      ],
+      "correct_index": 0
+    },
+    {
+      "accusation": "Zeuge, Ihre Aktenlage ist vollständig, inhaltsleer und unangreifbar. Halten Sie das für eine Verteidigung?",
+      "phrases": [
+        "Eine vollständige Aktenlage ist der höchste Stand verwaltungsrechtlicher Kunst.",
+        "Inhalt entsteht durch Lesen, und Lesen ist Sache derer, die es wagten.",
+        "Unangreifbar ist im Ausschuss das, was weder belegt noch widerlegt werden kann — das nennt man Vorsorge."
+      ],
+      "correct_index": 1
+    },
+    {
+      "accusation": "Kurz nach dem Parteispendentopf-Brunch stimmte Ihre Fraktion gegen eine Transparenz-Initiative. Zufall?",
+      "phrases": [
+        "Brunches haben keine Stimme, sie haben nur Butter — und Butter ist keine Mehrheit.",
+        "Meine Fraktion stimmt unabhängig, besonders nach gutem Frühstück.",
+        "Die Initiative war verfahrenstechnisch unausgereift, und das bemerkte meine Fraktion rein inhaltlich und vollkommen spontan."
+      ],
+      "correct_index": 2
+    }
+  ]
+}

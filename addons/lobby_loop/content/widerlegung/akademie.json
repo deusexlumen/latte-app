@@ -1,0 +1,307 @@
+{
+  "id": "akademie",
+  "nr": 1,
+  "shortName": "Akademie",
+  "shareIcon": "🏛️",
+  "ort": "Akademie zu Athen",
+  "jahr": "um 360 v. Chr.",
+  "gegner": "Platon",
+  "gegnerTitel": "Leiter der Akademie",
+  "siegel": [
+    "AKADEMIE",
+    "ZU ATHEN",
+    "PLATON"
+  ],
+  "begriff": "Mensch",
+  "truthYes": "ist ein Mensch",
+  "truthNo": "ist kein Mensch",
+  "lehreHead": "Mensch im Sinne dieser Lehre ist, was",
+  "startSatz": "„Der Mensch ist ein zweibeiniges Lebewesen ohne Federn.“",
+  "intro": "Platon hat den Menschen definiert. Die Schüler klatschen. Der Hörsaal ist voll, das Gebälk alt. Du stehst hinten, mit einem Sack voller Wirklichkeit.",
+  "hand": 5,
+  "wuerfe": 7,
+  "cap": 9,
+  "laterneLeihgabe": true,
+  "fixedHand": [
+    "huhn"
+  ],
+  "rhetorik": [
+    "autoritaet",
+    "sozial"
+  ],
+  "attrs": {
+    "lebt": {
+      "pos": "ein Lebewesen ist",
+      "neg": "kein Lebewesen ist",
+      "short": "Lebewesen",
+      "icon": "🫀"
+    },
+    "zweibeinig": {
+      "pos": "auf zwei Beinen geht",
+      "neg": "nicht auf zwei Beinen geht",
+      "short": "zwei Beine",
+      "icon": "🦵"
+    },
+    "federn": {
+      "pos": "Federn trägt",
+      "neg": "keine Federn trägt",
+      "short": "Federn",
+      "icon": "🪶"
+    },
+    "naegel": {
+      "pos": "breite Nägel hat",
+      "neg": "keine breiten Nägel hat",
+      "short": "breite Nägel",
+      "icon": "💅"
+    },
+    "spricht": {
+      "pos": "spricht",
+      "neg": "nicht spricht",
+      "short": "spricht",
+      "icon": "🗣️"
+    },
+    "kleidung": {
+      "pos": "Kleidung trägt",
+      "neg": "keine Kleidung trägt",
+      "short": "Kleidung",
+      "icon": "👘"
+    },
+    "lacht": {
+      "pos": "lacht",
+      "neg": "nicht lacht",
+      "short": "lacht",
+      "icon": "😄"
+    },
+    "schwanz": {
+      "pos": "einen Schwanz hat",
+      "neg": "keinen Schwanz hat",
+      "short": "Schwanz",
+      "icon": "〰️"
+    },
+    "fell": {
+      "pos": "ein Fell hat",
+      "neg": "kein Fell hat",
+      "short": "Fell",
+      "icon": "🐾"
+    },
+    "steuern": {
+      "pos": "Steuern zahlt",
+      "neg": "keine Steuern zahlt",
+      "short": "Steuern",
+      "icon": "🪙"
+    },
+    "schreibt": {
+      "pos": "schreiben kann",
+      "neg": "nicht schreiben kann",
+      "short": "schreibt",
+      "icon": "✍️"
+    },
+    "sterblich": {
+      "pos": "sterblich ist",
+      "neg": "unsterblich ist",
+      "short": "sterblich",
+      "icon": "⚱️"
+    }
+  },
+  "start": [
+    "+lebt",
+    "+zweibeinig",
+    "-federn"
+  ],
+  "prisma": [
+    "+naegel",
+    "+spricht",
+    "-fell",
+    "-schwanz",
+    "+kleidung",
+    "+lacht"
+  ],
+  "refMembers": [
+    "sokrates",
+    "alkibiades"
+  ],
+  "refNon": [
+    "pferd",
+    "gans"
+  ],
+  "cards": [
+    {
+      "id": "sokrates",
+      "name": "Sokrates",
+      "icon": "🧔",
+      "m": true,
+      "a": "lebt zweibeinig naegel spricht kleidung lacht steuern sterblich",
+      "note": "Hat nie etwas aufgeschrieben. Gilt trotzdem als Mensch."
+    },
+    {
+      "id": "alkibiades",
+      "name": "Alkibiades",
+      "icon": "🍷",
+      "m": true,
+      "a": "lebt zweibeinig naegel spricht kleidung lacht steuern schreibt sterblich",
+      "note": "Feldherr, Redner, Trinker. Mensch."
+    },
+    {
+      "id": "pferd",
+      "name": "Pferd",
+      "icon": "🐎",
+      "m": false,
+      "a": "lebt fell schwanz sterblich",
+      "note": "Vier Beine. Fiel nie unter die Lehre."
+    },
+    {
+      "id": "gans",
+      "name": "Gans",
+      "icon": "🪿",
+      "m": false,
+      "a": "lebt zweibeinig federn schwanz sterblich",
+      "note": "Zwei Beine, aber gefiedert. Das war der Plan."
+    },
+    {
+      "id": "huhn",
+      "name": "Gerupftes Huhn",
+      "icon": "🐔",
+      "m": false,
+      "a": "lebt zweibeinig schwanz sterblich",
+      "note": "Frisch gerupft. Zwei Beine, keine Federn. Gackert vorwurfsvoll."
+    },
+    {
+      "id": "kaenguru",
+      "name": "Känguru",
+      "icon": "🦘",
+      "m": false,
+      "a": "lebt zweibeinig schwanz fell sterblich",
+      "note": "Hüpft auf zwei Beinen. Hat keine Steuernummer."
+    },
+    {
+      "id": "schimpanse",
+      "name": "Zirkusaffe in Hosen",
+      "icon": "🐒",
+      "m": false,
+      "a": "lebt zweibeinig naegel kleidung lacht fell sterblich",
+      "note": "Geht aufrecht, trägt Hosen, lacht über Platon. Bleibt ein Affe."
+    },
+    {
+      "id": "tanzbaer",
+      "name": "Tanzbär",
+      "icon": "🐻",
+      "m": false,
+      "a": "lebt zweibeinig kleidung fell schwanz sterblich",
+      "note": "Tanzt aufrecht, trägt eine Rüschenkrause. Hat Krallen, keine Nägel."
+    },
+    {
+      "id": "kyklop",
+      "name": "Kyklop Polyphem",
+      "icon": "👁️",
+      "m": false,
+      "a": "lebt zweibeinig naegel spricht kleidung sterblich",
+      "note": "Ein Auge, zwei Beine, ein Schaffell als Mantel. Lacht nie. Ein Riese."
+    },
+    {
+      "id": "hermes",
+      "name": "Hermes als Wanderer",
+      "icon": "🧳",
+      "m": false,
+      "a": "lebt zweibeinig naegel spricht kleidung lacht schreibt",
+      "note": "Ein Gott in Reisekleidung. Bittet um Wasser, zahlt keine Steuern, stirbt nie."
+    },
+    {
+      "id": "echo",
+      "name": "Echo, die Nymphe",
+      "icon": "🗻",
+      "m": false,
+      "a": "lebt zweibeinig naegel spricht kleidung sterblich",
+      "note": "Kann nur wiederholen, was andere sagen. Lacht nie zuerst. Eine Nymphe."
+    },
+    {
+      "id": "satyr",
+      "name": "Satyr",
+      "icon": "🐐",
+      "m": false,
+      "a": "lebt zweibeinig naegel spricht lacht fell schwanz sterblich",
+      "note": "Bocksbeine, Schwanz, beste Laune. Bei jedem Symposion dabei."
+    },
+    {
+      "id": "saeugling",
+      "name": "Säugling",
+      "icon": "👶",
+      "m": true,
+      "a": "lebt naegel lacht kleidung sterblich",
+      "note": "Krabbelt auf vieren. Spricht nicht. Lacht über alles."
+    },
+    {
+      "id": "veteran",
+      "name": "Veteran mit Holzbein",
+      "icon": "🦿",
+      "m": true,
+      "a": "lebt naegel spricht kleidung lacht steuern schreibt sterblich",
+      "note": "Ein Bein bei Marathon gelassen. Zahlt trotzdem Steuern."
+    },
+    {
+      "id": "pythagoreer",
+      "name": "Pythagoreer im Schweigejahr",
+      "icon": "🤐",
+      "m": true,
+      "a": "lebt zweibeinig naegel kleidung steuern schreibt sterblich",
+      "note": "Fünf Jahre Schweigegebot. Lachen ist ebenfalls untersagt."
+    },
+    {
+      "id": "olympionike",
+      "name": "Olympionike",
+      "icon": "🏃",
+      "m": true,
+      "a": "lebt zweibeinig naegel spricht lacht steuern sterblich",
+      "note": "Startet nackt, wie es sich in Olympia gehört."
+    },
+    {
+      "id": "schauspieler",
+      "name": "Darsteller aus „Die Vögel“",
+      "icon": "🎭",
+      "m": true,
+      "a": "lebt zweibeinig naegel spricht kleidung lacht federn steuern schreibt sterblich",
+      "note": "Aristophanes-Kostüm, voll befiedert. Darunter ein Athener."
+    },
+    {
+      "id": "wolfskind",
+      "name": "Wolfskind",
+      "icon": "🐺",
+      "m": true,
+      "a": "lebt zweibeinig naegel lacht sterblich",
+      "note": "Von Wölfen aufgezogen. Spricht nicht, trägt nichts. Ein Mensch."
+    },
+    {
+      "id": "tithonos",
+      "name": "Tithonos",
+      "icon": "⏳",
+      "m": true,
+      "a": "lebt zweibeinig naegel spricht kleidung schreibt",
+      "note": "Bekam Unsterblichkeit. Vergaß, ewige Jugend mitzubeantragen."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Ein Einwand ohne Rang. Dennoch: Die Lehre wird präzisiert.",
+      "Gewiss. Gemeint war selbstverständlich auch: …{lit}.",
+      "Das war mitgedacht. Es steht jetzt auch da."
+    ],
+    "repair": [
+      "Eine Bestimmung entfällt. Die Lehre wird dadurch klarer, nicht schwächer.",
+      "Ich streiche, was nie wesentlich war, und setze, was immer gemeint war."
+    ],
+    "excl": [
+      "Ein Einzelfall. Er wird namentlich ausgenommen.",
+      "Dieses Ding verdient keine Regel. Es bekommt eine eigene Zeile."
+    ],
+    "incl": [
+      "Ein Sonderfall. Er wird ausdrücklich eingeschlossen.",
+      "Selbstverständlich ist auch dies gemeint. Ich schreibe es dazu."
+    ],
+    "confirm": [
+      "Bestätigt. Die Lehre hält.",
+      "Exakt wie erwartet.",
+      "Ein schönes Beispiel. Für mich."
+    ],
+    "collapse": "Der Boden gibt nach. Die Akademie verschwindet samt Lehre in der Sickergrube. Platon ergänzt noch im Fallen: „…mit breiten Nägeln.“",
+    "hold": "Die Lehre hält. Die Schüler schreiben mit. Exakt wie erwartet."
+  }
+}

@@ -1,0 +1,37 @@
+; Engine configuration file.
+; Hand gepflegt (nicht vom Sync erzeugt). Autoload-Pfade folgen der Pfadtabelle in tools/sync-games.mjs.
+
+config_version=5
+
+[application]
+
+config/name="Latte"
+config/description="Die Latte liegt am Boden: Lobby-Loop, Widerlegung und DAME in einer App."
+run/main_scene="res://flur/flur.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+App="*res://addons/dame/scripts/app.gd"
+SaveManager="*res://addons/lobby_loop/scripts/autoload/SaveManager.gd"
+GameState="*res://addons/lobby_loop/scripts/autoload/GameState.gd"
+ApiClient="*res://addons/lobby_loop/scripts/autoload/ApiClient.gd"
+FallbackDb="*res://addons/lobby_loop/scripts/autoload/FallbackDb.gd"
+DiceRoller="*res://addons/lobby_loop/scripts/autoload/DiceRoller.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.0784314, 0.0901961, 0.113725, 1)

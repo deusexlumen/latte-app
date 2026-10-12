@@ -1,0 +1,328 @@
+{
+  "id": "erfurt",
+  "nr": 3,
+  "shortName": "Erfurt 1184",
+  "shareIcon": "🐟",
+  "ort": "Dompropstei zu Erfurt",
+  "jahr": "Juli 1184 · Hoftag",
+  "gegner": "Die Fastenkommission",
+  "gegnerTitel": "tagt im Obergeschoss",
+  "siegel": [
+    "FASTEN-",
+    "KOMMISSION",
+    "ERFURT 1184"
+  ],
+  "begriff": "Fisch",
+  "truthYes": "ist ein Fisch",
+  "truthNo": "ist kein Fisch",
+  "lehreHead": "Fisch im Sinne der Fastenordnung ist, was",
+  "startSatz": "„Ein Fisch ist ein Tier, das im Wasser lebt und schwimmt.“",
+  "intro": "Juli 1184. Die Elite des Reiches drängt sich im Obergeschoss der Dompropstei. Die Fastenkommission legt fest, was freitags als Fisch auf den Tisch darf. Unter dem Saal liegt die Sickergrube des Klosters. Die Wirklichkeit heißt hier: Biologie.",
+  "hand": 5,
+  "wuerfe": 7,
+  "cap": 11,
+  "rhetorik": [
+    "anstrich",
+    "autoritaet"
+  ],
+  "attrs": {
+    "tier": {
+      "pos": "ein Tier ist",
+      "neg": "kein Tier ist",
+      "short": "Tier",
+      "icon": "🐾"
+    },
+    "wasser": {
+      "pos": "im Wasser lebt",
+      "neg": "nicht im Wasser lebt",
+      "short": "im Wasser",
+      "icon": "💧"
+    },
+    "schwimmt": {
+      "pos": "schwimmt",
+      "neg": "nicht schwimmt",
+      "short": "schwimmt",
+      "icon": "🏊"
+    },
+    "flossen": {
+      "pos": "Flossen hat",
+      "neg": "keine Flossen hat",
+      "short": "Flossen",
+      "icon": "🪭"
+    },
+    "schuppen": {
+      "pos": "Schuppen trägt",
+      "neg": "keine Schuppen trägt",
+      "short": "Schuppen",
+      "icon": "🛡️"
+    },
+    "kiemen": {
+      "pos": "mit Kiemen atmet",
+      "neg": "nicht mit Kiemen atmet",
+      "short": "Kiemen",
+      "icon": "🫧"
+    },
+    "wirbel": {
+      "pos": "eine Wirbelsäule hat",
+      "neg": "keine Wirbelsäule hat",
+      "short": "Wirbelsäule",
+      "icon": "🦴"
+    },
+    "eier": {
+      "pos": "Eier legt",
+      "neg": "keine Eier legt",
+      "short": "legt Eier",
+      "icon": "🥚"
+    },
+    "warm": {
+      "pos": "warmblütig ist",
+      "neg": "kaltblütig ist",
+      "short": "warmblütig",
+      "icon": "🌡️"
+    },
+    "fell": {
+      "pos": "ein Fell hat",
+      "neg": "kein Fell hat",
+      "short": "Fell",
+      "icon": "🧶"
+    },
+    "federn": {
+      "pos": "Federn trägt",
+      "neg": "keine Federn trägt",
+      "short": "Federn",
+      "icon": "🪶"
+    },
+    "beine": {
+      "pos": "Beine hat",
+      "neg": "keine Beine hat",
+      "short": "Beine",
+      "icon": "🦵"
+    }
+  },
+  "start": [
+    "+tier",
+    "+wasser",
+    "+schwimmt"
+  ],
+  "prisma": [
+    "+flossen",
+    "-fell",
+    "-federn",
+    "+schuppen",
+    "-beine",
+    "+kiemen",
+    "+eier"
+  ],
+  "refMembers": [
+    "hering",
+    "karpfen"
+  ],
+  "refNon": [
+    "ochse",
+    "muschel"
+  ],
+  "cards": [
+    {
+      "id": "hering",
+      "name": "Hering",
+      "icon": "🐟",
+      "m": true,
+      "a": "tier wasser schwimmt flossen schuppen kiemen wirbel eier",
+      "note": "Der Fisch, an den die Kommission denkt."
+    },
+    {
+      "id": "karpfen",
+      "name": "Karpfen",
+      "icon": "🎏",
+      "m": true,
+      "a": "tier wasser schwimmt flossen schuppen kiemen wirbel eier",
+      "note": "Klosterteich, zweites Becken links."
+    },
+    {
+      "id": "ochse",
+      "name": "Ochse",
+      "icon": "🐂",
+      "m": false,
+      "a": "tier warm fell beine wirbel",
+      "note": "Fleisch. Freitags verboten. Unstrittig."
+    },
+    {
+      "id": "muschel",
+      "name": "Muschel",
+      "icon": "🐚",
+      "m": false,
+      "a": "tier wasser eier",
+      "note": "Lebt im Wasser, schwimmt nicht. Liegt herum."
+    },
+    {
+      "id": "hai",
+      "name": "Hai",
+      "icon": "🦈",
+      "m": true,
+      "a": "tier wasser schwimmt flossen schuppen kiemen wirbel",
+      "note": "Knorpel statt Gräten, bringt lebende Junge zur Welt. Trotzdem Fisch."
+    },
+    {
+      "id": "seepferdchen",
+      "name": "Seepferdchen",
+      "icon": "♞",
+      "m": true,
+      "a": "tier wasser schwimmt flossen kiemen wirbel eier",
+      "note": "Knochenplatten statt Schuppen. Das Männchen trägt die Eier aus."
+    },
+    {
+      "id": "lungenfisch",
+      "name": "Lungenfisch",
+      "icon": "🫁",
+      "m": true,
+      "a": "tier wasser schwimmt flossen schuppen wirbel eier",
+      "note": "Atmet mit der Lunge. Überlebt Dürre eingegraben im Schlamm."
+    },
+    {
+      "id": "schlammspringer",
+      "name": "Schlammspringer",
+      "icon": "🐡",
+      "m": true,
+      "a": "tier schwimmt flossen schuppen kiemen wirbel eier",
+      "note": "Lebt an Land im Watt und klettert auf Mangroven. Ein Fisch."
+    },
+    {
+      "id": "anglerfisch",
+      "name": "Anglerfisch-Männchen",
+      "icon": "🎣",
+      "m": true,
+      "a": "tier wasser flossen kiemen wirbel",
+      "note": "Verwächst mit dem Weibchen und schwimmt nie wieder."
+    },
+    {
+      "id": "stockfisch",
+      "name": "Stockfisch",
+      "icon": "🪝",
+      "m": true,
+      "a": "tier flossen wirbel",
+      "note": "Getrocknet, hängt am Gestell. Ein toter Fisch ist ein Fisch. Fragen Sie den Händler."
+    },
+    {
+      "id": "rochen",
+      "name": "Rochen",
+      "icon": "🪁",
+      "m": true,
+      "a": "tier wasser schwimmt flossen kiemen wirbel eier",
+      "note": "Flach wie eine Verordnung. Keine Schuppen. Ein Fisch."
+    },
+    {
+      "id": "wal",
+      "name": "Wal",
+      "icon": "🐋",
+      "m": false,
+      "a": "tier wasser schwimmt flossen wirbel warm",
+      "note": "Atmet Luft, säugt Junge. Moby Dick nennt ihn trotzdem Fisch."
+    },
+    {
+      "id": "biber",
+      "name": "Biber",
+      "icon": "🦫",
+      "m": false,
+      "a": "tier wasser schwimmt schuppen fell wirbel warm beine",
+      "note": "Schuppiger Schwanz. Deshalb im Mittelalter als Fastenspeise geduldet."
+    },
+    {
+      "id": "bernikelgans",
+      "name": "Bernikelgans",
+      "icon": "🪿",
+      "m": false,
+      "a": "tier wasser schwimmt federn wirbel eier warm beine",
+      "note": "Wächst laut gelehrter Meinung an Treibholz. Darum angeblich fastentauglich."
+    },
+    {
+      "id": "tintenfisch",
+      "name": "Tintenfisch",
+      "icon": "🦑",
+      "m": false,
+      "a": "tier wasser schwimmt flossen kiemen eier",
+      "note": "Heißt Fisch. Ist eine Schnecke mit Ehrgeiz."
+    },
+    {
+      "id": "qualle",
+      "name": "Qualle",
+      "icon": "🪼",
+      "m": false,
+      "a": "tier wasser schwimmt",
+      "note": "Zu 98 % Wasser. Der Rest ist schlechte Laune."
+    },
+    {
+      "id": "krokodil",
+      "name": "Krokodil vom Achterdeck",
+      "icon": "🐊",
+      "m": false,
+      "a": "tier wasser schwimmt schuppen wirbel eier beine",
+      "note": "Zugestiegen auf Madagaskar, 1905. Frisst Seekarten."
+    },
+    {
+      "id": "kaulquappe",
+      "name": "Kaulquappe",
+      "icon": "🐸",
+      "m": false,
+      "a": "tier wasser schwimmt flossen kiemen wirbel",
+      "note": "Kiemen, Flossensaum, Wirbelsäule. Wird später ein Frosch."
+    },
+    {
+      "id": "axolotl",
+      "name": "Axolotl",
+      "icon": "🦎",
+      "m": false,
+      "a": "tier wasser schwimmt flossen kiemen wirbel eier beine",
+      "note": "Kiemen außen, Flossensaum, vier Beinchen. Ein Lurch, der nie erwachsen wird."
+    },
+    {
+      "id": "robbe",
+      "name": "Robbe",
+      "icon": "🦭",
+      "m": false,
+      "a": "tier wasser schwimmt flossen fell warm wirbel",
+      "note": "Flossen, Fell, Fischgeruch. Säugetier."
+    },
+    {
+      "id": "garnele",
+      "name": "Garnele",
+      "icon": "🦐",
+      "m": false,
+      "a": "tier wasser schwimmt kiemen beine eier",
+      "note": "Zehn Beine, Kiemen, kein Rückgrat."
+    },
+    {
+      "id": "schildkroete",
+      "name": "Meeresschildkröte",
+      "icon": "🐢",
+      "m": false,
+      "a": "tier wasser schwimmt flossen schuppen wirbel eier",
+      "note": "Flossen, Schuppen, Eier, Wirbelsäule. Atmet Luft."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Im Namen der Kommission: Die Fastenordnung wird ergänzt.",
+      "Ein frommer Hinweis. Er wird Gesetz.",
+      "Wir hatten das stets so gemeint. Nun steht es da."
+    ],
+    "repair": [
+      "Die Kommission verwirft eine Bestimmung und setzt eine bessere ein.",
+      "Was gestern galt, galt nie. Ab heute gilt dies."
+    ],
+    "excl": [
+      "Dieses Geschöpf wird ausdrücklich vom Freitagstisch verwiesen.",
+      "Für dieses eine Tier ergeht ein eigener Bescheid."
+    ],
+    "incl": [
+      "Dieses Geschöpf gilt fortan als Fisch. Ausnahmsweise.",
+      "Der Bischof isst es ohnehin. Es wird eingeschlossen."
+    ],
+    "confirm": [
+      "Die Kommission nickt.",
+      "Bekannt. Abgelegt.",
+      "Exakt wie erwartet."
+    ],
+    "collapse": "Das Gebälk bricht. Die Kommission stürzt zwei Stockwerke tief in die Sickergrube der Dompropstei. Der König hält sich in der Fensternische fest.",
+    "hold": "Die Fastenordnung steht. Das Gebälk hält. Noch."
+  }
+}

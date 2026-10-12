@@ -1,0 +1,312 @@
+{
+  "id": "division7b",
+  "nr": 4,
+  "shortName": "Division 7B",
+  "shareIcon": "👁️",
+  "ort": "Division 7B · Metaphysische Dienste",
+  "jahr": "Postfach 0 · 00000 Nirgendwo",
+  "gegner": "Die Klassifizierungsstelle",
+  "gegnerTitel": "Formular 7b-BLANK, Feld 4 · kein Kundendienst",
+  "siegel": [
+    "DIVISION 7B",
+    "METAPHYS.",
+    "DIENSTE"
+  ],
+  "begriff": "Lebewesen",
+  "truthYes": "ist ein Lebewesen",
+  "truthNo": "ist kein Lebewesen",
+  "lehreHead": "Lebewesen im Sinne der Dienstvorschrift MD-7B ist, was",
+  "startSatz": "„Ein Lebewesen ist, was wächst und sich bewegt.“",
+  "intro": "Division 7B führt das Register der Lebewesen, damit Entitäten ordentlich abgelehnt werden können. Abgelegt wird nach Aussehen. Die Wirklichkeit heißt hier: Biologie, ergänzt um zwei Gutachten der Division.",
+  "hand": 5,
+  "wuerfe": 7,
+  "cap": 10,
+  "rhetorik": [
+    "sozial",
+    "knappheit"
+  ],
+  "attrs": {
+    "waechst": {
+      "pos": "wächst",
+      "neg": "nicht wächst",
+      "short": "wächst",
+      "icon": "🌱"
+    },
+    "bewegt": {
+      "pos": "sich selbst bewegt",
+      "neg": "sich nicht selbst bewegt",
+      "short": "bewegt sich",
+      "icon": "🏃"
+    },
+    "atmet": {
+      "pos": "Sauerstoff veratmet",
+      "neg": "keinen Sauerstoff veratmet",
+      "short": "atmet",
+      "icon": "🌬️"
+    },
+    "vermehrt": {
+      "pos": "sich vermehrt",
+      "neg": "sich nicht vermehrt",
+      "short": "vermehrt sich",
+      "icon": "🐣"
+    },
+    "zellen": {
+      "pos": "aus Zellen besteht",
+      "neg": "nicht aus Zellen besteht",
+      "short": "Zellen",
+      "icon": "🧫"
+    },
+    "frisst": {
+      "pos": "Nahrung aufnimmt",
+      "neg": "keine Nahrung aufnimmt",
+      "short": "frisst",
+      "icon": "🍽️"
+    },
+    "reagiert": {
+      "pos": "auf Reize reagiert",
+      "neg": "nicht auf Reize reagiert",
+      "short": "reagiert",
+      "icon": "⚡"
+    },
+    "erbgut": {
+      "pos": "Erbgut trägt",
+      "neg": "kein Erbgut trägt",
+      "short": "Erbgut",
+      "icon": "🧬"
+    },
+    "warm": {
+      "pos": "Wärme abgibt",
+      "neg": "keine Wärme abgibt",
+      "short": "warm",
+      "icon": "🌡️"
+    },
+    "akte": {
+      "pos": "bei Division 7B aktenkundig ist",
+      "neg": "nicht aktenkundig ist",
+      "short": "aktenkundig",
+      "icon": "🗂️"
+    },
+    "stirbt": {
+      "pos": "sterben oder vergehen kann",
+      "neg": "nicht vergehen kann",
+      "short": "vergänglich",
+      "icon": "⚱️"
+    }
+  },
+  "start": [
+    "+waechst",
+    "+bewegt"
+  ],
+  "prisma": [
+    "+reagiert",
+    "+frisst",
+    "+stirbt",
+    "+vermehrt",
+    "+atmet",
+    "+warm"
+  ],
+  "refMembers": [
+    "hund",
+    "leiterin"
+  ],
+  "refNon": [
+    "stein",
+    "kaffeeautomat"
+  ],
+  "cards": [
+    {
+      "id": "hund",
+      "name": "Hund",
+      "icon": "🐕",
+      "m": true,
+      "a": "waechst bewegt atmet vermehrt zellen frisst reagiert erbgut warm stirbt",
+      "note": "Lebt. Bellt Entitäten an."
+    },
+    {
+      "id": "leiterin",
+      "name": "Abteilungsleiterin 7B",
+      "icon": "👩‍💼",
+      "m": true,
+      "a": "waechst bewegt atmet vermehrt zellen frisst reagiert erbgut warm stirbt akte",
+      "note": "Lebt. Ist aktenkundig. Beides ungefragt."
+    },
+    {
+      "id": "stein",
+      "name": "Stein",
+      "icon": "🪨",
+      "m": false,
+      "a": "",
+      "note": "Liegt. Liegt weiter."
+    },
+    {
+      "id": "kaffeeautomat",
+      "name": "Kaffeeautomat, 3. OG",
+      "icon": "☕",
+      "m": false,
+      "a": "frisst reagiert warm akte",
+      "note": "Frisst Münzen, reagiert gelegentlich, Störungsmeldung 7B-K-3."
+    },
+    {
+      "id": "eiche",
+      "name": "Eiche",
+      "icon": "🌳",
+      "m": true,
+      "a": "waechst atmet vermehrt zellen reagiert erbgut stirbt",
+      "note": "Bewegt sich in 800 Jahren keinen Meter."
+    },
+    {
+      "id": "schimmel",
+      "name": "Schimmel in der Kantine",
+      "icon": "🍄",
+      "m": true,
+      "a": "waechst atmet vermehrt zellen frisst erbgut stirbt akte",
+      "note": "Wächst seit 2019. Dreimal gemeldet, nie bearbeitet."
+    },
+    {
+      "id": "maultier",
+      "name": "Maultier",
+      "icon": "🫏",
+      "m": true,
+      "a": "waechst bewegt atmet zellen frisst reagiert erbgut warm stirbt",
+      "note": "Unfruchtbar. Lebt trotzdem, aus Prinzip."
+    },
+    {
+      "id": "baertierchen",
+      "name": "Bärtierchen (eingetrocknet)",
+      "icon": "🐛",
+      "m": true,
+      "a": "zellen erbgut stirbt",
+      "note": "In Kryptobiose. Übersteht Vakuum, Strahlung und Montage."
+    },
+    {
+      "id": "koralle",
+      "name": "Koralle",
+      "icon": "🪸",
+      "m": true,
+      "a": "waechst atmet vermehrt zellen frisst reagiert erbgut stirbt",
+      "note": "Ein Tier, das aussieht wie ein Stein, der aussieht wie eine Pflanze."
+    },
+    {
+      "id": "hefe",
+      "name": "Hefe im Teig",
+      "icon": "🍞",
+      "m": true,
+      "a": "waechst vermehrt zellen frisst erbgut stirbt",
+      "note": "Gärt ohne Sauerstoff. Lebt trotzdem."
+    },
+    {
+      "id": "samen",
+      "name": "Samenkorn (ruhend)",
+      "icon": "🌰",
+      "m": true,
+      "a": "atmet zellen erbgut stirbt",
+      "note": "Tut seit Jahren nichts. Lebt, auf Abruf."
+    },
+    {
+      "id": "turritopsis",
+      "name": "Unsterbliche Qualle",
+      "icon": "🎐",
+      "m": true,
+      "a": "waechst bewegt atmet vermehrt zellen frisst reagiert erbgut",
+      "note": "Verjüngt sich bei Bedarf. Stirbt nicht. Lebt."
+    },
+    {
+      "id": "darmbakterium",
+      "name": "Darmbakterium",
+      "icon": "🦠",
+      "m": true,
+      "a": "waechst bewegt vermehrt zellen frisst reagiert erbgut stirbt",
+      "note": "Schwimmt mit Geißel, braucht keinen Sauerstoff, gibt keine Wärme ab."
+    },
+    {
+      "id": "fliegenfalle",
+      "name": "Venusfliegenfalle",
+      "icon": "🪴",
+      "m": true,
+      "a": "waechst bewegt atmet vermehrt zellen frisst reagiert erbgut stirbt",
+      "note": "Eine Pflanze, die zuschnappt."
+    },
+    {
+      "id": "feuer",
+      "name": "Feuer",
+      "icon": "🔥",
+      "m": false,
+      "a": "waechst bewegt atmet vermehrt frisst reagiert warm stirbt",
+      "note": "Wächst, frisst, atmet, vermehrt sich, stirbt. Ist trotzdem nur Feuer."
+    },
+    {
+      "id": "wirbelsturm",
+      "name": "Wirbelsturm",
+      "icon": "🌪️",
+      "m": false,
+      "a": "waechst bewegt frisst stirbt",
+      "note": "Wächst über warmem Wasser, zieht weiter, vergeht. Hat einen Vornamen."
+    },
+    {
+      "id": "schattenesser",
+      "name": "Der Schattenesser (EB-004)",
+      "icon": "👤",
+      "m": false,
+      "a": "waechst bewegt frisst reagiert akte",
+      "note": "Entität. Frisst Schatten. Besteht aus nichts Nachweisbarem."
+    },
+    {
+      "id": "konzern",
+      "name": "Konzern (juristische Person)",
+      "icon": "🏢",
+      "m": false,
+      "a": "waechst frisst vermehrt reagiert akte stirbt",
+      "note": "Rechtlich eine Person. Biologisch Papier."
+    },
+    {
+      "id": "geruecht",
+      "name": "Gerücht",
+      "icon": "🗣️",
+      "m": false,
+      "a": "waechst bewegt vermehrt stirbt",
+      "note": "Wächst, wandert, vermehrt sich. Stirbt an Langeweile."
+    },
+    {
+      "id": "tamagotchi",
+      "name": "Tamagotchi",
+      "icon": "🥚",
+      "m": false,
+      "a": "waechst frisst reagiert stirbt",
+      "note": "Stirbt, wenn man es vergisst. Ist trotzdem Plastik."
+    },
+    {
+      "id": "zombie",
+      "name": "Untoter (Akte offen)",
+      "icon": "🧟",
+      "m": false,
+      "a": "bewegt frisst reagiert zellen erbgut stirbt",
+      "note": "Zellen, Erbgut, Appetit. Atmet nicht. Laut 7B: tot, aber mobil."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Klassifizierung angepasst. Fehlercode CL_001: Regel als selbstverständlich behandelt.",
+      "Ergänzung vorgenommen. Der Vorgang gilt als gelöst.",
+      "Feld 4 wurde erweitert. Rückfragen werden automatisch abgelehnt."
+    ],
+    "repair": [
+      "Ein Kriterium wird außer Dienst gestellt. Ersatz wird aus dem Bestand gezogen.",
+      "Revision 1.1. Die alte Fassung hat nie existiert."
+    ],
+    "excl": [
+      "Einzelakte angelegt. Status: ausgenommen. Begründung: unbekannt.",
+      "Für diesen Fall gilt Fehlercode MG_004. Er wird ausgenommen."
+    ],
+    "incl": [
+      "Sonderfall registriert. Lebt laut Akte.",
+      "Manuelle Aufnahme ins Register. Das ist ausreichend."
+    ],
+    "confirm": [
+      "Ausreichend.",
+      "Abgelegt. Und es ist ausreichend.",
+      "Exakt wie erwartet."
+    ],
+    "collapse": "Das Register wiegt mehr als die Etage. Division 7B liegt in der Sickergrube. Und es ist ausreichend.",
+    "hold": "Das Register hält. Die Etage auch. Und das ist ausreichend."
+  }
+}

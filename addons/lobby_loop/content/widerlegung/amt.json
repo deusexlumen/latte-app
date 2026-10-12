@@ -1,0 +1,343 @@
+{
+  "id": "amt",
+  "nr": 2,
+  "shortName": "Amt",
+  "shareIcon": "📋",
+  "ort": "Amt für Systemische Erwartungsreduktion",
+  "jahr": "Abteilung IV · Stelle 04",
+  "gegner": "Sachbearbeitung",
+  "gegnerTitel": "nicht besetzt · Rückfragen zwecklos",
+  "siegel": [
+    "AMT F. SYST.",
+    "ERWARTUNGS-",
+    "REDUKTION"
+  ],
+  "begriff": "Sitzgelegenheit",
+  "truthYes": "ist eine Sitzgelegenheit",
+  "truthNo": "ist keine Sitzgelegenheit",
+  "lehreHead": "Sitzgelegenheit im Sinne dieser Verordnung ist, was",
+  "startSatz": "„Eine Sitzgelegenheit ist ein Möbelstück auf vier Beinen mit Rückenlehne.“",
+  "intro": "Das Amt erlässt die Verordnung über Sitzgelegenheiten an Arbeitsstätten. Die Sachbearbeitung ist nicht besetzt, die Verordnung schreibt sich trotzdem fort. Abteilung IV liegt im dritten Stock. Der Boden ist aus den Siebzigern.",
+  "hand": 5,
+  "wuerfe": 7,
+  "cap": 9,
+  "rhetorik": [
+    "knappheit",
+    "anstrich"
+  ],
+  "attrs": {
+    "moebel": {
+      "pos": "ein Möbelstück ist",
+      "neg": "kein Möbelstück ist",
+      "short": "Möbel",
+      "icon": "🪑"
+    },
+    "vierbeine": {
+      "pos": "auf vier Beinen steht",
+      "neg": "nicht auf vier Beinen steht",
+      "short": "vier Beine",
+      "icon": "🦵"
+    },
+    "lehne": {
+      "pos": "eine Rückenlehne hat",
+      "neg": "keine Rückenlehne hat",
+      "short": "Lehne",
+      "icon": "🔙"
+    },
+    "sitzflaeche": {
+      "pos": "eine Sitzfläche bietet",
+      "neg": "keine Sitzfläche bietet",
+      "short": "Sitzfläche",
+      "icon": "🟫"
+    },
+    "traegt": {
+      "pos": "einen Erwachsenen trägt",
+      "neg": "keinen Erwachsenen trägt",
+      "short": "trägt 80 kg",
+      "icon": "🏋️"
+    },
+    "genehmigt": {
+      "pos": "behördlich zugelassen ist",
+      "neg": "nicht zugelassen ist",
+      "short": "zugelassen",
+      "icon": "🔏"
+    },
+    "liegen": {
+      "pos": "zum Liegen bestimmt ist",
+      "neg": "nicht zum Liegen bestimmt ist",
+      "short": "zum Liegen",
+      "icon": "🛌"
+    },
+    "innen": {
+      "pos": "für Innenräume bestimmt ist",
+      "neg": "nicht für Innenräume bestimmt ist",
+      "short": "für drinnen",
+      "icon": "🏠"
+    },
+    "tragbar": {
+      "pos": "von einer Person getragen werden kann",
+      "neg": "nicht von einer Person getragen werden kann",
+      "short": "tragbar",
+      "icon": "👜"
+    },
+    "lebt": {
+      "pos": "lebendig ist",
+      "neg": "nicht lebendig ist",
+      "short": "lebendig",
+      "icon": "🫀"
+    },
+    "weich": {
+      "pos": "gepolstert ist",
+      "neg": "ungepolstert ist",
+      "short": "gepolstert",
+      "icon": "☁️"
+    },
+    "rollen": {
+      "pos": "auf Rollen fährt",
+      "neg": "keine Rollen hat",
+      "short": "Rollen",
+      "icon": "🛞"
+    }
+  },
+  "start": [
+    "+moebel",
+    "+vierbeine",
+    "+lehne"
+  ],
+  "prisma": [
+    "+sitzflaeche",
+    "+traegt",
+    "+genehmigt",
+    "-liegen",
+    "+innen",
+    "-lebt"
+  ],
+  "refMembers": [
+    "kuechenstuhl",
+    "sofa"
+  ],
+  "refNon": [
+    "tisch",
+    "aktenschrank"
+  ],
+  "cards": [
+    {
+      "id": "kuechenstuhl",
+      "name": "Küchenstuhl",
+      "icon": "🪑",
+      "m": true,
+      "a": "moebel vierbeine lehne sitzflaeche traegt genehmigt innen tragbar",
+      "note": "Der Normalfall. Steht im Formular als Beispiel."
+    },
+    {
+      "id": "sofa",
+      "name": "Sofa",
+      "icon": "🛋️",
+      "m": true,
+      "a": "moebel vierbeine lehne sitzflaeche traegt genehmigt innen weich",
+      "note": "Gepolstert, zugelassen, zu schwer zum Tragen."
+    },
+    {
+      "id": "tisch",
+      "name": "Schreibtisch",
+      "icon": "🗃️",
+      "m": false,
+      "a": "moebel vierbeine traegt genehmigt innen tragbar",
+      "note": "Vier Beine, keine Lehne. Man arbeitet daran, nicht darauf."
+    },
+    {
+      "id": "aktenschrank",
+      "name": "Aktenschrank (voll)",
+      "icon": "🗄️",
+      "m": false,
+      "a": "moebel genehmigt innen",
+      "note": "Enthält die Vorgänge 1 bis 4.000. Bewegt sich nicht."
+    },
+    {
+      "id": "buerostuhl",
+      "name": "Bürostuhl",
+      "icon": "💺",
+      "m": true,
+      "a": "moebel lehne sitzflaeche traegt genehmigt innen tragbar weich rollen",
+      "note": "Fünf Rollen, null Beine. Steht in jedem Amt."
+    },
+    {
+      "id": "melkschemel",
+      "name": "Melkschemel",
+      "icon": "🪵",
+      "m": true,
+      "a": "moebel sitzflaeche traegt tragbar",
+      "note": "Drei Beine. Wackelt nie. Nie zugelassen."
+    },
+    {
+      "id": "sitzsack",
+      "name": "Sitzsack",
+      "icon": "🫘",
+      "m": true,
+      "a": "moebel sitzflaeche traegt tragbar weich innen",
+      "note": "Formlos, beinlos, lehnenlos. Bequem."
+    },
+    {
+      "id": "fensternische",
+      "name": "Fensternische, Erfurt 1184",
+      "icon": "🪟",
+      "m": true,
+      "a": "sitzflaeche traegt",
+      "note": "Fest im Mauerwerk. Hielt als Einzige. Rettete einem König das Leben."
+    },
+    {
+      "id": "latrine",
+      "name": "Latrine",
+      "icon": "🚽",
+      "m": true,
+      "a": "sitzflaeche traegt innen",
+      "note": "Technisch eine Sitzgelegenheit. Historisch eine Falle."
+    },
+    {
+      "id": "thron",
+      "name": "Thron",
+      "icon": "👑",
+      "m": true,
+      "a": "moebel vierbeine lehne sitzflaeche traegt weich innen",
+      "note": "Nie beantragt. Nie genehmigt. Wird trotzdem besessen."
+    },
+    {
+      "id": "sattel",
+      "name": "Sattel",
+      "icon": "🏇",
+      "m": true,
+      "a": "sitzflaeche traegt tragbar weich",
+      "note": "Sitzgelegenheit mit Pferd als Unterbau."
+    },
+    {
+      "id": "karussellpferd",
+      "name": "Karussellpferd",
+      "icon": "🎠",
+      "m": true,
+      "a": "vierbeine sitzflaeche traegt genehmigt",
+      "note": "Vier Beine, eine Stange, TÜV-geprüft. Kein Möbel."
+    },
+    {
+      "id": "parkbank",
+      "name": "Parkbank",
+      "icon": "🌳",
+      "m": true,
+      "a": "moebel lehne sitzflaeche traegt genehmigt",
+      "note": "Zwei gusseiserne Füße. Steht im Regen. Ist zugelassen."
+    },
+    {
+      "id": "verbotsstuhl",
+      "name": "Stuhl mit Schild „Nicht benutzen“",
+      "icon": "🚫",
+      "m": true,
+      "a": "moebel vierbeine lehne sitzflaeche traegt innen tragbar",
+      "note": "Ein Stuhl bleibt ein Stuhl, auch wenn ihn keiner benutzen darf. Zulassung entzogen."
+    },
+    {
+      "id": "rollstuhl",
+      "name": "Rollstuhl",
+      "icon": "♿",
+      "m": true,
+      "a": "lehne sitzflaeche traegt genehmigt tragbar weich rollen",
+      "note": "Hilfsmittel, kein Möbel. Scheitert regelmäßig an Behördentreppen, nicht an Definitionen."
+    },
+    {
+      "id": "liegestuhl",
+      "name": "Liegestuhl",
+      "icon": "⛱️",
+      "m": true,
+      "a": "moebel lehne sitzflaeche traegt tragbar genehmigt liegen",
+      "note": "Heißt Stuhl, ist halb zum Liegen. Klappgestell statt Beinen."
+    },
+    {
+      "id": "strandkorb",
+      "name": "Strandkorb",
+      "icon": "🏖️",
+      "m": true,
+      "a": "moebel lehne sitzflaeche traegt weich",
+      "note": "Steht im Sand. Hat ein Dach und keine Beine."
+    },
+    {
+      "id": "bett",
+      "name": "Bett",
+      "icon": "🛏️",
+      "m": false,
+      "a": "moebel vierbeine lehne sitzflaeche traegt genehmigt innen weich liegen",
+      "note": "Kopfteil zählt als Lehne. Gedacht ist es zum Liegen."
+    },
+    {
+      "id": "puppenstuhl",
+      "name": "Puppenstuhl",
+      "icon": "🧸",
+      "m": false,
+      "a": "moebel vierbeine lehne sitzflaeche genehmigt innen tragbar",
+      "note": "Maßstab 1:12. Trägt keinen Erwachsenen."
+    },
+    {
+      "id": "kaputterstuhl",
+      "name": "Stuhl ohne Sitzfläche",
+      "icon": "🪚",
+      "m": false,
+      "a": "moebel vierbeine lehne genehmigt innen tragbar",
+      "note": "Sitzfläche seit 1998 in Reparatur. Vorgang offen."
+    },
+    {
+      "id": "kniebank",
+      "name": "Kniebank",
+      "icon": "🙏",
+      "m": false,
+      "a": "moebel vierbeine lehne sitzflaeche traegt innen",
+      "note": "Gepolstertes Brett, Pultlehne. Zum Knien gedacht. Kirchlich, nicht behördlich zugelassen."
+    },
+    {
+      "id": "kuh",
+      "name": "Kuh",
+      "icon": "🐄",
+      "m": false,
+      "a": "lebt vierbeine sitzflaeche traegt",
+      "note": "Vier Beine, breiter Rücken, trägt einen Erwachsenen. Ist dagegen."
+    },
+    {
+      "id": "mauer",
+      "name": "Gartenmauer",
+      "icon": "🧱",
+      "m": false,
+      "a": "sitzflaeche traegt",
+      "note": "Man kann darauf sitzen. Gebaut wurde sie zum Trennen."
+    },
+    {
+      "id": "haengematte",
+      "name": "Hängematte",
+      "icon": "🪢",
+      "m": false,
+      "a": "sitzflaeche traegt tragbar weich liegen",
+      "note": "Man liegt. Man sitzt nur beim Herausfallen."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Ihre Eingabe wurde zur Kenntnis genommen. Die Verordnung wird ergänzt.",
+      "Änderungsbescheid ergeht von Amts wegen.",
+      "Die Lücke war bekannt. Sie ist jetzt geregelt."
+    ],
+    "repair": [
+      "Eine Bestimmung wird aufgehoben. Eine andere tritt an ihre Stelle.",
+      "Novelle. Gilt rückwirkend."
+    ],
+    "excl": [
+      "Für den vorliegenden Gegenstand wird eine Einzelfallregelung erlassen.",
+      "Ausnahmetatbestand angelegt. Aktenzeichen folgt."
+    ],
+    "incl": [
+      "Der Gegenstand wird im Wege der Ausnahme anerkannt.",
+      "Sondergenehmigung erteilt. Ein Widerspruch ist nicht vorgesehen."
+    ],
+    "confirm": [
+      "Vorgang ohne Befund.",
+      "Kein Änderungsbedarf erkennbar.",
+      "Zu den Akten."
+    ],
+    "collapse": "Die Verordnung wiegt mehr als das Gebäude. Abteilung IV ist ab sofort ebenerdig. Eine Rückmeldung ist unerwünscht.",
+    "hold": "Die Verordnung tritt in Kraft. Eine Rückmeldung über ihre Wirkung ist unerwünscht."
+  }
+}

@@ -1,0 +1,305 @@
+{
+  "id": "spiel",
+  "nr": 5,
+  "shortName": "Spielgesetz",
+  "shareIcon": "🎲",
+  "ort": "Kommission zur Normierung des Vergnügens",
+  "jahr": "Plenarsaal · Schlusslesung",
+  "gegner": "Die Kommission",
+  "gegnerTitel": "tagt bis zur abschließenden Regelung",
+  "siegel": [
+    "KOMMISSION",
+    "NORMIERUNG",
+    "D. VERGNÜGENS"
+  ],
+  "begriff": "Spiel",
+  "truthYes": "heißt ein Spiel",
+  "truthNo": "heißt kein Spiel",
+  "lehreHead": "Spiel im Sinne dieses Gesetzes ist, was",
+  "startSatz": "„Ein Spiel hat feste Regeln, einen Gewinner und keinen ernsten Zweck.“",
+  "intro": "Die Kommission will gesetzlich regeln, was ein Spiel ist. Ein gewisser Ludwig W. hat schriftlich davor gewarnt: Man finde keine Eigenschaft, die allen Spielen gemeinsam ist, nur Verwandtschaften. Die Warnung liegt ungelesen im Eingangskorb. Die Wirklichkeit heißt hier: Sprachgebrauch.",
+  "hand": 5,
+  "wuerfe": 8,
+  "cap": 13,
+  "rhetorik": [
+    "autoritaet",
+    "anstrich",
+    "knappheit"
+  ],
+  "attrs": {
+    "regeln": {
+      "pos": "feste Regeln hat",
+      "neg": "keine festen Regeln hat",
+      "short": "Regeln",
+      "icon": "📜"
+    },
+    "gewinner": {
+      "pos": "einen Gewinner kennt",
+      "neg": "keinen Gewinner kennt",
+      "short": "Gewinner",
+      "icon": "🏆"
+    },
+    "ernst": {
+      "pos": "einem ernsten Zweck dient",
+      "neg": "keinem ernsten Zweck dient",
+      "short": "ernster Zweck",
+      "icon": "⚖️"
+    },
+    "spass": {
+      "pos": "Spaß macht",
+      "neg": "keinen Spaß macht",
+      "short": "Spaß",
+      "icon": "😄"
+    },
+    "freiwillig": {
+      "pos": "freiwillig geschieht",
+      "neg": "verpflichtend ist",
+      "short": "freiwillig",
+      "icon": "🕊️"
+    },
+    "mehrere": {
+      "pos": "mehrere Beteiligte braucht",
+      "neg": "allein möglich ist",
+      "short": "mehrere",
+      "icon": "👥"
+    },
+    "zufall": {
+      "pos": "vom Zufall abhängt",
+      "neg": "nicht vom Zufall abhängt",
+      "short": "Zufall",
+      "icon": "🎲"
+    },
+    "geschick": {
+      "pos": "Geschick verlangt",
+      "neg": "kein Geschick verlangt",
+      "short": "Geschick",
+      "icon": "🎯"
+    },
+    "material": {
+      "pos": "Spielzeug oder Material braucht",
+      "neg": "ohne Material auskommt",
+      "short": "Material",
+      "icon": "🧩"
+    },
+    "geld": {
+      "pos": "um Geld geht",
+      "neg": "nicht um Geld geht",
+      "short": "Geld",
+      "icon": "💰"
+    },
+    "ende": {
+      "pos": "ein festes Ende hat",
+      "neg": "kein festes Ende hat",
+      "short": "Ende",
+      "icon": "🏁"
+    },
+    "zuschauer": {
+      "pos": "Zuschauer hat",
+      "neg": "ohne Zuschauer auskommt",
+      "short": "Zuschauer",
+      "icon": "👀"
+    }
+  },
+  "start": [
+    "+regeln",
+    "+gewinner",
+    "-ernst"
+  ],
+  "prisma": [
+    "+spass",
+    "+freiwillig",
+    "+mehrere",
+    "+material",
+    "-geld",
+    "+ende",
+    "+geschick"
+  ],
+  "refMembers": [
+    "schach",
+    "fussball"
+  ],
+  "refNon": [
+    "steuer",
+    "krieg"
+  ],
+  "cards": [
+    {
+      "id": "schach",
+      "name": "Schach",
+      "icon": "♟️",
+      "m": true,
+      "a": "regeln gewinner spass freiwillig mehrere geschick material ende",
+      "note": "Das Spiel, an das die Kommission denkt."
+    },
+    {
+      "id": "fussball",
+      "name": "Fußballspiel",
+      "icon": "⚽",
+      "m": true,
+      "a": "regeln gewinner spass freiwillig mehrere geschick material ende zuschauer",
+      "note": "Heißt so. Ist so."
+    },
+    {
+      "id": "steuer",
+      "name": "Steuererklärung",
+      "icon": "🧾",
+      "m": false,
+      "a": "regeln ernst ende",
+      "note": "Regeln: ja. Frist: ja. Spiel: nein."
+    },
+    {
+      "id": "krieg",
+      "name": "Krieg",
+      "icon": "⚔️",
+      "m": false,
+      "a": "regeln gewinner mehrere ernst zufall",
+      "note": "Hat sogar eine Landkriegsordnung. Ist kein Spiel."
+    },
+    {
+      "id": "ringelreihen",
+      "name": "Ringelreihen",
+      "icon": "💃",
+      "m": true,
+      "a": "regeln spass freiwillig mehrere ende",
+      "note": "Am Ende fallen alle hin. Gewonnen hat niemand."
+    },
+    {
+      "id": "ballwand",
+      "name": "Ball gegen die Wand",
+      "icon": "🏐",
+      "m": true,
+      "a": "spass freiwillig geschick material",
+      "note": "Ein Kind, eine Wand, kein Regelwerk. Ludwig W. nannte es trotzdem Spiel."
+    },
+    {
+      "id": "patience",
+      "name": "Patience",
+      "icon": "🃏",
+      "m": true,
+      "a": "regeln spass freiwillig zufall material ende",
+      "note": "Man spielt allein und verliert gegen niemanden."
+    },
+    {
+      "id": "kriegsspiel",
+      "name": "Preußisches Kriegsspiel",
+      "icon": "🗺️",
+      "m": true,
+      "a": "regeln gewinner mehrere ernst zufall geschick material ende",
+      "note": "Offiziersausbildung, 1824. Pflicht, ernst gemeint, heißt trotzdem Spiel."
+    },
+    {
+      "id": "lotto",
+      "name": "Lotto",
+      "icon": "🎱",
+      "m": true,
+      "a": "regeln gewinner freiwillig mehrere zufall geld ende zuschauer",
+      "note": "Kein Geschick, kaum Spaß, viel Geld. Heißt Glücksspiel."
+    },
+    {
+      "id": "marathon",
+      "name": "Olympia-Marathon 1904",
+      "icon": "🏃",
+      "m": true,
+      "a": "regeln gewinner mehrere freiwillig geschick ende zuschauer",
+      "note": "Ein Sieger auf Rattengift, einer fuhr im Auto. Offiziell Teil der Spiele."
+    },
+    {
+      "id": "verstecken",
+      "name": "Verstecken",
+      "icon": "🙈",
+      "m": true,
+      "a": "regeln spass freiwillig mehrere",
+      "note": "Endet, wenn jemand zum Essen ruft."
+    },
+    {
+      "id": "puzzle",
+      "name": "Puzzle",
+      "icon": "🧩",
+      "m": true,
+      "a": "spass freiwillig geschick material ende",
+      "note": "Ein Geduldsspiel. Ohne Gegner, ohne Sieger."
+    },
+    {
+      "id": "poker",
+      "name": "Pokern",
+      "icon": "♠️",
+      "m": true,
+      "a": "regeln gewinner spass freiwillig mehrere zufall geschick material geld ende",
+      "note": "Geld, Glück, Geschick. Zweifellos ein Spiel."
+    },
+    {
+      "id": "boerse",
+      "name": "Börsenhandel",
+      "icon": "📈",
+      "m": false,
+      "a": "regeln gewinner freiwillig mehrere zufall geld",
+      "note": "Regeln, Gewinner, Zufall. Endet nie."
+    },
+    {
+      "id": "gericht",
+      "name": "Gerichtsverfahren",
+      "icon": "⚖️",
+      "m": false,
+      "a": "regeln gewinner mehrere ernst ende zuschauer",
+      "note": "Eine Partei gewinnt. Gespielt hat keine."
+    },
+    {
+      "id": "preis",
+      "name": "Preisverleihung",
+      "icon": "🏅",
+      "m": false,
+      "a": "gewinner mehrere zuschauer ende freiwillig",
+      "note": "Es gibt einen Gewinner. Gespielt hat niemand."
+    },
+    {
+      "id": "walzer",
+      "name": "Wiener Walzer",
+      "icon": "🕺",
+      "m": false,
+      "a": "regeln spass freiwillig mehrere geschick ende",
+      "note": "Feste Schritte, viel Spaß, kein Sieger. Ein Tanz."
+    },
+    {
+      "id": "wette",
+      "name": "Wette unter Kollegen",
+      "icon": "🤝",
+      "m": false,
+      "a": "regeln gewinner spass freiwillig mehrere zufall geld ende",
+      "note": "Um einen Kasten Bier. Eine Wette, kein Spiel."
+    },
+    {
+      "id": "assessment",
+      "name": "Assessment-Center",
+      "icon": "📋",
+      "m": false,
+      "a": "regeln gewinner mehrere ernst geschick ende",
+      "note": "Nennt seine Übungen Rollenspiele. Ist keins."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Die Kommission ergänzt § 1. Vergnügen braucht Ordnung.",
+      "Änderungsantrag angenommen. Einstimmig, bei einer Enthaltung.",
+      "Die Definition wird nachgeschärft."
+    ],
+    "repair": [
+      "§ 1 wird neu gefasst. Die Kommission bedauert nichts.",
+      "Ein Merkmal entfällt, ein anderes rückt nach."
+    ],
+    "excl": [
+      "Dieser Fall wird ausdrücklich ausgeschlossen. Spaß hin oder her.",
+      "Ausnahme nach § 2. Eine Begründung folgt nie."
+    ],
+    "incl": [
+      "Dieser Fall gilt kraft Gesetzes als Spiel.",
+      "Eingeschlossen. Die Kommission spielt es ab sofort selbst."
+    ],
+    "confirm": [
+      "Die Kommission nimmt das zur Kenntnis.",
+      "Kein Handlungsbedarf.",
+      "Exakt wie erwartet."
+    ],
+    "collapse": "Das Gesetz bricht unter seinen Ausnahmen zusammen. Was ein Spiel ist, weiß jetzt wieder jeder. Sagen kann es keiner.",
+    "hold": "Das Gesetz tritt in Kraft. Ab morgen ist Spielen genehmigungspflichtig."
+  }
+}
