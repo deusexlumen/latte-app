@@ -35,3 +35,16 @@ func _ready() -> void:
 			var l := Label.new()
 			l.text = "  " + str(line)
 			column.add_child(l)
+
+	var hz := get_node_or_null("/root/Hinterzimmer")
+	if hz != null and app != null:
+		var favor := Button.new()
+		favor.text = "Gefallen einfordern (%d Gefälligkeiten, Stand: %d)" % [hz.FAVOR_PRICE, app.profile.chips()]
+		favor.tooltip_text = "Einmal +2 auf den nächsten Wurf in der Karriere. Gefälligkeiten verdient man im Hinterzimmer."
+		favor.disabled = not hz.can_claim_favor()
+		favor.pressed.connect(func() -> void:
+			if hz.claim_favor():
+				favor.text = "Gefallen eingefordert. Er gilt beim nächsten Wurf."
+				favor.disabled = true
+		)
+		column.add_child(favor)

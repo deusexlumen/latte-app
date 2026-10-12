@@ -42,3 +42,7 @@ func test_perma_death_writes_fresh_state_and_signals() -> void:
 	assert_eq(fresh, SaveData.fresh_state())
 	assert_eq(sm.load_game()["current_scene"], "kommunalpolitik")
 	assert_signal_emitted(sm, "perma_death_restarted")
+
+
+func test_headless_never_uses_the_real_save() -> void:
+	assert_eq(get_node("/root/SaveManager").path, load("res://app/save_manager.gd").HEADLESS_PATH)

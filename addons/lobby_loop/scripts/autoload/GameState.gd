@@ -29,6 +29,9 @@ var last_run_stats := {}
 ## Statischer Charakterbogen-Bonus, immer aktiv.
 var character_bonus := {"source": "berufspolitischer_bonus", "value": 3}
 
+## Inventar-Boni, die nur einen Wurf lang gelten (Item-Feld "once"); gefüllt von get_roll_bonuses.
+var _once_sources := {}
+
 
 func _ready() -> void:
 	randomize()
@@ -95,7 +98,9 @@ func change_scene(scene_id: String) -> void:
 ## der Seed kommt aus Karriere + Szene + laufender Nummer, nie vom Spielleiter.
 func start_minigame(game: String = "beleidigungsfechten", params: Dictionary = {}) -> void:
 	var final_params := params.duplicate()
-	if game == MinigameContract.GAME_WIDERLEGUNG:
+	if MinigameContract.external_games.has(game):
+		final_params["scene"] = current_scene
+	elif game == MinigameContract.GAME_WIDERLEGUNG:
 		var material := "%s#%s" % [ApiClient.session_id(), run_stats.started_at]
 		var az := MinigameContract.derive_seed(material, current_scene, run_stats.minigame_count)
 		final_params = MinigameContract.widerlegung_params(params, current_scene, az, WiderlegungLibrary.ids(widerlegung_library_dir))
@@ -126,6 +131,8 @@ func get_roll_bonuses(item_definitions: Array = []) -> Array:
 		var buff: Variant = item.get("buff")
 		if (buff is int or buff is float) and int(buff) != 0:
 			bonuses.append({"source": item_id, "value": int(buff)})
+			if bool(item.get("once", false)):
+				_once_sources[item_id] = true
 	return bonuses
 
 
@@ -142,6 +149,12 @@ func apply_trigger_event(event: Variant) -> bool:
 ## Nimmt ein Wurf-Ergebnis auf (wird von main.gd ans DiceRoller-Signal gehängt).
 func record_roll(roll: Dictionary) -> void:
 	run_stats.record_roll(roll)
+	# Einmal-Boni (Item-Feld "once") sind nach dem Wurf verbraucht.
+	for b in roll.get("bonuses", []):
+		var source := str(b.get("source", "")) if b is Dictionary else ""
+		if _once_sources.has(source):
+			_once_sources.erase(source)
+			remove_item(source)
 
 
 ## Kompakte Akte des aktuellen Runs für Karriere-Akte und Ermittlungsstand.

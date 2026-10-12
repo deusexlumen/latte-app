@@ -8,8 +8,12 @@ extends Node
 ## Lobby-Loop verbindet sich darauf (Perma-Death-Neustart).
 signal perma_death_restarted
 
+## Headless heißt Testlauf: nie in den echten Spielstand schreiben (sonst bliebe ein Teststand liegen
+## und die Migration würde den alten Lobby-Loop-Stand beim ersten echten Start nicht übernehmen).
+const HEADLESS_PATH := "user://test_headless_savegame.json"
+
 ## Tests lenken hier auf eine eigene Datei um.
-var path := SaveData.SAVE_PATH
+var path := HEADLESS_PATH if DisplayServer.get_name() == "headless" else SaveData.SAVE_PATH
 
 
 func save_game() -> Error:

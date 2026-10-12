@@ -80,6 +80,18 @@
       "id": "gerupftes_huhn",
       "display_name": "Gerupftes Huhn",
       "description": "Zwei Beine, keine Federn, ein vorwurfsvoller Blick. Fällt unter jede Definition, die man zu schnell geschrieben hat."
+    },
+    {
+      "id": "eingeforderter_gefallen",
+      "display_name": "Eingeforderter Gefallen",
+      "description": "Jemand im Hinterzimmer schuldet Ihnen etwas. Einmal, beim nächsten Wurf, zahlt er zurück. Danach kennt er Sie nicht mehr.",
+      "buff": 2,
+      "once": true
+    },
+    {
+      "id": "notiz_aus_dem_hinterzimmer",
+      "display_name": "Notiz aus dem Hinterzimmer",
+      "description": "Ein Bierdeckel mit drei Namen und einer Telefonnummer. Wer im Hinterzimmer gewinnt, bekommt keine Chips, sondern Kontakte."
     }
   ],
   "combinations": [

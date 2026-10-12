@@ -47,6 +47,19 @@
       "prompt_hint": "Ein Mikrofon mit Einlassungsknopf. Es wird meist nur betätigt, um das Wort 'Zustimmung' in die Protokolle zu hauchen.",
       "default_dc": 10,
       "fallback_dialogue": "Das Mikrofon wartet. Es ist an Zustimmungen gewöhnt und an nichts sonst."
+    },
+    {
+      "id": "hinterzimmer",
+      "type": "object",
+      "label": "Tür zum Hinterzimmer",
+      "position": {"x": 1000, "y": 420},
+      "prompt_hint": "Eine gepolsterte Tür ohne Schild. Dahinter wird Dame gespielt, und wer gewinnt, hat bei der nächsten Abstimmung Freunde. Wer sich an den Tisch setzt, startet eine Partie: trigger_event {\"type\": \"start_minigame\", \"game\": \"dame\"}. Nur in der Gesamt-App verfügbar.",
+      "default_dc": 12,
+      "fallback_dialogue": "Hinter der Tür klappern Karten. Jemand ruft 'Dame!', ein anderer flucht leise. Ein Stuhl ist frei.",
+      "absurd_actions": [
+        "Anklopfen und nach dem Protokoll der letzten Partie fragen"
+      ],
+      "minigame": {"game": "dame"}
     }
   ],
   "exits": [

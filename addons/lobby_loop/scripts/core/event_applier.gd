@@ -31,7 +31,7 @@ static func is_valid(event: Variant) -> bool:
 	if not VALID_TYPES.has(type):
 		return false
 	if type == TYPE_START_MINIGAME:
-		return MinigameContract.GAMES.has(MinigameContract.game_of(event))
+		return MinigameContract.is_known(MinigameContract.game_of(event))
 	return true
 
 

@@ -10,6 +10,24 @@ const GAME_BELEIDIGUNGSFECHTEN := "beleidigungsfechten"
 const GAME_WIDERLEGUNG := "widerlegung"
 const GAMES: Array = [GAME_BELEIDIGUNGSFECHTEN, GAME_WIDERLEGUNG]
 
+## Andockpunkt für Minispiele einer einbettenden App (latte-app: "dame"). Name -> Callable(params: Dictionary).
+## Das Ergebnis kommt nach dem Vertrag über GameState.apply_minigame_result zurück.
+## Ohne Gastgeber ist ein solches Spiel unbekannt: das Ereignis ist ungültig und nichts startet.
+static var external_games: Dictionary = {}
+
+
+static func register_external(game: String, starter: Callable) -> void:
+	external_games[game] = starter
+
+
+static func unregister_external(game: String) -> void:
+	external_games.erase(game)
+
+
+## Bekannt sind die eigenen Spiele und die eines Gastgebers.
+static func is_known(game: String) -> bool:
+	return GAMES.has(game) or external_games.has(game)
+
 const LEHREN: Array = ["akademie", "amt", "erfurt", "division7b", "spiel"]
 const DEFAULT_LEHRE := "amt"
 const LEHRE_BIBLIOTHEK := "bibliothek"

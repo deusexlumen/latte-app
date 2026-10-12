@@ -284,6 +284,9 @@ func _on_minigame_requested(game: String, params: Dictionary) -> void:
 	_overlay.abort()
 	if game == MinigameContract.GAME_WIDERLEGUNG:
 		_widerlegung.start(params)
+	elif MinigameContract.external_games.has(game):
+		SaveManager.autosave()
+		(MinigameContract.external_games[game] as Callable).call(params)
 	else:
 		_minigame.start()
 
