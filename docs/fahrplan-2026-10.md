@@ -1,7 +1,7 @@
 # Fahrplan ab 18. Oktober 2026
 
 **Maßstab:** das Leitbild in `CLAUDE.md`. Eine App, ein Herzensprojekt, kein Geld als Ziel. Jeder Schritt wird daran gemessen, ob er die Welt, das Erleben und das, was man mitnimmt, stärkt.
-**Bezug:** Spezifikation 0.1 (E0 bis E5), Manifest „Die Latte liegt am Boden“, Gesamtkonzept vom 11.10.2026 (`../lobby-loop/docs/konzept/gesamtkonzept-latte.md`; Welt, Spielformen und Erweiterungen gelten, Geschäftsmodell und Eigenständigkeit der Einzelspiele nicht)
+**Bezug:** Spezifikation 0.1 (`grundlagen/spezifikation-0.1-gemeinsame-spielwelt.md`, E0 bis E5), Manifest „Die Latte liegt am Boden“, Gesamtkonzept vom 11.10.2026 (`../lobby-loop/docs/konzept/gesamtkonzept-latte.md`; Welt, Spielformen und Erweiterungen gelten, Geschäftsmodell und Eigenständigkeit der Einzelspiele nicht)
 
 ## Wo wir stehen
 
