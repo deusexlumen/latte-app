@@ -1,7 +1,7 @@
 # Fahrplan ab 18. Oktober 2026
 
 **Maßstab:** das Leitbild in `CLAUDE.md`. Eine App, ein Herzensprojekt, kein Geld als Ziel. Jeder Schritt wird daran gemessen, ob er die Welt, das Erleben und das, was man mitnimmt, stärkt.
-**Bezug:** Spezifikation 0.1 (E0 bis E5), Manifest „Die Latte liegt am Boden“, `../lobby-loop/docs/konzept/gesamtkonzept-latte.md` (ohne die überholten Teile)
+**Bezug:** Spezifikation 0.1 (E0 bis E5), Manifest „Die Latte liegt am Boden“, Gesamtkonzept vom 11.10.2026 (`../lobby-loop/docs/konzept/gesamtkonzept-latte.md`; Welt, Spielformen und Erweiterungen gelten, Geschäftsmodell und Eigenständigkeit der Einzelspiele nicht)
 
 ## Wo wir stehen
 
@@ -31,6 +31,8 @@ Der Spieltest misst genau das Leitbild: ob Menschen eine eigene Handlung später
 - **E5:** zweiter Vorgang aus denselben Regeln. Er zeigt, dass die Welt wächst, ohne dass jedes Mal Sonderbau nötig ist.
 - **Was man mitnimmt:** Die Akte stellt heute schon amtliche Fassung und Tatsächliches nebeneinander. Am Ende einer Karriere sollte sie das über alle Spiele zusammenführen, damit sichtbar wird, wie der Apparat das eigene Handeln verarbeitet hat. Wie genau, ist eine Gestaltungsfrage für uns beide.
 - **Menschen gegen Menschen auch im Denkspiel:** Huhn-Duell (einer baut eine Lehre, einer reißt sie ein) über den DAME-Netzkern. Raum, Wiedereintritt und Abwesenheit sind schon unabhängig vom Spiel.
+- **Lehren-Werkstatt:** Spieler bauen eigene Lehren, die Simulation vergibt ein Prüfsiegel, Teilen per Raumcode.
+- **Division 7B:** die metaphysische Abteilung mit dem Entitäten-Bestiarium als eigene Abteilung des Amts.
 - **Weitere Orte aus dem Manifest:** Garbo, Köpenick, Vasa, Poyais, Erfurt 1184. Jeder wird ein eigener Mechanismus im selben Minispiel-Vertrag, jeder zeigt eine andere Seite von Kulisse gegen Fundament.
 - **Für alle spielbar:** durchgehend Tastatur, große Schrift, Bildschirmleser.
 
