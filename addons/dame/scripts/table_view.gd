@@ -9,6 +9,12 @@ signal state_changed
 const DameRulesScript = preload("res://addons/dame/scripts/dame_rules.gd")
 const DameAIScript = preload("res://addons/dame/scripts/dame_ai.gd")
 const DameHostScript = preload("res://addons/dame/scripts/net/dame_host.gd")
+const PresenceScript = preload("res://addons/dame/scripts/net/presence.gd")
+const RejoinHostScript = preload("res://addons/dame/scripts/net/rejoin_host.gd")
+const RejoinGuestScript = preload("res://addons/dame/scripts/net/rejoin_guest.gd")
+const SignalingScript = preload("res://addons/dame/scripts/net/signaling.gd")
+const RtcConnectorScript = preload("res://addons/dame/scripts/net/rtc_connector.gd")
+const NetConfigScript = preload("res://addons/dame/scripts/net/net_config.gd")
 const DameProtocol = preload("res://addons/dame/scripts/net/net_protocol.gd")
 const SeatViewScript = preload("res://addons/dame/scripts/ui/seat_view.gd")
 const CardViewScript = preload("res://addons/dame/scripts/ui/card_view.gd")
@@ -19,6 +25,11 @@ const I18nScript = preload("res://addons/amt_core/i18n.gd")
 const FxLayerScript = preload("res://addons/dame/scripts/ui/fx_layer.gd")
 
 const REVEAL_DEAL_MS := 5000
+const HOST_LEFT_TEXT := "Der Host hat die Partie verlassen. Die Partie endet ohne Wertung."
+const RECONNECTING_TEXT := "Verbindung zum Host verloren. Verbinde neu …"
+const REJOIN_LATE_TEXT := "Keine Verbindung zum Host. Nach 5 Minuten ist kein Wiedereinstieg mehr möglich."
+# Online: so lange wartet der Tisch zwischen zwei Ausgaben hoechstens (§10).
+const NEXT_DEAL_SECONDS := 10.0
 const HELP_DE := """[b]Dein Zug[/b]
 1. Ziehe vom [b]Stapel[/b] (Leertaste) oder nimm die oberste Karte der [b]Ablage[/b].
 2. Tausche sie gegen eine eigene Karte (Karte anklicken) oder lege sie direkt ab (A).
@@ -110,6 +121,11 @@ var _game_recorded := false
 var _guest_seat_pending := false
 # Online-Host: erlaubte Gaeste {peer_id: seat}.
 var _guest_seats := {}
+# Online-Host: Abwesenheit der Gaeste (§11) und Wartezeiten, siehe _tick_presence.
+var _presence = null
+var _absent_wait := 0.0
+var _absent_key := -1
+var _deal_wait := 0.0
 # Gast: eigene Aktion gesendet, Ergebnis steht noch aus (keine Doppel-Eingabe).
 var _awaiting_result := false
 # Online: Verbindung beendet (selbst getrennt oder Host weg). Nicht mehr pollen.
@@ -117,6 +133,16 @@ var _net_closed := false
 # Besitzer der Verbindung (RtcConnector). Er schliesst beim Freigeben seinen Peer,
 # deshalb haelt ihn der Tisch die ganze Partie und schliesst ihn mit dem Link.
 var _net_owner = null
+# Wiedereintritt nach Verbindungsverlust (§11): Host haelt den Raum offen, der Gast
+# kommt darueber zurueck. Nur bei Partien ueber einen Raumcode.
+var _rejoin_host = null
+var _rejoin_guest = null
+var _host_said_bye := false
+# Tests: Phoenix-Nachbau statt Supabase ("" = echter Dienst); TURN-Abruf beim Wiedereintritt.
+var signaling_url := ""
+var rejoin_turn_url: String = NetConfigScript.TURN_URL
+# Tests: Connector-Fabrik fuer den Wiedereintritt (Standard: echter RtcConnector).
+var rejoin_connector_factory: Callable
 var _pause_menu_button: Button
 var _again_button: Button
 var _host_left_panel: PanelContainer
@@ -309,7 +335,42 @@ func start_online_host(job: Dictionary) -> void:
 	_attach_host(r, int(config.seed) + 7, REVEAL_DEAL_MS, link, [host_seat])
 	session.peer_joined.connect(_on_peer_joined)
 	session.peer_left.connect(_on_peer_left)
+	_presence = PresenceScript.new()
+	for peer in _guest_seats:
+		_presence.track(int(_guest_seats[peer]))
+	# Jede Stufenaenderung geht als Anzeige an alle Tische.
+	_presence.stage_changed.connect(_on_presence_stage)
+	# Raum der Partie offen halten, damit Gaeste nach Verbindungsverlust zurueckkommen.
+	var room := str(job.get("room", ""))
+	if room != "" and _net_owner != null and _net_owner.has_method("drop_peer"):
+		_rejoin_host = RejoinHostScript.new(_net_owner, session, room, _new_signaling, _rejoin_allowed)
 	_apply_online_ui()
+
+
+func _on_presence_stage(seat: int, stage: int) -> void:
+	if session != null and not _net_closed:
+		session.set_absence(seat, stage)
+
+
+func _new_signaling():
+	var sig = SignalingScript.new()
+	if signaling_url != "":
+		sig.url = signaling_url
+		sig.api_key = ""
+	return sig
+
+
+func _new_rejoin_connector():
+	if rejoin_connector_factory.is_valid():
+		return rejoin_connector_factory.call()
+	return RtcConnectorScript.new()
+
+
+# Host: darf dieser Gast zurueck? Nur bekannte Gaeste, Platz nicht verloren (§11 Stufe 3).
+func _rejoin_allowed(peer_id: int) -> bool:
+	if _net_closed or not _guest_seats.has(peer_id):
+		return false
+	return _presence == null or _presence.rejoin_allowed(int(_guest_seats[peer_id]))
 
 
 func _try_resume() -> bool:
@@ -364,6 +425,8 @@ func _attach_guest(s) -> void:
 	# Host weg (Review Focus 7): Meldung und Knopf ins Menue.
 	if session.link != null and session.link.has_signal("peer_disconnected"):
 		session.link.peer_disconnected.connect(_on_link_peer_disconnected)
+	if session.has_signal("host_left"):
+		session.host_left.connect(_on_host_bye)
 	_apply_online_ui()
 	var first: Dictionary = session.latest_view
 	local_seats = [int(first.get("viewer_seat", 0))]
@@ -1207,6 +1270,10 @@ func next_deal() -> void:
 		return
 	if session.is_authority():
 		session.next_round()
+		# §11 Stufe 2: Strafkarte fuer Wiedereinsteiger in der neuen Ausgabe.
+		if _presence != null:
+			for seat in _presence.take_pending_penalties():
+				session.penalize_absence(int(seat))
 	else:
 		# Gast: nur der Hinweis, er bleibt auch nach jedem Neuzeichnen (_prompt_text).
 		_prompt.text = _prompt_text()
@@ -1339,6 +1406,10 @@ func _apply_online_ui() -> void:
 # Verbindung beenden und danach nicht mehr pollen.
 # Idempotent: schliesst immer, auch wenn die Gegenseite schon weg ist.
 func _close_link() -> void:
+	# Host geht absichtlich: Gaeste sollen nicht 30 s auf einen Wiedereintritt warten.
+	if _is_online() and session.is_authority() and not _net_closed:
+		session.say_bye()
+	_close_rejoin()
 	# Besitzer zuerst: schliesst Peer-Verbindungen und Multiplayer-Peer (WebRTC-Threads).
 	_close_owner()
 	if not _is_online():
@@ -1347,6 +1418,16 @@ func _close_link() -> void:
 	_awaiting_result = false
 	if session.link.has_method("close"):
 		session.link.close()
+
+
+# Idempotent: Raum des Hosts schliessen bzw. laufenden Wiedereintritt des Gastes abbrechen.
+func _close_rejoin() -> void:
+	if _rejoin_host != null:
+		_rejoin_host.close()
+		_rejoin_host = null
+	if _rejoin_guest != null:
+		_rejoin_guest.cancel()
+		_rejoin_guest = null
 
 
 # Idempotent: Besitzer genau einmal schliessen und loslassen.
@@ -1379,7 +1460,16 @@ func _abort_online(reason: String, link = null) -> void:
 func _on_peer_joined(peer_id: int) -> void:
 	if not _guest_seats.has(peer_id) or _net_closed:
 		return
-	session.assign_seat(peer_id, int(_guest_seats[peer_id]))
+	var seat := int(_guest_seats[peer_id])
+	var returning := false
+	if _presence != null:
+		if not _presence.rejoin_allowed(seat):
+			return
+		returning = not _presence.is_present(seat)
+		_presence.set_present(seat, true)
+	session.assign_seat(peer_id, seat)
+	if returning and not _view.is_empty() and seat < (_view.players as Array).size():
+		_toast_text(tr("%s ist wieder da.") % str(_view.players[seat].name))
 
 
 # Host: Gast getrennt. Der Platz bleibt am Tisch (Abwesenheit nach §11 folgt spaeter).
@@ -1387,6 +1477,8 @@ func _on_peer_left(peer_id: int) -> void:
 	if not _guest_seats.has(peer_id) or _view.is_empty():
 		return
 	var seat := int(_guest_seats[peer_id])
+	if _presence != null:
+		_presence.set_present(seat, false)
 	if seat >= 0 and seat < (_view.players as Array).size():
 		_toast_text(tr("%s hat die Verbindung verloren.") % str(_view.players[seat].name))
 
@@ -1399,15 +1491,81 @@ func _on_link_peer_disconnected(peer_id: int) -> void:
 	# (das Signal kommt mitten aus dessen Schleife). _exit_tree schliesst sonst.
 	_net_closed = true
 	_awaiting_result = false
-	call_deferred("_close_link")
+	# Genau diese tote Verbindung abbauen; ein spaeterer Wiedereintritt bringt eine neue.
+	var dead_owner = _net_owner
+	_net_owner = null
+	call_deferred("_close_dead", session.link, dead_owner)
 	_ai_timer.stop()
 	# Nach dem Spielende ist das normal (Host spielt neu oder geht): keine Meldung.
 	if str(_view.get("phase", "")) == "game_over":
 		return
-	_show_host_left()
+	# Host hat sich verabschiedet oder Partie ohne Raum (Copy-Paste): kein Wiedereintritt.
+	if _host_said_bye or not _rejoin_possible():
+		_show_host_left()
+		return
+	_start_rejoin()
 
 
-func _show_host_left() -> void:
+func _rejoin_possible() -> bool:
+	var room = session.get("room")
+	var tok = session.get("token")
+	return typeof(room) == TYPE_STRING and room != "" and typeof(tok) == TYPE_STRING and tok != ""
+
+
+func _close_dead(link, net_owner) -> void:
+	if net_owner != null and net_owner.has_method("close"):
+		net_owner.close()
+	if link != null and link.has_method("close"):
+		link.close()
+
+
+func _on_host_bye() -> void:
+	_host_said_bye = true
+
+
+# Gast: ueber den Raum der Partie neu verbinden (§11). Die Hand bleibt beim Host liegen.
+func _start_rejoin() -> void:
+	if _rejoin_guest != null:
+		return
+	var rj = RejoinGuestScript.new(str(session.room), str(session.token), int(session.peer_id), _new_signaling, _new_rejoin_connector)
+	rj.turn_url = rejoin_turn_url
+	rj.reconnected.connect(_on_rejoined)
+	rj.gave_up.connect(_on_rejoin_gave_up)
+	_rejoin_guest = rj
+	_show_host_left(RECONNECTING_TEXT)
+	if _e2e_log():
+		print("ONLINE_REJOIN start")
+
+
+func _on_rejoined(link, connector) -> void:
+	_rejoin_guest = null
+	_net_owner = connector
+	session.link = link
+	_net_closed = false
+	if link.has_signal("peer_disconnected"):
+		link.peer_disconnected.connect(_on_link_peer_disconnected)
+	session.connect_to_host()
+	if _host_left_panel != null:
+		_host_left_panel.visible = false
+	_toast_text("Wieder verbunden.")
+	if _e2e_log():
+		print("ONLINE_REJOIN ok")
+	_refresh()
+
+
+func _on_rejoin_gave_up(host_gone: bool) -> void:
+	_rejoin_guest = null
+	_show_host_left(HOST_LEFT_TEXT if host_gone else REJOIN_LATE_TEXT)
+	if _e2e_log():
+		print("ONLINE_REJOIN failed host_gone=%s" % str(host_gone))
+
+
+func _e2e_log() -> bool:
+	var app := _app()
+	return app != null and app.has_method("e2e_mode") and app.e2e_mode()
+
+
+func _show_host_left(text: String = HOST_LEFT_TEXT) -> void:
 	if _host_left_panel == null:
 		_host_left_panel = _panel(Vector2(340, 250), Vector2(600, 200))
 		_host_left_panel.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -1419,12 +1577,12 @@ func _show_host_left() -> void:
 		_host_left_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_host_left_label.custom_minimum_size = Vector2(560, 0)
 		_host_left_label.add_theme_font_size_override("font_size", 20)
-		_host_left_label.text = "Der Host hat die Partie verlassen. Die Partie endet ohne Wertung."
 		vb.add_child(_host_left_label)
 		_host_left_button = Button.new()
 		_host_left_button.text = "Hauptmenü"
 		_host_left_button.pressed.connect(_on_main_menu)
 		vb.add_child(_host_left_button)
+	_host_left_label.text = text
 	_pause_panel.visible = false
 	_host_left_panel.visible = true
 	_host_left_button.grab_focus()
@@ -1437,6 +1595,11 @@ func _process(delta: float) -> void:
 	# Online: Pakete abholen (Gast immer, Host nur mit Verbindung).
 	if session != null and session.link != null and not _net_closed:
 		session.poll()
+	# Wiedereintritt (§11): Host bedient den Raum, Gast verbindet sich neu.
+	if _rejoin_host != null and not _net_closed:
+		_rejoin_host.poll()
+	if _rejoin_guest != null:
+		_rejoin_guest.poll()
 	if _view.is_empty():
 		return
 	# Zugtimer laeuft nur beim Host; ein Gast hat (vorerst) keinen.
@@ -1444,10 +1607,11 @@ func _process(delta: float) -> void:
 		_timer_bar.visible = false
 		_turn_owner = -1
 		return
+	_tick_presence(delta)
 	var step := str(_view.turn_step)
 	# Pause bei Bube/Koenig-Auswahl (Spec Blitz-Modus).
-	var paused := step == "jack" or step == "king"
-	var running := bool(_setting("turn_timer")) and _human_turn() and not _pause_panel.visible
+	var paused := (step == "jack" or step == "king") and _presence == null
+	var running := (bool(_setting("turn_timer")) or _presence != null) and _human_turn() and not _pause_panel.visible
 	_timer_bar.visible = running
 	if not running:
 		_turn_owner = -1
@@ -1464,6 +1628,52 @@ func _process(delta: float) -> void:
 	if _turn_left <= 0.0:
 		_turn_owner = -1
 		timeout_turn()
+
+
+# Online-Host: Abwesenheit der Gaeste (§11) und automatische naechste Ausgabe (§10).
+func _tick_presence(delta: float) -> void:
+	if _presence == null or _net_closed:
+		return
+	var phase := str(_view.phase)
+	if phase == "round_end":
+		_deal_wait += delta
+		if _deal_wait >= NEXT_DEAL_SECONDS:
+			_deal_wait = 0.0
+			next_deal()
+		return
+	_deal_wait = 0.0
+	_presence.tick(delta)
+	if phase != "play" and phase != "dame_called":
+		return
+	var seat := int(_view.current_index)
+	if not _presence.is_tracked(seat):
+		_absent_wait = 0.0
+		_absent_key = -1
+		return
+	var key := seat * 1000 + int(_view.round) + int(_view.get("deal", 0)) * 100000
+	if key != _absent_key:
+		_absent_key = key
+		_absent_wait = 0.0
+	_absent_wait += delta
+	if _presence.is_present(seat) and not _presence.is_machine_controlled(seat):
+		# §10: anwesender Gast, Zeit um = genau eine Strafkarte. Der Timer pausiert online nie.
+		if _absent_wait >= float(_setting("turn_timer_seconds")):
+			_absent_wait = 0.0
+			_quiet = true
+			session.timeout_turn(ai)
+			_quiet = false
+		return
+	if _presence.is_machine_controlled(seat):
+		# Stufe 2/3: vorsichtige Vertretung im KI-Tempo.
+		if _absent_wait >= maxf(_ai_delay(), 0.05):
+			_absent_wait = 0.0
+			session.machine_step(ai, seat)
+	elif _absent_wait >= float(_setting("turn_timer_seconds")) + PresenceScript.RESERVE_WAIT:
+		# Stufe 1: Zeit plus Verbindungsreserve um, aussetzen ohne Strafkarte.
+		_absent_wait = 0.0
+		_quiet = true
+		session.absent_turn(ai, seat)
+		_quiet = false
 
 
 # Zeit abgelaufen: Zug mit sicheren Standardaktionen beenden.
