@@ -8,7 +8,8 @@ extends Node
 
 const GAME := "dame"
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
-const DAME_MENU := "res://addons/dame/scenes/main_menu.tscn"
+## Das Hinterzimmer als Ort ersetzt DAMEs Hauptmenü; DAME kehrt nach jeder Partie und jedem „Zurück“ hierher zurück.
+const ROOM := "res://hinterzimmer/hinterzimmer.tscn"
 const REWARD_ITEM := "notiz_aus_dem_hinterzimmer"
 const FAVOR_ITEM := "eingeforderter_gefallen"
 ## Preis eines eingeforderten Gefallens (+2 auf einen Wurf, einmal). Ein Sieg gegen die KI bringt 50.
@@ -27,6 +28,7 @@ func _ready() -> void:
 	var app := get_node_or_null("/root/App")
 	if app == null:
 		return
+	app.home_scene = ROOM
 	app.match_finished.connect(_on_match_finished)
 	install_terms(str(app.settings.get_value("language")))
 	_welcome(app)
@@ -36,7 +38,7 @@ func _process(_delta: float) -> void:
 	# DAME kehrt nach der Partie in sein Menü zurück; für Karriere-Partien geht es stattdessen zurück an den Schreibtisch.
 	if return_pending:
 		var scene := get_tree().current_scene
-		if scene != null and scene.scene_file_path == DAME_MENU:
+		if scene != null and scene.scene_file_path == ROOM:
 			return_pending = false
 			get_tree().change_scene_to_file(KARRIERE)
 

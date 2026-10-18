@@ -46,6 +46,8 @@ func _ready() -> void:
 	_connect_signals()
 	_briefcase.position = Vector2((size.x - 96) / 2, 8) if size.x > 0 else Vector2(592, 8)
 	load_scene(GameState.current_scene)
+	if GameState.perma_death_pending:
+		_on_perma_death()
 
 
 # ---------------------------------------------------------------- Aufbau
@@ -299,6 +301,7 @@ func _on_widerlegung_finished(result: Dictionary) -> void:
 
 
 func _on_perma_death() -> void:
+	GameState.perma_death_pending = false
 	_overlay.abort()
 	_minigame.abort()
 	_widerlegung.abort()

@@ -1,6 +1,6 @@
 # PURPOSE: Szenenfluss der App headless: Flur -> Karriere -> Flur -> Karriere (Wiedereintritt), Dialog offen blockiert den Rückweg, Hörsaal, Innenhof (BANK-01, inkl. DAME-Tisch und Rückkehr), Hinterzimmer, zurück. Gibt REENTRY_OK aus.
 # ARCHITECTURE: tools
-# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, DAME main_menu.tscn, amt/vorgang.tscn, AmtStore, VorgangDame
+# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, Hinterzimmer (hinterzimmer.tscn), amt/vorgang.tscn, AmtStore, VorgangDame
 # PIPELINE: test
 # LAST_VALIDATED: 2026-10-18
 extends SceneTree
@@ -11,7 +11,7 @@ extends SceneTree
 const FLUR := "res://flur/flur.tscn"
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
-const HINTERZIMMER := "res://addons/dame/scenes/main_menu.tscn"
+const HINTERZIMMER := "res://hinterzimmer/hinterzimmer.tscn"
 const INNENHOF := "res://amt/vorgang.tscn"
 
 var _fail := []
@@ -98,20 +98,20 @@ func _run() -> void:
 	table_app.match_finished.emit({"won": true, "score": 1, "online": false, "mode": "new", "match_id": "m42"})
 	_expect(vd.result.is_empty(), "fremde Partie wird ignoriert")
 	table_app.match_finished.emit({"won": true, "score": 9, "online": false, "mode": "new", "match_id": session["match_id"]})
-	table_app.goto(table_app.MAIN_MENU)
+	table_app.goto(table_app.home_scene)
 	await _settle(8)
 	_expect(current_scene.scene_file_path == INNENHOF, "nach der Partie zurück in den Innenhof")
 	_expect(Bank01.running_session(current_scene.state).is_empty(), "Ergebnis der Partie verbucht")
 	_expect(current_scene.state["actors"]["mertens"]["commitments"].has("stuhl"), "Sieg im Hinterzimmer: Mertens sagt den Stuhl zu")
 	await _go(HINTERZIMMER)
-	_expect(fb.can_leave(), "DAME-Menü: Rückweg erlaubt")
+	_expect(fb.can_leave(), "Hinterzimmer: Rückweg erlaubt")
 	# Am Tisch kein Rückweg-Knopf: Ein Fehlklick würde die Partie verlassen, DAME hat dort ein eigenes Menü.
 	var app: Node = root.get_node("App")
 	app.new_match({"mode": "ai", "players": 4})
 	await _settle(20)
 	_expect(current_scene.scene_file_path == "res://addons/dame/scenes/table.tscn", "DAME-Tisch geladen")
 	_expect(not fb.can_leave(), "am DAME-Tisch kein Rückweg-Knopf")
-	app.goto(app.MAIN_MENU)
+	app.goto(app.home_scene)
 	await _settle()
 	# Phase 4: Karriere -> Hinterzimmer-Tür -> DAME-Tisch -> Ergebnis -> zurück in die Karriere.
 	await _go(KARRIERE)
@@ -121,7 +121,7 @@ func _run() -> void:
 	_expect(current_scene.scene_file_path == "res://addons/dame/scenes/table.tscn", "Karriere startet den DAME-Tisch")
 	var disziplin: int = gs.fraktionsdisziplin
 	app.match_finished.emit({"won": true, "score": 5, "online": false})
-	app.goto(app.MAIN_MENU)
+	app.goto(app.home_scene)
 	await _settle(6)
 	_expect(current_scene.scene_file_path == KARRIERE, "nach der Karriere-Partie zurück in die Karriere")
 	_expect(gs.fraktionsdisziplin == mini(disziplin + 1, 10), "Sieg im Hinterzimmer zählt für die Karriere")

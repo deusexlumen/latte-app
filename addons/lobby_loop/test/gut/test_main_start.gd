@@ -27,3 +27,19 @@ func test_main_can_be_loaded_twice() -> void:
 		if c["callable"] == Callable(GameState, "record_roll"):
 			hits += 1
 	assert_eq(hits, 1)
+
+
+## Regression aus latte-app: Perma-Death während einer Hinterzimmer-Partie (Karriere-Szene nicht geladen)
+## zeigt den Schirm, sobald die Karriere-Szene wieder lädt, und nur einmal.
+func test_pending_perma_death_shows_screen_on_load() -> void:
+	GameState.perma_death_pending = true
+	var main: Node = load("res://addons/lobby_loop/scenes/main.tscn").instantiate()
+	add_child_autofree(main)
+	await wait_process_frames(1)
+	var screen := main.find_child("PermaDeathScreen", true, false) as Control
+	assert_true(screen.visible)
+	assert_false(GameState.perma_death_pending)
+	var again: Node = load("res://addons/lobby_loop/scenes/main.tscn").instantiate()
+	add_child_autofree(again)
+	await wait_process_frames(1)
+	assert_false((again.find_child("PermaDeathScreen", true, false) as Control).visible)

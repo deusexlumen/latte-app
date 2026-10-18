@@ -12,6 +12,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [autoload]
 
+WebSaveMirror="*res://app/web_save_mirror.gd"
 Migration="*res://app/migration.gd"
 App="*res://addons/dame/scripts/app.gd"
 SaveManager="*res://app/save_manager.gd"
