@@ -19,9 +19,8 @@ Preset „Web“ gebaut (`godot --headless --path . --export-release "Web" build
 |---|---|
 | `sync-games.mjs` und Ordnername | `findRepo` nimmt `point and pen` oder `lobby-loop`, der erste vorhandene gewinnt; Test in `sync-games.test.mjs` |
 | DAME 9495 gegen 9591 Checks | **Geklärt:** Ohne WebRTC-Erweiterung werden die Verbindungstests übersprungen (9495). Mit ihr laufen sie zusätzlich (Notizen: 9591, unter Windows). Nachgestellt: DAME-Repo mit entfernter Erweiterung ergibt 9495/15, mit Erweiterung laufen in der netzlosen Umgebung die Verbindungstests in Zeitüberschreitung. Latte hat die Erweiterung nicht im Paket (`addons/webrtc` ohne `lib`) |
-| `feat/online-webrtc` nach `main` | PR #15 enthielt vier Commits nicht (Amts-Look, `match_finished`, TURN). Entwurf-PR **Dame-Card-Game#17** angelegt, **nicht gemergt**: ein Merge löst das Deployment auf GitHub Pages aus |
-| Lobby-Loop-Stand | `sync-manifest.json` nennt `bbf1766`, das Repo steht auf `dac5b0b` (nur Doku, laut Commit „Phase 4 umgesetzt“). Kein Neu-Sync in diesem Schritt |
+| `feat/online-webrtc` nach `main` | PR #15 enthielt vier Commits nicht (Amts-Look, `match_finished`, TURN). Dame-Card-Game#17 gemergt (`a5e503d`, CI ohne Fehler). `sync-games.mjs` baut DAME jetzt aus `main`; neu synchronisiert, der Inhalt entspricht dem bisherigen Stand (a84f2db) |
+| Lobby-Loop-Stand | Neu synchronisiert auf `dac5b0b` (vorher `bbf1766`); geändert ist nur `plan.md` |
 
 ## Offen
-- Entscheidung, ob Dame-Card-Game#17 gemergt wird; danach in `sync-games.mjs` den Branch von `feat/online-webrtc` auf `main` stellen und neu synchronisieren.
 - Spieltest und dessen Überarbeitung, dann E5.

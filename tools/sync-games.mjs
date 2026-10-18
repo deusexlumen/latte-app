@@ -37,9 +37,8 @@ export const GAMES = [
   {
     name: 'dame',
     repo: join(PROJECTS, 'Dame-Card-Game'),
-    // Fest benannter Branch statt HEAD: Ein Branchwechsel im DAME-Repo soll latte nicht still verändern.
-    // feat/online-webrtc enthält main (gemergt) plus Online-Test.
-    branch: 'feat/online-webrtc',
+    // Fest benannter Branch statt HEAD (seit E4 main, Online-Stand ist gemergt): Ein Branchwechsel im DAME-Repo soll latte nicht still verändern.
+    branch: 'main',
     sub: 'godot',
     // Längster Präfix zuerst. DAMEs Dienste und i18n werden zum gemeinsamen Kern (amt_core).
     map: [

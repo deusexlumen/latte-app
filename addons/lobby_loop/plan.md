@@ -3575,6 +3575,15 @@ Danach Pull Request gegen `master`. Erst wenn dieses Tor erreicht ist, beginnt P
 
 ## Phase 4: DAME als Hinterzimmer
 
+**Stand 12.10.2026: umgesetzt (LO-Entscheidung: Amts-Look als Zusatz-Kosmetik, Verknüpfung als latte-Code).**
+- [x] M1 Amtsstube als Raum-Kosmetik (Aktenschränke statt Bar), Casino wählbar
+- [~] M2 Kartenrücken mit Aktenzeichen: ja. Figuren als Beamte: nein (bräuchte neue 3D-Assets)
+- [x] M3 Chips heißen Gefälligkeiten; nur erspielt; Gefallen einfordern = einmal +2 auf einen Wurf
+- [x] M4 DAME im Minispiel-Vertrag (Andockpunkt `register_external`, Partie gegen KI, Ergebnis wie Widerlegung)
+- [x] M5 Online-Partien zählen nie in einer Karriere (Test `test_online_match_never_counts_for_the_career`)
+- Tor: [x] DAME aus der Karriere spielbar (Tür zum Hinterzimmer, Aufsichtsratssitzung), [x] Online zählt nicht
+
+
 **Tor zum Start:** Phase 3 abgenommen. **Und deine Entscheidung, ob DAME den Amts-Look bekommt** (Spec: Geschmacksfrage).
 
 **Meilensteine:**
