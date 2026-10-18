@@ -74,7 +74,7 @@ Die Spezifikation ließ diese Punkte offen. Sie sind **Entwurfsentscheidungen**,
 
 ## Nicht in E1
 
-- Echte Widerlegung im Ausschuss: seit E2 vorhanden (`docs/e2-widerlegung.md`). Echte DAME-Partie: E3.
+- Echte Widerlegung im Ausschuss: seit E2 vorhanden (`docs/e2-widerlegung.md`). Echte DAME-Partie: seit E3 vorhanden (`docs/e3-gemeinsame-erfahrung.md`).
 - Räumliche Gestaltung, Ton, Übergänge: E3.
 - Schmale Darstellung: Das Projekt skaliert 1280 × 720 logisch (`canvas_items`, `keep`); eine eigene Ansicht ab 360 logischen Pixeln ist ungeprüft.
 - Screenreader: nicht geprüft (Kap. 12.3 verlangt einen eigenen Befund).

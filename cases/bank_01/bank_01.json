@@ -45,7 +45,7 @@
     "kern_bench": "Frau Kern sitzt auf der Bank und liest ihre Wartenummer, als stünde etwas Neues darauf.",
     "kern_chair": "Frau Kern sitzt auf dem Klappstuhl, Rücken gerade, die Tasche auf den Knien.",
     "spatz": "Ein Spatz pickt im Kies.",
-    "hinterzimmer_abend": "Mertens sitzt schon am Tisch und mischt. »Spielen Sie? Oder reden wir nur?«",
+    "hinterzimmer_abend": "Mertens sitzt schon am Tisch und mischt. Frau Seidel hängt ihre Tasche über die Stuhllehne und schaut auf die Uhr. »Spielen Sie mit? Oder reden wir nur?«",
     "hinterzimmer_tag": "Tagsüber leer. Auf dem Tisch ein Kartenspiel, ordentlich gestapelt.",
     "neuer_stuhl": "Am Nebeneingang wartet ein Mann mit einem Gartenstuhl und einer Wartenummer. Auf dem Stuhl klebt ein Formular.",
     "aushang_label": "Neues Schild am Hofeingang"
@@ -114,7 +114,7 @@
     "chair_delivered": "Hausdienst: Ein Klappstuhl steht jetzt im Innenhof. Frau Kern hat sich gesetzt.",
     "day_end": "Dienstschluss. Im Hinterzimmer sitzt Mertens schon am Tisch.",
     "evening_end": "Der nächste Morgen. Die Vorhalle riecht nach nassen Mänteln.",
-    "dame_started": "Mertens teilt aus. [Entwicklung: Platzhalter statt DAME-Tisch]",
+    "dame_started": "Mertens teilt aus. Frau Seidel nimmt ihre Karten auf, ohne hinzusehen.",
     "dame_won_favor": "»Gut gespielt.« Mertens schiebt die Karten zusammen. »Morgen früh steht ein Klappstuhl im Hof. Einmal.«",
     "dame_won_no_favor": "»Gut gespielt. Der Stuhl ist ja schon zugesagt.«",
     "dame_won_again": "»Gut gespielt. Gezählt hat aber die erste.«",
@@ -245,5 +245,19 @@
     "scope": "neue_sitzgelegenheiten",
     "text": "Zur Sicherstellung der Zugänglichkeit sind neue Sitzgelegenheiten vor Aufstellung zur Zugänglichkeitsprüfung anzumelden.",
     "sign": "Zur Sicherstellung der Zugänglichkeit sind neue Sitzgelegenheiten vor Aufstellung zur Zugänglichkeitsprüfung anzumelden. BANK-01"
+  },
+  "official": {
+    "formal_release": "Zugänglichkeit der Sitzgelegenheit INV-7731 berichtigt. Prüfanforderung PA-12 erlassen (Herkunft: BANK-01).",
+    "temporary_exception": "Befristete Ausnahme für INV-7731 erteilt. Wiedervorlage zur Überprüfung.",
+    "replacement_chair": "Vorläufige Auslagerung eines Sitzmittels abgeschlossen. Sperrung unverändert.",
+    "unresolved": "Vorgang ohne Antrag abgelegt. Zuständigkeit verbleibt im Amt.",
+    "open": "Vorgang in Bearbeitung."
+  },
+  "help": {
+    "missing_none": "Für beide Anträge liegt alles vor.",
+    "missing_head": "Für den Antrag »%s« fehlt noch:",
+    "requested_none": "Sie haben noch keine Stelle angesprochen.",
+    "requested_tail": "Ob eine Stelle von Ihrer Prüfung weiß, merken Sie an ihrem Verhalten.",
+    "when_none": "Dazu liegt noch kein Eintrag vor."
   }
 }

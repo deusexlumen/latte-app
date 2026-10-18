@@ -36,3 +36,8 @@
   Vorgang: Jede Karte geht als `minigame_play` an den Vorgang, Ergebnisse gelten nur, wenn Seed und Kartenfolge sie erklären; Fortsetzen und Abbruch ohne neue Hand; kein Einspruch im Bank-Panel; Panel-Effekte werden nie übernommen. DAME bleibt Platzhalter bis E3.
   Parität: 200 Partien auf der Bank-Lehre, JS-Engine gegen Godot-Port, 200/200 gleich. Die Kopie in lobby-loop/vendor/huhn und das hochgeladene Archiv liefern dasselbe Golden.
   **Tests:** Latte 87 (vorher 67); DAME 9495/15 + FLOW_OK, Latte-Fluss, Lobby-Loop 145. **Offen:** E3 (echte DAME-Partie, räumlicher Übergang, Spieltest).
+
+- [x] **2026-10-18 — E3 der gemeinsamen Welt: gemeinsame Erfahrung (`docs/e3-gemeinsame-erfahrung.md`):**
+  Echte DAME-Partie im Hinterzimmer (Amtsstube, Gegner Mertens und Seidel, `match_id` pro Session, Fortsetzen/Abbruch, Raumwahl des Spielers kommt zurück); Autoloads `Uebergang` (Blende) und `VorgangDame`. Seidel sitzt abends im Hinterzimmer. Aktenhilfe (drei Fragen, nur eigenes Wissen), Akte-Abschnitt mit amtlicher Fassung neben dem Tatsächlichen.
+  Spieltest vorbereitet: `docs/spieltest-bank-01.md`, `tools/spieltest-auswertung.mjs` (+ Fixture). **Der Spieltest selbst ist nicht durchgeführt.**
+  **Tests:** Latte 111 (vorher 87), Node 9, DAME 9495/15 + FLOW_OK, Latte-Fluss inkl. DAME-Tisch, Lobby-Loop 145. **Grenzen:** DAME-Ergebnisse nicht nachprüfbar (nur match_id-Bindung); Übergang nur auf Standbildern gesehen; kein Web-Export mit den neuen Dateien gebaut. **Offen:** Spieltest, danach E4/E5.

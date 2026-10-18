@@ -1,7 +1,7 @@
-# PURPOSE: Vorgang BANK-01 als schlichter Klickprototyp (Etappen E1 und E2, Kap. 19): Ort, Personen, Handlungen, Aktenkoffer, Einreichung, Widerlegung im Ausschuss.
-# PURPOSE: Jede Handlung geht als Befehl an den Weltkern und wird danach gespeichert. Die Widerlegung läuft im echten Panel; DAME ist bis E3 ein Platzhalter der Entwicklungsansicht.
+# PURPOSE: Vorgang BANK-01 als schlichter Klickprototyp (Etappen E1 bis E3, Kap. 19): Ort, Personen, Handlungen, Aktenkoffer, Aktenhilfe, Einreichung,
+# PURPOSE: Widerlegung im Ausschuss und DAME im Hinterzimmer. Jede Handlung geht als Befehl an den Weltkern und wird danach gespeichert.
 # ARCHITECTURE: ui
-# DEPENDENCIES: Bank01, BankWiderlegung, AmtWorld, AmtStore, amt/bank_panel.gd
+# DEPENDENCIES: Bank01, BankWiderlegung, BankDame, VorgangDame, AmtWorld, AmtStore, amt/bank_panel.gd
 # PIPELINE: runtime, test
 # LAST_VALIDATED: 2026-10-18
 extends Control
@@ -34,6 +34,8 @@ var _reader: Label
 var _cmp_a: OptionButton
 var _cmp_b: OptionButton
 var _log: Label
+var _help_out: Label
+var _help_pick: OptionButton
 var _dev_info: Label
 var _session_box: VBoxContainer
 var _form: Control
@@ -63,6 +65,21 @@ func _ready() -> void:
 	else:
 		state = Bank01.new_state()
 	refresh()
+	_apply_dame_result()
+
+
+## Kommt der Spieler aus einer beendeten DAME-Partie dieser Session zurück, wird ihr Ergebnis jetzt verbucht.
+func _apply_dame_result() -> void:
+	var autoload := get_node_or_null("/root/VorgangDame")
+	if autoload == null or state.is_empty():
+		return
+	var r: Dictionary = autoload.take_result()
+	var session := Bank01.running_session(state)
+	if r.is_empty() or session.is_empty() or session["game"] != "dame":
+		return
+	var world := BankDame.world_result(session, r)
+	if not world.is_empty():
+		run("minigame_result", {"result": world})
 
 
 ## Ein Befehl an den Weltkern. Abgelehnt: Grund anzeigen, nichts ändern. Angenommen: speichern, neu zeichnen.
@@ -108,8 +125,6 @@ func refresh() -> void:
 func _build_actions() -> void:
 	var groups := {"hier": [], "anfordern": [], "gehen": [], "vorgang": []}
 	for a in Bank01.available_actions(state):
-		if a["type"] == "start_minigame" and not dev_mode:
-			continue  # In E1 gibt es noch kein echtes Minispiel; ohne Entwicklungsansicht nicht anbieten.
 		groups[a["group"]].append(a)
 	var here: Array = groups["hier"]
 	for a in here.slice(0, PRIMARY_MAX):
@@ -136,8 +151,12 @@ func _act(a: Dictionary) -> void:
 		open_form()
 		return
 	var r := run(a["type"], a["params"])
-	if r["ok"] and a["type"] == "start_minigame" and a["params"].get("game") == "widerlegung":
+	if not (r["ok"] and a["type"] == "start_minigame"):
+		return
+	if a["params"].get("game") == "widerlegung":
 		open_hearing()
+	else:
+		start_dame()
 
 
 func _build_akte() -> void:
@@ -148,6 +167,10 @@ func _build_akte() -> void:
 	_clear(_docs)
 	for d in Bank01.documents(state):
 		_docs.add_child(_button("Lesen: %s" % d["titel"], func() -> void: _reader.text = d["text"]))
+	_help_pick.clear()
+	for e in Bank01.akte(state):
+		_help_pick.add_item("%s %s" % [e["id"], e["titel"]])
+		_help_pick.set_item_metadata(_help_pick.item_count - 1, e["id"])
 	for ob in [_cmp_a, _cmp_b]:
 		var keep: Variant = ob.get_selected_metadata() if ob.selected >= 0 else null
 		ob.clear()
@@ -160,8 +183,8 @@ func _build_akte() -> void:
 		_cmp_b.select((_cmp_a.selected + 1) % _cmp_b.item_count)
 
 
-## Laufende Partie. Die Widerlegung öffnet das Panel (auch nach einem Neustart, dann mit den gespielten Karten).
-## DAME ist bis E3 ein Platzhalter. Abbrechen darf jeder, Ausgänge ohne Spiel setzen nur Entwickler (Kap. 19.1).
+## Laufende Partie. Die Widerlegung öffnet das Panel (auch nach einem Neustart, dann mit den gespielten Karten),
+## DAME startet oder setzt die Partie im Hinterzimmer fort. Abbrechen darf jeder, Ausgänge ohne Spiel setzen nur Entwickler (Kap. 19.1).
 func _build_session() -> void:
 	_clear(_session_box)
 	var session := Bank01.running_session(state)
@@ -173,7 +196,7 @@ func _build_session() -> void:
 	if hearing:
 		info.text = "Die Widerlegung läuft. Gespielte Karten: %d." % plays
 	else:
-		info.text = "Partie läuft (DAME). In dieser Fassung ist sie ein Platzhalter."
+		info.text = "Mertens und Frau Seidel warten am Tisch. Eine Partie DAME, wie sie am Abend üblich ist."
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_session_box.add_child(info)
 	var row := HFlowContainer.new()
@@ -182,10 +205,37 @@ func _build_session() -> void:
 	_session_box.add_child(row)
 	if hearing:
 		row.add_child(_button("Partie fortsetzen" if plays > 0 else "Partie öffnen", open_hearing))
+	else:
+		row.add_child(_button("Partie fortsetzen" if _can_resume_dame(session) else "Zum Tisch", start_dame))
 	if dev_mode:
 		row.add_child(_button("[Entwicklung] gewonnen", _dev_result.bind("won")))
 		row.add_child(_button("[Entwicklung] verloren", _dev_result.bind("lost")))
-	row.add_child(_button("Partie abbrechen", _dev_result.bind("aborted")))
+	row.add_child(_button("Partie abbrechen", _abort_session))
+
+
+func _abort_session() -> void:
+	var session := Bank01.running_session(state)
+	var autoload := get_node_or_null("/root/VorgangDame")
+	if not session.is_empty() and session["game"] == "dame" and autoload != null:
+		autoload.discard(session)
+	_dev_result("aborted")
+
+
+func _can_resume_dame(session: Dictionary) -> bool:
+	var autoload := get_node_or_null("/root/VorgangDame")
+	return autoload != null and bool(autoload.can_resume(session))
+
+
+## Zum Tisch im Hinterzimmer: neue Partie, oder die gespeicherte dieser Session fortsetzen.
+func start_dame() -> void:
+	var session := Bank01.running_session(state)
+	var autoload := get_node_or_null("/root/VorgangDame")
+	if session.is_empty() or session["game"] != "dame" or autoload == null:
+		return
+	if autoload.can_resume(session):
+		autoload.resume(session)
+	else:
+		autoload.start(state, session)
 
 
 ## Öffnet das Panel für die laufende Widerlegung. Bereits gespielte Karten werden ohne Tor nachgespielt.
@@ -433,6 +483,7 @@ func _build() -> void:
 	_tabs.add_child(_scrolled("Vergleichen", cmp))
 	_log = _text_label()
 	_tabs.add_child(_scrolled("Verlauf", _log))
+	_tabs.add_child(_scrolled("Hilfe", _build_help()))
 	if dev_mode:
 		_dev_info = _text_label()
 		_dev_info.modulate = WARN
@@ -443,6 +494,27 @@ func _build() -> void:
 	add_child(_panel)
 	_panel.gate = _on_card_gate
 	_panel.finished.connect(_on_hearing_finished)
+
+
+## Aktenhilfe (Kap. 11.3): drei operative Fragen, beantwortet nur aus dem, was der Spieler schon weiß. Kostet keine Diensthandlung.
+func _build_help() -> Control:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 8)
+	var hint := _text_label()
+	hint.text = "Die Aktenhilfe beantwortet praktische Fragen zum Vorgang. Sie kennt nur, was Sie bereits wissen."
+	box.add_child(hint)
+	box.add_child(_button("Welche Unterlage fehlt?", func() -> void: _help_out.text = Bank01.help_missing(state)))
+	box.add_child(_button("Welche Stelle kennt meine Anfrage?", func() -> void: _help_out.text = Bank01.help_requested(state)))
+	_help_pick = OptionButton.new()
+	_help_pick.custom_minimum_size = MIN_TARGET
+	_help_pick.fit_to_longest_item = false
+	box.add_child(_help_pick)
+	box.add_child(_button("Wann wurde das festgehalten?", func() -> void:
+		if _help_pick.selected >= 0:
+			_help_out.text = Bank01.help_when(state, str(_help_pick.get_selected_metadata()))))
+	_help_out = _text_label()
+	box.add_child(_help_out)
+	return box
 
 
 func _build_form() -> void:

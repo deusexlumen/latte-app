@@ -9,9 +9,19 @@ extends GutTest
 const SAVE := "user://test_vorgang_ui.json"
 
 
+func before_all() -> void:
+	# Ohne Testmodus würde ein Start der DAME-Partie wirklich die Szene wechseln.
+	get_node("/root/App").use_test_storage()
+
+
 func before_each() -> void:
 	for p in [SAVE, AmtStore.prev_path(SAVE), SAVE + ".alt", SAVE + ".bak"]:
 		JsonStore.remove(p)
+	var vd := get_node("/root/VorgangDame")
+	vd.active = {}
+	vd.result = {}
+	vd.return_pending = false
+	get_node("/root/App").saves.clear()
 
 
 func _scene(dev: bool = true) -> Control:
@@ -101,15 +111,16 @@ func test_form_names_missing_evidence_and_keeps_open_on_refusal() -> void:
 	assert_not_null(_button(v, "Vorgang ▾"))
 
 
-func test_minigame_placeholder_only_in_dev_mode() -> void:
+func test_game_shortcuts_only_in_dev_mode() -> void:
 	var player := _scene(false)
 	_steps(player, [["move", {"to": "innenhof"}], ["open_case"], ["end_day"]])
-	assert_null(_button(player, "Mit Mertens spielen (DAME)"), "ohne Entwicklungsansicht kein Platzhalter-Spiel")
+	assert_not_null(_button(player, "Mit Mertens spielen (DAME)"), "die echte Partie gibt es für alle")
 	assert_not_null(_button(player, "Mit Mertens über die Bank sprechen"))
+	_press(player, "Mit Mertens spielen (DAME)")
+	assert_null(_button(player, "[Entwicklung] gewonnen"), "ohne Entwicklungsansicht keine Abkürzung")
+	assert_not_null(_button(player, "Partie abbrechen"))
 	var dev := _scene(true)
-	_press(dev, "Mit Mertens spielen (DAME)")
-	assert_false(Bank01.running_session(dev.state).is_empty())
-	assert_not_null(_button(dev, "Partie abbrechen"))
+	assert_not_null(_button(dev, "[Entwicklung] gewonnen"), "Entwickler dürfen abkürzen")
 	_press(dev, "[Entwicklung] gewonnen")
 	assert_eq(dev.state["actors"]["mertens"]["commitments"]["stuhl"]["quelle"], "dame")
 
@@ -176,3 +187,93 @@ func test_panel_without_objection_buttons_in_the_scene() -> void:
 	for b in v._panel.find_children("*", "Button", true, false):
 		if (b as Button).text == "!":
 			assert_false((b as Button).visible)
+
+
+func _to_evening(v: Control) -> void:
+	_steps(v, [["move", {"to": "innenhof"}], ["open_case"], ["end_day"]])
+
+
+func test_dame_button_hands_the_match_to_the_table_and_back() -> void:
+	var v := _scene(false)
+	_to_evening(v)
+	var vd := get_node("/root/VorgangDame")
+	var app := get_node("/root/App")
+	_press(v, "Mit Mertens spielen (DAME)")
+	var session: Dictionary = Bank01.running_session(v.state)
+	assert_eq(session["game"], "dame")
+	assert_eq(vd.active["match_id"], session["match_id"])
+	assert_eq(app.pending["mode"], "new", "DAME bekommt den Auftrag für den Tisch")
+	assert_string_contains(v._session_box.get_child(0).text, "Mertens und Frau Seidel")
+	assert_not_null(_button(v, "Zum Tisch"))
+	assert_null(_button(v, "[Entwicklung] gewonnen"), "ohne Entwicklungsansicht keine Abkürzung")
+	# Die Partie endet; der Innenhof verbucht das Ergebnis beim Wiedereintritt.
+	app.match_finished.emit({"won": true, "score": 7, "online": false, "mode": "new", "match_id": session["match_id"]})
+	assert_true(vd.return_pending)
+	var back := _scene(false)
+	assert_true(Bank01.running_session(back.state).is_empty(), "Ergebnis verbucht")
+	assert_eq(back.state["actors"]["mertens"]["commitments"]["stuhl"]["quelle"], "dame")
+	assert_string_contains(back._message.text, "Klappstuhl", "Mertens sagt die Gefälligkeit zu")
+	assert_true(vd.active.is_empty())
+
+
+func test_foreign_result_does_not_touch_the_case() -> void:
+	var v := _scene(false)
+	_to_evening(v)
+	_press(v, "Mit Mertens spielen (DAME)")
+	get_node("/root/App").match_finished.emit({"won": true, "score": 1, "online": false, "mode": "new", "match_id": "m42"})
+	var back := _scene(false)
+	assert_false(Bank01.running_session(back.state).is_empty(), "die Partie läuft weiter")
+	assert_eq((back.state["actors"]["mertens"]["commitments"] as Dictionary).size(), 0)
+
+
+func test_abort_discards_the_dame_save_and_closes_the_session() -> void:
+	var v := _scene(false)
+	_to_evening(v)
+	_press(v, "Mit Mertens spielen (DAME)")
+	var app := get_node("/root/App")
+	var id: String = Bank01.running_session(v.state)["match_id"]
+	app.saves.save_match({"state": {}}, {"match_id": id})
+	v.refresh()
+	assert_not_null(_button(v, "Partie fortsetzen"), "gespeicherte Partie dieser Session ist fortsetzbar")
+	_press(v, "Partie abbrechen")
+	assert_true(Bank01.running_session(v.state).is_empty())
+	assert_false(app.saves.has_save(), "Spielstand der Session verworfen")
+	assert_eq(v.state["cases"]["BANK-01"]["definition"], "")
+	_press(v, "Mit Mertens spielen (DAME)")
+	assert_eq(Bank01.sessions_of(v.state, "dame").size(), 2, "danach neu startbar")
+
+
+func test_help_tab_answers_from_known_information() -> void:
+	var v := _scene(false)
+	_steps(v, [["move", {"to": "innenhof"}], ["open_case"], ["move", {"to": "hausdienst"}],
+		["interview", {"actor": "mertens", "topic": "bank"}]])
+	var hours: int = v.state["cases"]["BANK-01"]["hours_remaining"]
+	for i in v._tabs.get_tab_count():
+		if v._tabs.get_tab_title(i) == "Hilfe":
+			v._tabs.current_tab = i
+	_press(v, "Welche Unterlage fehlt?")
+	assert_string_contains(v._help_out.text, "Formelle Freigabe")
+	_press(v, "Welche Stelle kennt meine Anfrage?")
+	assert_string_contains(v._help_out.text, "Hausdienst: befragt")
+	v._help_pick.select(v._help_pick.item_count - 1)
+	_press(v, "Wann wurde das festgehalten?")
+	assert_string_contains(v._help_out.text, "Tag 1")
+	assert_eq(v.state["cases"]["BANK-01"]["hours_remaining"], hours, "die Hilfe kostet keine Diensthandlung")
+
+
+func test_akte_page_shows_the_case_next_to_the_games() -> void:
+	var path := AmtStore.default_path()
+	var state := Bank01.new_state()
+	for step in [["move", {"to": "innenhof"}], ["open_case"]]:
+		state = AmtWorld.execute(state, Bank01.command(state, step[0], step[1] if step.size() > 1 else {}), Bank01)["state"]
+	assert_true(AmtStore.save(state, path))
+	var akte: Control = load("res://akte/akte.tscn").instantiate()
+	add_child_autofree(akte)
+	var texts := []
+	for l in akte.find_children("*", "Label", true, false):
+		texts.append((l as Label).text)
+	JsonStore.remove(path)
+	JsonStore.remove(AmtStore.prev_path(path))
+	assert_has(texts, "Innenhof (BANK-01)")
+	assert_true(texts.any(func(t: String) -> bool: return t.contains("Amtlich: Vorgang in Bearbeitung.")))
+	assert_has(texts, "Karriere", "die übrigen Abschnitte bleiben")

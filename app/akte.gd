@@ -1,8 +1,8 @@
 # PURPOSE: Karriere-Akte der App (Phase 3, M7): ein Abschnitt je Spiel (Karriere, Hörsaal, Hinterzimmer). Erweitert ADR 0005.
 # ARCHITECTURE: core
-# DEPENDENCIES: none (reine Daten)
+# DEPENDENCIES: Bank01 (nur für den Abschnitt des Vorgangs)
 # PIPELINE: runtime, test
-# LAST_VALIDATED: 2026-10-12
+# LAST_VALIDATED: 2026-10-18
 class_name LatteAkte
 extends RefCounted
 
@@ -40,3 +40,30 @@ static func build(lobby: Dictionary, hoersaal: Dictionary, dame: Dictionary) -> 
 		{"titel": "Hörsaal", "zeilen": hs},
 		{"titel": "Hinterzimmer", "zeilen": hz},
 	]
+
+
+## Abschnitt für den Vorgang BANK-01 (Kap. 13.1): die amtliche Fassung neben dem, was tatsächlich geschah.
+## state ist der Weltzustand oder {} (noch kein Vorgang begonnen).
+static func vorgang_section(state: Dictionary) -> Dictionary:
+	if state.is_empty() or str(state["cases"]["BANK-01"]["status"]) == "not_opened":
+		return {"titel": "Innenhof (BANK-01)", "zeilen": ["Noch kein Vorgang eröffnet."]}
+	var c: Dictionary = state["cases"]["BANK-01"]
+	var hearing := "noch nicht angefochten"
+	match str(c["definition"]):
+		"won":
+			hearing = "Arbeitsdefinition widerlegt"
+		"lost":
+			hearing = "Arbeitsdefinition hat gehalten"
+	var seat: String = {"bench": "auf der Bank", "chair": "auf einem Klappstuhl"}.get(str(state["actors"]["kern"]["seat"]), "")
+	var lines := [
+		"Stand: %s" % Bank01.status_line(state),
+		"Amtlich: %s" % Bank01.official_summary(state),
+		"Tatsächlich: Frau Kern %s." % ("sitzt " + seat if not seat.is_empty() else "steht noch"),
+		"Diensthandlungen: %d von %d verbraucht" % [Bank01.HOURS - int(c["hours_remaining"]), Bank01.HOURS],
+		"Belege im Aktenkoffer: %d" % (state["evidence"] as Dictionary).size(),
+		"Widerlegung: %s" % hearing,
+		"Partien DAME im Hinterzimmer: %d" % Bank01.completed_sessions(state, "dame").size(),
+	]
+	for rule in state["rules"]:
+		lines.append("Aus diesem Vorgang erlassen: %s (%s)" % [rule["rule_id"], rule["herkunft"]])
+	return {"titel": "Innenhof (BANK-01)", "zeilen": lines}

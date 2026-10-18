@@ -91,7 +91,7 @@ Revidierbar, keine Nutzervorgaben.
 
 ## Nicht in E2 / offen
 
-- **Echte DAME-Partie** im Hinterzimmer und der gemeinsame visuelle Übergang: E3.
+- **Echte DAME-Partie** im Hinterzimmer und der Übergang: seit E3 vorhanden (`docs/e3-gemeinsame-erfahrung.md`).
 - **Balance der Lehre** ist simuliert (Validator), nicht erspielt. Ob die Partie Spaß macht und ob die Referenz „bereitgestellt“ ohne Erklärung verständlich wird, zeigt erst der Spieltest (Kap. 20.4).
 - Die Texte der Karten und Ausgangszeilen sind erster Entwurf.
 - Das Panel ist das von Lobby-Loop, mit dessen Gestaltung. Eine Anpassung an die räumliche Darstellung (Saalmodell auf dem Ausschusstisch, Kap. 8.2) ist E3.
