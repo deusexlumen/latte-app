@@ -1,0 +1,310 @@
+{
+  "id": "bib_bank_01",
+  "content_id": "bank_public_seating_v1",
+  "content_version": "bank_public_seating@1",
+  "nr": 6.0,
+  "shortName": "Bank",
+  "shareIcon": "🪑",
+  "ort": "Ausschuss für Begriffsbestimmung",
+  "jahr": "Sitzung Punkt 4 · BANK-01",
+  "gegner": "Herr Voss",
+  "gegnerTitel": "Ausschuss · möchte keine neue offene Akte",
+  "siegel": [
+    "AUSSCHUSS",
+    "BEGRIFFS-",
+    "BESTIMMUNG"
+  ],
+  "begriff": "öffentliche Sitzgelegenheit",
+  "truthYes": "ist eine öffentliche Sitzgelegenheit",
+  "truthNo": "ist keine öffentliche Sitzgelegenheit",
+  "lehreHead": "Öffentliche Sitzgelegenheit im Sinne dieser Arbeitsdefinition ist, was",
+  "startSatz": "„Eine öffentliche Sitzgelegenheit ist ein bewegliches Möbel mit Rückenlehne, das nicht als Kunst inventarisiert ist.“",
+  "intro": "Herr Voss legt die Arbeitsdefinition auf den Tisch. Daneben steht ein Saalmodell aus Pappe, damit man sieht, was die Definition trägt. Es geht um die Bank im Innenhof. Als Referenz gilt der dokumentierte Nutzungsauftrag: Öffentliche Sitzgelegenheit ist, was für Wartende bereitgestellt wurde. Die Arbeitsdefinition kennt dieses Merkmal nicht.",
+  "hand": 5.0,
+  "wuerfe": 7,
+  "cap": 11,
+  "rhetorik": [
+    "autoritaet",
+    "anstrich"
+  ],
+  "attrs": {
+    "beweglich": {
+      "pos": "ein bewegliches Möbel ist",
+      "neg": "fest verbaut ist",
+      "short": "beweglich",
+      "icon": "🪑"
+    },
+    "lehne": {
+      "pos": "eine Rückenlehne hat",
+      "neg": "keine Rückenlehne hat",
+      "short": "Lehne",
+      "icon": "🔙"
+    },
+    "kunst": {
+      "pos": "als Kunst inventarisiert ist",
+      "neg": "nicht als Kunst inventarisiert ist",
+      "short": "Kunst",
+      "icon": "🖼️"
+    },
+    "bereit": {
+      "pos": "für Wartende bereitgestellt ist",
+      "neg": "nicht für Wartende bereitgestellt ist",
+      "short": "bereitgestellt",
+      "icon": "📋"
+    },
+    "sitzflaeche": {
+      "pos": "eine Sitzfläche bietet",
+      "neg": "keine Sitzfläche bietet",
+      "short": "Sitzfläche",
+      "icon": "🟫"
+    },
+    "traegt": {
+      "pos": "einen Erwachsenen trägt",
+      "neg": "keinen Erwachsenen trägt",
+      "short": "trägt 80 kg",
+      "icon": "🏋️"
+    },
+    "innen": {
+      "pos": "im Gebäude steht",
+      "neg": "im Freien steht",
+      "short": "drinnen",
+      "icon": "🏠"
+    },
+    "gesperrt": {
+      "pos": "zur Nutzung gesperrt ist",
+      "neg": "nicht gesperrt ist",
+      "short": "gesperrt",
+      "icon": "🚧"
+    },
+    "ausstellung": {
+      "pos": "nur zur Ansicht aufgestellt ist",
+      "neg": "nicht nur zur Ansicht aufgestellt ist",
+      "short": "Ausstellung",
+      "icon": "🔍"
+    },
+    "polster": {
+      "pos": "gepolstert ist",
+      "neg": "ungepolstert ist",
+      "short": "gepolstert",
+      "icon": "☁️"
+    }
+  },
+  "start": [
+    "+beweglich",
+    "+lehne",
+    "-kunst"
+  ],
+  "prisma": [
+    "+traegt",
+    "+sitzflaeche",
+    "-ausstellung",
+    "+innen",
+    "-gesperrt",
+    "+polster"
+  ],
+  "refMembers": [
+    "besucherstuhl",
+    "klappstuhl"
+  ],
+  "refNon": [
+    "aktenschrank",
+    "kuehlschrank"
+  ],
+  "cards": [
+    {
+      "id": "besucherstuhl",
+      "name": "Besucherstuhl",
+      "icon": "🪑",
+      "m": true,
+      "a": "beweglich lehne bereit sitzflaeche traegt innen",
+      "note": "Der Normalfall. Steht im Wartebereich und wird nicht beachtet."
+    },
+    {
+      "id": "klappstuhl",
+      "name": "Klappstuhl des Hausdienstes",
+      "icon": "🪑",
+      "m": true,
+      "a": "beweglich lehne bereit sitzflaeche traegt innen",
+      "note": "Hat einen Inventaraufkleber und einen Rückgabezettel."
+    },
+    {
+      "id": "wartebank",
+      "name": "Verschraubte Wartebank",
+      "icon": "🛋️",
+      "m": true,
+      "a": "lehne bereit sitzflaeche traegt innen",
+      "note": "Fest am Boden. Wer sie verrücken will, braucht einen Antrag."
+    },
+    {
+      "id": "parkbank",
+      "name": "Bank am Parkplatz",
+      "icon": "🌳",
+      "m": true,
+      "a": "lehne bereit sitzflaeche traegt",
+      "note": "Steht im Regen und ist trotzdem für Wartende gedacht."
+    },
+    {
+      "id": "wartehocker",
+      "name": "Offizieller Wartehocker",
+      "icon": "🪵",
+      "m": true,
+      "a": "beweglich bereit sitzflaeche traegt innen",
+      "note": "Keine Lehne. Bereitgestellt wurde er trotzdem, laut Beschaffungsauftrag."
+    },
+    {
+      "id": "stehsitz",
+      "name": "Stehsitz im Flur",
+      "icon": "📐",
+      "m": true,
+      "a": "beweglich bereit sitzflaeche traegt innen polster",
+      "note": "Man lehnt sich halb an. Für Wartende, die nicht lange warten sollen."
+    },
+    {
+      "id": "fensterbank",
+      "name": "Breite Fensterbank",
+      "icon": "🪟",
+      "m": true,
+      "a": "bereit sitzflaeche traegt innen",
+      "note": "Offiziell ausgewiesen: »Sitzfläche Nord«. Keine Lehne, nicht beweglich, aber ausgewiesen."
+    },
+    {
+      "id": "bank01",
+      "name": "BANK-01",
+      "icon": "🧱",
+      "m": true,
+      "a": "beweglich lehne kunst bereit sitzflaeche traegt gesperrt",
+      "note": "Als Kunst geführt, als Sitzbank beschafft. Gesperrt seit Februar."
+    },
+    {
+      "id": "sitzskulptur",
+      "name": "Wartebank als Sitzskulptur",
+      "icon": "🗿",
+      "m": true,
+      "a": "beweglich lehne kunst bereit sitzflaeche traegt innen",
+      "note": "Kunst im Amt. Ausdrücklich zum Daraufsitzen, Schild liegt bei."
+    },
+    {
+      "id": "aktenschrank",
+      "name": "Aktenschrank",
+      "icon": "🗄️",
+      "m": false,
+      "a": "innen",
+      "note": "Enthält die Vorgänge 1 bis 4.000. Bewegt sich nicht."
+    },
+    {
+      "id": "tisch",
+      "name": "Konferenztisch",
+      "icon": "🪑",
+      "m": false,
+      "a": "beweglich traegt innen",
+      "note": "Vier Beine, keine Lehne. Man arbeitet daran, nicht darauf."
+    },
+    {
+      "id": "miniatur",
+      "name": "Stuhl im Miniaturmodell",
+      "icon": "🧸",
+      "m": false,
+      "a": "beweglich lehne sitzflaeche innen",
+      "note": "Maßstab 1:12. Steht auf dem Ausschusstisch und trägt niemanden."
+    },
+    {
+      "id": "ausstellungsstuhl",
+      "name": "Ausstellungsstuhl mit Berührungsverbot",
+      "icon": "🚫",
+      "m": false,
+      "a": "beweglich lehne sitzflaeche traegt innen gesperrt ausstellung",
+      "note": "Beweglich, mit Lehne, aus Eiche. Angesehen werden darf er."
+    },
+    {
+      "id": "lagerstuhl",
+      "name": "Stuhl im Kellerlager",
+      "icon": "📦",
+      "m": false,
+      "a": "beweglich lehne sitzflaeche traegt",
+      "note": "Gestapelt, nicht aufgestellt. Wartet selbst seit Jahren."
+    },
+    {
+      "id": "transportkiste",
+      "name": "Transportkiste",
+      "icon": "📦",
+      "m": false,
+      "a": "beweglich sitzflaeche traegt innen",
+      "note": "Man kann darauf sitzen. Gedacht ist sie für Akten."
+    },
+    {
+      "id": "treppenstufe",
+      "name": "Treppenstufe mit Geländer",
+      "icon": "🪜",
+      "m": false,
+      "a": "lehne sitzflaeche traegt innen",
+      "note": "Man kann sich setzen und anlehnen. Gebaut wurde sie zum Steigen."
+    },
+    {
+      "id": "stuhlskulptur",
+      "name": "Stuhlskulptur »Leerer Platz«",
+      "icon": "🎭",
+      "m": false,
+      "a": "beweglich lehne kunst sitzflaeche gesperrt ausstellung innen",
+      "note": "Kunst im Amt. Die Lehne ist aus Glas und trägt keinen."
+    },
+    {
+      "id": "blumenkuebel",
+      "name": "Blumenkübel am Eingang",
+      "icon": "🪴",
+      "m": false,
+      "a": "beweglich sitzflaeche traegt",
+      "note": "Breiter Rand, trägt einen Erwachsenen und beschwert sich nicht."
+    },
+    {
+      "id": "behandlungsstuhl",
+      "name": "Behandlungsstuhl der Betriebsärztin",
+      "icon": "🦷",
+      "m": false,
+      "a": "lehne sitzflaeche traegt innen polster",
+      "note": "Verstellbar bis zur Waagerechten. Nicht für Wartende gedacht."
+    },
+    {
+      "id": "kuehlschrank",
+      "name": "Kühlschrank der Teeküche",
+      "icon": "🧊",
+      "m": false,
+      "a": "innen",
+      "note": "Auch beschriftet, auch geliebt. Steht im Weg."
+    }
+  ],
+  "lines": {
+    "add": [
+      "Die Arbeitsdefinition wird ergänzt. Herr Voss notiert es am Rand.",
+      "Ergänzung angenommen. Eine Rückfrage wird vorbereitet.",
+      "Das war bekannt. Es steht jetzt auch im Protokoll."
+    ],
+    "repair": [
+      "Eine Bestimmung wird gestrichen, eine andere tritt an ihre Stelle.",
+      "Neufassung. Die alte gilt für Altfälle weiter."
+    ],
+    "excl": [
+      "Für diesen Gegenstand wird eine Ausnahme vermerkt.",
+      "Ausnahmetatbestand angelegt. Herr Voss legt ein neues Blatt ein."
+    ],
+    "incl": [
+      "Der Gegenstand wird ausnahmsweise einbezogen.",
+      "Einbezogen, vorbehaltlich einer Überprüfung."
+    ],
+    "confirm": [
+      "Kein Änderungsbedarf.",
+      "Herr Voss nickt und blättert weiter.",
+      "Zu den Akten."
+    ],
+    "collapse": "Das Saalmodell aus Pappe kippt vom Tisch. Herr Voss hebt es auf. Die Arbeitsdefinition trägt BANK-01 nicht.",
+    "hold": "Die Arbeitsdefinition hält. Herr Voss stellt das Saalmodell wieder gerade hin."
+  },
+  "pruefung": {
+    "messung": {
+      "cap": 11,
+      "gelegenheit": 0.646666666666667,
+      "zufall": 0.226666666666667,
+      "ausnahme": 0.99
+    },
+    "paare": 17
+  }
+}

@@ -30,3 +30,9 @@
   **E1** in `docs/e1-bank-01.md`: Weltkern `world_core/` (jede Änderung als Ereignis mit Operationen; Nachspielen ergibt denselben Zustand), Vorgang `cases/bank_01/`, Klickprototyp `amt/vorgang.tscn` hinter der neuen Flur-Tür „Innenhof“. T-01 bis T-08, Pfade A/B/C, QA-01 bis QA-17 als Tests; Minispiel-Ausgänge nur über die Entwicklungsansicht. 14 neue Entwurfsentscheidungen dort aufgelistet.
   **Tests:** DAME 9495/15 (Notizen nannten 9591; unter Linux zweimal 9495) + FLOW_OK, Latte-Fluss inkl. Innenhof, Lobby-Loop 145, Latte 67 (vorher 21).
   **Offen:** E2 (Bank-Lehre, Ergebnis-Adapter), `feat/online-webrtc` nach DAME-`main`, Sync-Pfad für beide Ordnernamen.
+
+- [x] **2026-10-18 — E2 der gemeinsamen Welt: Widerlegung im Ausschuss (`docs/e2-widerlegung.md`):**
+  Bank-Lehre `cases/bank_01/lehre/bib_bank_01.json` (20 Karten, Prisma ohne die Referenz „bereitgestellt“); der Validator setzt `cap` 11 und 7 Würfe (überlegt 64,7 % Einsturz, Zufall 22,7 %, Ausnahmen 99 %). Mitglied ⇔ „bereitgestellt“ ist getestet.
+  Vorgang: Jede Karte geht als `minigame_play` an den Vorgang, Ergebnisse gelten nur, wenn Seed und Kartenfolge sie erklären; Fortsetzen und Abbruch ohne neue Hand; kein Einspruch im Bank-Panel; Panel-Effekte werden nie übernommen. DAME bleibt Platzhalter bis E3.
+  Parität: 200 Partien auf der Bank-Lehre, JS-Engine gegen Godot-Port, 200/200 gleich. Die Kopie in lobby-loop/vendor/huhn und das hochgeladene Archiv liefern dasselbe Golden.
+  **Tests:** Latte 87 (vorher 67); DAME 9495/15 + FLOW_OK, Latte-Fluss, Lobby-Loop 145. **Offen:** E3 (echte DAME-Partie, räumlicher Übergang, Spieltest).

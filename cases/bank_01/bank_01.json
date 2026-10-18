@@ -120,7 +120,7 @@
     "dame_won_again": "»Gut gespielt. Gezählt hat aber die erste.«",
     "dame_lost": "»Nächstes Mal.« Er sammelt die Karten ein. »Fragen dürfen Sie trotzdem.«",
     "minigame_aborted": "Abgebrochen. Alles liegt da wie vorher.",
-    "hearing_started": "Herr Voss legt die Arbeitsdefinition auf den Tisch, daneben ein Saalmodell aus Pappe. [Entwicklung: Platzhalter statt Widerlegung]",
+    "hearing_started": "Herr Voss legt die Arbeitsdefinition auf den Tisch, daneben ein Saalmodell aus Pappe.",
     "definition_rejected": "Die Arbeitsdefinition trägt den Fall BANK-01 nicht. Herr Voss notiert: »Für diesen Vorgang aufgehoben.«",
     "definition_upheld": "Die Arbeitsdefinition hält. Herr Voss: »Eine befristete Ausnahme können Sie trotzdem beantragen.«",
     "submitted": "Eingereicht. Die Eingangsbestätigung hat einen Stempel und ein Datum.",
