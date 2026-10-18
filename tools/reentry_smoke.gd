@@ -1,8 +1,8 @@
-# PURPOSE: Szenenfluss der App headless: Flur -> Karriere -> Flur -> Karriere (Wiedereintritt), Dialog offen blockiert den Rückweg, Hörsaal, Hinterzimmer, zurück. Gibt REENTRY_OK aus.
+# PURPOSE: Szenenfluss der App headless: Flur -> Karriere -> Flur -> Karriere (Wiedereintritt), Dialog offen blockiert den Rückweg, Hörsaal, Innenhof (BANK-01), Hinterzimmer, zurück. Gibt REENTRY_OK aus.
 # ARCHITECTURE: tools
-# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, DAME main_menu.tscn
+# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, DAME main_menu.tscn, amt/vorgang.tscn, AmtStore
 # PIPELINE: test
-# LAST_VALIDATED: 2026-10-12
+# LAST_VALIDATED: 2026-10-18
 extends SceneTree
 
 # Aufruf: godot --headless --path . --script res://tools/reentry_smoke.gd
@@ -12,6 +12,7 @@ const FLUR := "res://flur/flur.tscn"
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
 const HINTERZIMMER := "res://addons/dame/scenes/main_menu.tscn"
+const INNENHOF := "res://amt/vorgang.tscn"
 
 var _fail := []
 
@@ -45,6 +46,9 @@ func _run() -> void:
 	# use_test_storage schaltet auch DAMEs Szenenwechsel ab; hier wollen wir echte Wechsel.
 	root.get_node("App").test_mode = false
 	root.get_node("SaveManager").path = "user://test_smoke_savegame.json"
+	# Der Innenhof liest headless seine Testdatei; jeder Lauf beginnt frisch.
+	for p in [AmtStore.HEADLESS_PATH, AmtStore.prev_path(AmtStore.HEADLESS_PATH)]:
+		JsonStore.remove(p)
 	var fb: Node = root.get_node("FlurButton")
 	await _go(FLUR)
 	_expect(not fb.can_leave(), "im Flur darf der Rückweg nicht angeboten werden")
@@ -69,6 +73,15 @@ func _run() -> void:
 	fb.go_to_flur()
 	await _settle()
 	await _go(HOERSAAL)
+	# Innenhof (BANK-01): Handlung ausführen, Rückweg frei, Stand bleibt beim Wiedereintritt erhalten.
+	await _go(INNENHOF)
+	_expect(fb.can_leave(), "Innenhof: Rückweg erlaubt")
+	current_scene.run("move", {"to": "innenhof"})
+	current_scene.run("open_case")
+	fb.go_to_flur()
+	await _settle()
+	await _go(INNENHOF)
+	_expect(str(current_scene.state["cases"]["BANK-01"]["status"]) == "open", "Innenhof: Stand nach Wiedereintritt erhalten")
 	await _go(HINTERZIMMER)
 	_expect(fb.can_leave(), "DAME-Menü: Rückweg erlaubt")
 	# Am Tisch kein Rückweg-Knopf: Ein Fehlklick würde die Partie verlassen, DAME hat dort ein eigenes Menü.

@@ -2,7 +2,7 @@
 # ARCHITECTURE: test
 # DEPENDENCIES: flur/flur.gd, hoersaal/hoersaal.gd, LatteAkte, HoersaalStats
 # PIPELINE: test
-# LAST_VALIDATED: 2026-10-12
+# LAST_VALIDATED: 2026-10-18
 extends GutTest
 
 const FlurScript := preload("res://flur/flur.gd")
@@ -22,7 +22,7 @@ func test_every_door_points_to_a_loadable_scene() -> void:
 	var paths := [FlurScript.AKTE, FlurScript.EINSTELLUNGEN]
 	for door in FlurScript.DOORS:
 		paths.append(door[2])
-	assert_eq(FlurScript.DOORS.size(), 3, "drei Türen: Karriere, Hörsaal, Hinterzimmer")
+	assert_eq(FlurScript.DOORS.size(), 4, "vier Türen: Karriere, Hörsaal, Hinterzimmer, Innenhof")
 	for path in paths:
 		assert_true(ResourceLoader.exists(path), path)
 		assert_not_null(load(path), path)
@@ -34,7 +34,7 @@ func test_flur_builds_door_buttons() -> void:
 	var texts := []
 	for b in flur.find_children("*", "Button", true, false):
 		texts.append((b as Button).text)
-	for t in ["Karriere", "Hörsaal", "Hinterzimmer", "Akte", "Einstellungen"]:
+	for t in ["Karriere", "Hörsaal", "Hinterzimmer", "Innenhof", "Akte", "Einstellungen"]:
 		assert_has(texts, t)
 
 

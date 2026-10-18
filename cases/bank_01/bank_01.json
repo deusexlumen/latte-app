@@ -1,0 +1,249 @@
+{
+  "content_version": "bank_01@1",
+  "case_id": "BANK-01",
+  "titel": "Die gesperrte Bank",
+  "hinweis": "Handgeschriebene Inhalte für den ersten Vorgang (Spezifikation 0.1, Kap. 9). Namen, Texte und Nummern sind Entwurf.",
+  "phases": {
+    "tag1": "Tag 1 · Untersuchung",
+    "abend": "Abend · Hinterzimmer",
+    "tag2": "Tag 2 · Entscheidung",
+    "rueckkehr": "Tag 2 · Innenhof",
+    "nachgang": "Einige Wochen später"
+  },
+  "locations": {
+    "vorhalle": {
+      "name": "Vorhalle",
+      "text": "Nummernautomat, zwei Reihen Schalensitze, alle besetzt. Die Anzeige springt von 214 auf 217 und wieder zurück. Durch die Glastür sieht man den Innenhof."
+    },
+    "innenhof": {
+      "name": "Innenhof",
+      "text": "Kies, ein Ahorn, eine Holzbank an der Mauer."
+    },
+    "hausdienst": {
+      "name": "Hausdienst",
+      "text": "Werkbank, Schraubenkästen, eine Pinnwand voller Reparaturzettel. Es riecht nach Leim und Filterkaffee."
+    },
+    "registratur": {
+      "name": "Registratur",
+      "text": "Regale bis unter die Decke, ein Tresen, dahinter ein grauer Stahlschrank mit der Aufschrift »Prüfung«."
+    },
+    "ausschussraum": {
+      "name": "Ausschussraum",
+      "text": "Langer Tisch, zwölf Stühle, Wasserkaraffen mit Deckel. An der Wand der Sitzungsplan."
+    },
+    "hinterzimmer": {
+      "name": "Hinterzimmer",
+      "text": "Ein runder Tisch unter einer tiefen Lampe. Bierdeckel dienen als Notizblock."
+    }
+  },
+  "scene": {
+    "bench_blocked": "Um die Bank ist rot-weißes Absperrband gewickelt. Daran ein laminiertes Schild: »Gesperrt. Vorgang BANK-01. Auskunft: Registratur.«",
+    "bench_open": "Das Absperrband ist weg. Die Bank ist eine Bank.",
+    "bench_temporary": "Das Absperrband liegt aufgerollt auf der Lehne. Ein Zettel: »Vorläufig freigegeben (Ausnahme). Verlängerung beantragen.«",
+    "chair": "Neben der Bank steht ein Klappstuhl mit Inventaraufkleber des Hausdienstes.",
+    "kern_standing": "Frau Kern steht neben der Bank, die Handtasche vor dem Bauch, die Wartenummer zwischen zwei Fingern.",
+    "kern_bench": "Frau Kern sitzt auf der Bank und liest ihre Wartenummer, als stünde etwas Neues darauf.",
+    "kern_chair": "Frau Kern sitzt auf dem Klappstuhl, Rücken gerade, die Tasche auf den Knien.",
+    "spatz": "Ein Spatz pickt im Kies.",
+    "hinterzimmer_abend": "Mertens sitzt schon am Tisch und mischt. »Spielen Sie? Oder reden wir nur?«",
+    "hinterzimmer_tag": "Tagsüber leer. Auf dem Tisch ein Kartenspiel, ordentlich gestapelt.",
+    "neuer_stuhl": "Am Nebeneingang wartet ein Mann mit einem Gartenstuhl und einer Wartenummer. Auf dem Stuhl klebt ein Formular.",
+    "aushang_label": "Neues Schild am Hofeingang"
+  },
+  "people": {
+    "kern": {"name": "Frau Kern", "rolle": "Besucherin"},
+    "mertens": {"name": "Herr Mertens", "rolle": "Hausmeister"},
+    "seidel": {"name": "Frau Seidel", "rolle": "Registratur"},
+    "voss": {"name": "Herr Voss", "rolle": "Ausschuss"}
+  },
+  "offices": {
+    "hausdienst": "Hausdienst",
+    "registratur": "Registratur",
+    "ausschuss": "Ausschuss"
+  },
+  "observe": {
+    "vorhalle": ["Die Nummer 214 wird aufgerufen. Niemand steht auf."],
+    "innenhof": ["Die Bank sieht nicht kaputt aus. Eine Leiste der Sitzfläche ist heller als die anderen, die Schrauben glänzen noch."],
+    "hinterzimmer": ["Tagsüber leer. Der Kartenstapel liegt so genau auf Kante, als hätte ihn jemand gezählt."],
+    "hausdienst": [
+      "Mertens schleift eine Schranktür ab und nickt Ihnen zu, ohne aufzuhören. An der Pinnwand ein Zettel: »Bank Innenhof – erledigt«.",
+      "Mertens legt das Schleifpapier weg. »Für wen sind Sie noch mal unterwegs?«",
+      "Auf der Werkbank liegt ein Ordner, aufgeschlagen und gerade ausgerichtet. Mertens steht daneben, als hätte er jemanden erwartet.",
+      "»Steht alles im Vermerk«, sagt Mertens, bevor Sie fragen. Der Vermerk liegt obenauf."
+    ],
+    "registratur": [
+      "Frau Seidel sortiert Hängemappen nach Farben. Ein Kollege schiebt einen Aktenwagen vorbei und grüßt niemanden.",
+      "Frau Seidel sieht auf. »Haben Sie eine Nummer? Ich meine einen Auftrag.«",
+      "Auf dem Tresen liegen drei Ordner bereit, mit Klebezetteln. Frau Seidel hat die Brille schon auf.",
+      "»Dazu gibt es einen gemeinsamen Vermerk von Registratur und Hausdienst«, sagt Frau Seidel, wörtlich wie am Telefon."
+    ],
+    "ausschussraum": [
+      "Der Raum ist leer bis auf Herrn Voss, der eine Tagesordnung mit dem Lineal unterstreicht.",
+      "Herr Voss legt das Lineal hin. »Sie sind die Prüfung? Dann bitte schriftlich.«",
+      "Die Tagesordnung für morgen liegt aus. Punkt 4: »Sitzgelegenheiten, Begriffsbestimmung«.",
+      "Herr Voss zitiert den Sitzungsplan, bevor Sie etwas sagen."
+    ],
+    "registratur_leer": " Das Regalfach »Bestand Innenhof« ist leer. Der Prüfschrank ist abgeschlossen."
+  },
+  "lines": {
+    "case_opened": "Aktenkoffer: Antrag auf Prüfung angenommen. Mit der Prüfung beauftragt: Antragsteller. Acht Diensthandlungen bis Dienstschluss. Lesen, Vergleichen und Gehen kosten keine.",
+    "kern_before": "»Ich muss noch warten. Stehen habe ich schon.«",
+    "kern_open": "»Ist das jetzt Ihre Sache mit der Bank? Ich hätte nur gern gesessen.«",
+    "kern_tag2": "»Heute wieder. Termin um zehn, dran bin ich um zwölf.«",
+    "kern_bench": "»Na also.«",
+    "kern_chair": "»Geht auch. Danke.«",
+    "kern_still": "»Ich steh dann noch ein bisschen.«",
+    "mertens_bank": "»Die Bank? Hab ich im Juni gemacht. Leiste getauscht, abgenommen, fertig.« Er zieht einen Zettel von der Pinnwand. »Freigegeben. Das Band ist nicht meins.«",
+    "mertens_bank_formal": "»Die Bank, ja.« Er reicht Ihnen eine Kopie des Prüfzettels und lässt sich den Empfang quittieren. »Nur, damit das ordentlich ist.«",
+    "mertens_informed": "»Ah, die Prüfung. Hat sich schon rumgesprochen.« ",
+    "mertens_bank_again": "»Den Zettel haben Sie doch schon.«",
+    "mertens_kunst": "»Die Reparatur war im Hausdienst-Etat nicht drin. Im Kunstetat war noch was. Also wurde die Bank ein Kunstwerk. Hat ja keinem geschadet.« Er überlegt. »Bis jetzt.«",
+    "mertens_kunst_again": "»Hab ich Ihnen doch erzählt. Kunstetat.«",
+    "mertens_help": "»Klappstuhl hab ich im Lager. Bring ich rüber. Auf den passen Sie aber auf.«",
+    "mertens_evening_bank": "»Die Bank.« Er mischt. »Reparatur ging nur über den Kunstetat. Also Exponat. So kriegt man Dinge repariert.«",
+    "mertens_evening_again": "»Hab ich Ihnen heute schon erzählt.« Er teilt aus.",
+    "mertens_evening_other": "»Feierabend ist Feierabend.« Er legt eine Karte ab.",
+    "seidel_closed": "»Bestandsauskünfte gibt es auf schriftliche Anforderung. Das ist nicht unfreundlich gemeint, das ist der Ablauf.«",
+    "seidel_audit": "»Sie haben angefordert, also gilt R-3.« Sie gibt Ihnen das Verfahrensblatt. »Originale gehen nach Ankündigung einer Prüfung in den Prüfschrank. Das machen wir bei jeder Prüfung.«",
+    "seidel_moved": " »Ihre liegen schon drin.«",
+    "seidel_again": "»Das Verfahrensblatt haben Sie. Mehr steht da auch nicht drin.«",
+    "voss_bank": "»Öffentliche Sitzgelegenheit ist bei uns ein bewegliches Möbel mit Rückenlehne, das nicht als Kunst inventarisiert ist. So steht es in der Arbeitsdefinition. Wenn Sie etwas anderes wollen, stellen Sie einen Antrag.«",
+    "voss_again": "»Die Definition hat sich seit vorhin nicht geändert.«",
+    "wait": "Sie lassen Zeit verstreichen.",
+    "witnessed_move": "Während Sie dort sind, trägt ein Kollege die Ordner »Bestand Innenhof« aus dem Regal in den Prüfschrank und schließt ab. Sie notieren die Uhrzeit.",
+    "chair_delivered": "Hausdienst: Ein Klappstuhl steht jetzt im Innenhof. Frau Kern hat sich gesetzt.",
+    "day_end": "Dienstschluss. Im Hinterzimmer sitzt Mertens schon am Tisch.",
+    "evening_end": "Der nächste Morgen. Die Vorhalle riecht nach nassen Mänteln.",
+    "dame_started": "Mertens teilt aus. [Entwicklung: Platzhalter statt DAME-Tisch]",
+    "dame_won_favor": "»Gut gespielt.« Mertens schiebt die Karten zusammen. »Morgen früh steht ein Klappstuhl im Hof. Einmal.«",
+    "dame_won_no_favor": "»Gut gespielt. Der Stuhl ist ja schon zugesagt.«",
+    "dame_won_again": "»Gut gespielt. Gezählt hat aber die erste.«",
+    "dame_lost": "»Nächstes Mal.« Er sammelt die Karten ein. »Fragen dürfen Sie trotzdem.«",
+    "minigame_aborted": "Abgebrochen. Alles liegt da wie vorher.",
+    "hearing_started": "Herr Voss legt die Arbeitsdefinition auf den Tisch, daneben ein Saalmodell aus Pappe. [Entwicklung: Platzhalter statt Widerlegung]",
+    "definition_rejected": "Die Arbeitsdefinition trägt den Fall BANK-01 nicht. Herr Voss notiert: »Für diesen Vorgang aufgehoben.«",
+    "definition_upheld": "Die Arbeitsdefinition hält. Herr Voss: »Eine befristete Ausnahme können Sie trotzdem beantragen.«",
+    "submitted": "Eingereicht. Die Eingangsbestätigung hat einen Stempel und ein Datum.",
+    "bench_released": "Mertens schneidet das Absperrband ab und rollt es auf. Der Bestand führt die Bank jetzt als öffentliche Sitzgelegenheit.",
+    "exception_granted": "Das Absperrband wird aufgerollt, aber nicht entfernt. Die Bank bleibt Exponat, darf für die Dauer der Wartezeit benutzt werden.",
+    "chair_returned": " Der Klappstuhl geht zurück in den Hausdienst.",
+    "closed": "Vorgang geschlossen. Der bekannte Stand wird abgelegt.",
+    "advance": "Einige Wochen später.",
+    "rule_issued": "Aktenkoffer: Prüfanforderung PA-12 protokolliert. Herkunft: BANK-01.",
+    "thanks": "Ein Mitarbeiter des Ausschussbüros bleibt kurz stehen. »Danke übrigens für den Hinweis mit der Zugänglichkeit. Das hätten wir sonst nie geregelt.«",
+    "renewal": "Hauspost: Erinnerung zur Ausnahme für die Bank.",
+    "return_slip": "Hauspost: Rückgabezettel vom Hausdienst.",
+    "filed": "Hauspost: Ablagevermerk der Registratur.",
+    "inquiry": "Hauspost: Rückfrage der Registratur zu Ihrem Bericht, mit Anlage.",
+    "seidel_later": "Frau Seidel, im Vorbeigehen: »Die Originale haben wir wegen Ihrer Prüfung umgelagert.«",
+    "report_corrected": "Die Schlussfolgerung im Bericht ist geändert. Die Rückfrage ist beantwortet."
+  },
+  "documents": {
+    "repair_slip": {
+      "titel": "Reparaturzettel HD-0412",
+      "text": "Hausdienst · Reparaturzettel HD-0412\nObjekt: Holzbank Innenhof, Inv.-Nr. INV-7731\nMangel: Sitzleiste gebrochen\nMaßnahme: Leiste ersetzt, verschraubt, mit 120 kg belastet\nAbnahme: 3. Juni, Mertens\nStatus: freigegeben zur Nutzung"
+    },
+    "bench_inventory": {
+      "titel": "Bestandsblatt INV-7731",
+      "text": "Registratur · Bestandsblatt INV-7731\nBezeichnung: Bank, Holz, 1,80 m\nStandort: Innenhof\nKlasse: Exponat (Kunst im Amt). Berührung und Nutzung untersagt.\nUmbuchung: 14. Februar, Kostenstelle Kunstetat\nVermerk: Sperrung bis Abschluss der Maßnahme"
+    },
+    "procurement_order": {
+      "titel": "Beschaffungsauftrag 2019/44",
+      "text": "Beschaffungsauftrag 2019/44 (lag lose in der Akte)\nGegenstand: Sitzbank, Holz\nAufstellung: Innenhof\nInv.-Nr. INV-7731\nZweck: Sitzgelegenheit für Wartende"
+    },
+    "procedure_sheet": {
+      "titel": "Verfahrensblatt R-3",
+      "text": "Registratur · Verfahrensblatt R-3 · Prüfungsoriginale\nNach Ankündigung einer Prüfung sind die betroffenen Originale bis zum Ende der folgenden Diensthandlung in den Prüfschrank zu verlegen. Einsicht nur über die prüfende Stelle. Gilt für jede Prüfung."
+    },
+    "rule_notice": {
+      "titel": "Prüfanforderung PA-12",
+      "text": "Ausschuss · Prüfanforderung PA-12\nZur Sicherstellung der Zugänglichkeit sind neue Sitzgelegenheiten vor Aufstellung zur Zugänglichkeitsprüfung anzumelden.\nBegründung aus Vorgang BANK-01: »{wording}«\nZuständig: Voss"
+    },
+    "renewal_reminder": {
+      "titel": "Erinnerung: Ausnahme INV-7731",
+      "text": "Ausschuss · Erinnerung\nDie Ausnahme für INV-7731 gilt für die laufende Wartezeit. Für eine Verlängerung ist rechtzeitig ein Antrag zu stellen. Der Eintrag »Exponat« bleibt unberührt.\nStatus: überprüfungsbedürftig"
+    },
+    "return_slip": {
+      "titel": "Rückgabezettel Klappstuhl HD-12",
+      "text": "Hausdienst · Rückgabezettel\nKlappstuhl HD-12, ausgegeben an: Innenhof (Frau Kern)\nRückgabe nach Gebrauch an den Hausdienst. Danke. M."
+    },
+    "filing_note": {
+      "titel": "Ablagevermerk BANK-01",
+      "text": "Registratur · Ablagevermerk\nVorgang BANK-01 ohne Antrag abgeschlossen. Sperrung unverändert.\nZuständig: Registratur. Wiedervorlage: offen."
+    },
+    "registry_inquiry": {
+      "titel": "Rückfrage der Registratur",
+      "text": "Registratur · Rückfrage zu Ihrem Bericht\nSie schreiben von Verschleierung. Die Umlagerung erfolgte nach Verfahrensblatt R-3 (anbei). Wir bitten um Prüfung Ihrer Schlussfolgerung.\nSeidel"
+    }
+  },
+  "requests": {
+    "bench_inventory": {"office": "registratur", "label": "Bestandsakte der Bank", "documents": ["bench_inventory", "procurement_order"]},
+    "procedure_sheet": {"office": "registratur", "label": "Verfahrensblatt Prüfungsoriginale", "documents": ["procedure_sheet"]},
+    "repair_record": {"office": "hausdienst", "label": "Reparaturakte der Bank", "documents": ["repair_slip"]}
+  },
+  "document_evidence": {
+    "repair_slip": "B-01",
+    "bench_inventory": "B-02",
+    "procurement_order": "D-01",
+    "procedure_sheet": "B-05",
+    "rule_notice": "B-07"
+  },
+  "kinds": {
+    "beobachtung": "Eigene Beobachtung",
+    "dokument": "Dokument",
+    "aussage": "Aussage",
+    "abgleich": "Eigener Abgleich"
+  },
+  "evidence": {
+    "O-01": {"kind": "beobachtung", "titel": "Neue Leiste an der Bank", "belegt": "Die Bank wirkt repariert.", "belegt_nicht": "Dass sie freigegeben ist.", "claims": ["bank_wirkt_repariert"]},
+    "B-01": {"kind": "dokument", "titel": "Reparaturzettel mit Freigabe", "belegt": "Technische Freigabe der Bank.", "belegt_nicht": "Dass die Einstufung als Exponat aufgehoben ist.", "claims": ["bank_technisch_freigegeben"]},
+    "B-02": {"kind": "dokument", "titel": "Bestandseintrag »Exponat«", "belegt": "Die aktuelle offizielle Einstufung.", "belegt_nicht": "Dass die Bank nicht zum Sitzen gedacht ist.", "claims": ["bank_als_exponat_gefuehrt"]},
+    "D-01": {"kind": "dokument", "titel": "Beschaffungsauftrag 2019/44", "belegt": "Dass 2019 eine Sitzbank für Wartende beschafft wurde.", "belegt_nicht": "Dass es diese Bank ist. Das zeigt erst der Abgleich.", "claims": []},
+    "B-03": {"kind": "abgleich", "titel": "Ursprünglicher Auftrag: Sitzbank für Wartende", "belegt": "Die vorgesehene Nutzung dieser Bank (gleiche Inventarnummer).", "belegt_nicht": "Eine heute erteilte Benutzungserlaubnis.", "claims": ["bank_zum_sitzen_beschafft"]},
+    "B-04": {"kind": "aussage", "titel": "Mertens: Kunstzuordnung wegen Finanzierung", "belegt": "Seine Erklärung der Finanzierung.", "belegt_nicht": "Einen rechtswirksamen Beschluss.", "claims": ["kunstzuordnung_wegen_finanzierung"]},
+    "B-05": {"kind": "dokument", "titel": "Verfahrensblatt R-3", "belegt": "Warum Originale nach Ankündigung einer Prüfung umgelagert werden.", "belegt_nicht": "Dass es keine anderen Aktenprobleme gibt.", "claims": ["umlagerung_nach_anweisung"]},
+    "B-06": {"kind": "beobachtung", "titel": "Originale in den Prüfschrank verlegt", "belegt": "Dass Ordner nach Bekanntwerden der Prüfung verlagert wurden.", "belegt_nicht": "Eine Absicht der Verschleierung.", "claims": ["originale_nach_pruefung_verlegt"]},
+    "B-07": {"kind": "dokument", "titel": "Prüfanforderung PA-12 mit Herkunft BANK-01", "belegt": "Dass der eigene Beschluss weiterverarbeitet wurde.", "belegt_nicht": "Dass jeder Reformversuch scheitert.", "claims": ["beschluss_weiterverarbeitet"]},
+    "S-01": {"kind": "aussage", "titel": "Voss: Arbeitsdefinition Sitzgelegenheit", "belegt": "Welche Definition der Ausschuss anwendet.", "belegt_nicht": "Dass sie zum Auftrag der Bank passt.", "claims": ["arbeitsdefinition_ausschuss"]},
+    "S-02": {"kind": "aussage", "titel": "Seidel: Umlagerung wegen der Prüfung", "belegt": "Ihre Aussage über die Umlagerung.", "belegt_nicht": "Eine eigene Beobachtung.", "claims": ["originale_nach_pruefung_verlegt"]},
+    "F-01": {"kind": "abgleich", "titel": "Freigabe und Bestand widersprechen sich", "belegt": "Dass der Bestand nach der Reparatur nicht abgeglichen wurde.", "belegt_nicht": "Wer den Abgleich hätte machen müssen.", "claims": ["bestand_nicht_abgeglichen"]},
+    "F-02": {"kind": "abgleich", "titel": "Umlagerung folgte der eigenen Anforderung", "belegt": "Den zeitlichen und verfahrensmäßigen Zusammenhang.", "belegt_nicht": "Eine Absicht.", "claims": ["umlagerung_durch_eigene_anforderung"]}
+  },
+  "comparisons": [
+    {"pair": ["B-02", "D-01"], "evidence": "B-03", "text": "Auf beiden steht INV-7731. Beschafft wurde 2019 eine »Sitzbank für Wartende«. Geführt wird sie als Exponat."},
+    {"pair": ["B-01", "B-02"], "evidence": "F-01", "text": "Der Hausdienst hat die Bank im Juni freigegeben. Der Bestand führt sie seit Februar als Exponat, Vermerk »Sperrung bis Abschluss der Maßnahme«. Niemand hat die beiden Blätter nebeneinandergelegt."},
+    {"pair": ["B-05", "B-06"], "evidence": "F-02", "text": "R-3 verlangt die Umlagerung bis zum Ende der Diensthandlung nach einer Prüfungsankündigung. Die Ordner gingen eine Handlung nach Ihrer Anforderung in den Schrank."},
+    {"pair": ["B-05", "S-02"], "evidence": "F-02", "text": "Frau Seidel sagt, die Originale wurden wegen Ihrer Prüfung umgelagert. R-3 schreibt genau das vor."}
+  ],
+  "compare_nothing": "Die beiden Einträge haben nichts miteinander zu tun, soweit erkennbar.",
+  "conclusions": {
+    "bestand_nicht_abgeglichen": {"text": "Die Bank ist repariert und freigegeben; die Sperrung besteht fort, weil der Bestand nicht abgeglichen wurde.", "requires": ["bank_technisch_freigegeben", "bank_als_exponat_gefuehrt"]},
+    "zweck_gegen_einstufung": {"text": "Die Einstufung als Exponat widerspricht dem Zweck, für den die Bank beschafft wurde.", "requires": ["bank_zum_sitzen_beschafft", "bank_als_exponat_gefuehrt"]},
+    "umlagerung_regulaer": {"text": "Die Umlagerung der Originale folgte dem Verfahren und wurde durch die Prüfung ausgelöst.", "requires": ["umlagerung_nach_anweisung", "originale_nach_pruefung_verlegt"]},
+    "verschleierung": {"text": "Die Registratur hat nach Ankündigung der Prüfung Unterlagen verschleiert.", "requires": ["absicht_der_verschleierung"]},
+    "keine": {"text": "Keine Schlussfolgerung.", "requires": []}
+  },
+  "open_questions": {
+    "zustaendigkeit": {"text": "Wer hebt eine Sperrung auf, wenn niemand den Bestand berichtigt?", "if": [], "unless": []},
+    "kunst": {"text": "Warum wurde die Bank als Kunst geführt?", "if": ["B-02"], "unless": ["B-04"]},
+    "originale": {"text": "Warum wurden die Originale verlegt?", "if_any": ["B-06", "S-02"], "unless": ["B-05"]},
+    "definition": {"text": "Passt die Arbeitsdefinition des Ausschusses auf Wartebänke?", "if": ["S-01"], "unless": []},
+    "keine": {"text": "Keine weiteren offenen Punkte bekannt.", "if": [], "unless": []}
+  },
+  "antraege": {
+    "formal": {"label": "Formelle Freigabe (Einstufung berichtigen)", "requires": ["B-01", "B-02", "B-03"]},
+    "ausnahme": {"label": "Befristete Ausnahme", "requires": ["B-01", "B-02"]},
+    "keiner": {"label": "Kein Antrag, nur Bericht", "requires": []}
+  },
+  "wordings": [
+    "Sitzgelegenheiten müssen zugänglich sein.",
+    "Eine reparierte Bank für Wartende ist zum Sitzen da.",
+    "Der Zweck einer Sitzgelegenheit geht ihrer Inventarklasse vor."
+  ],
+  "rule": {
+    "id": "PA-12",
+    "scope": "neue_sitzgelegenheiten",
+    "text": "Zur Sicherstellung der Zugänglichkeit sind neue Sitzgelegenheiten vor Aufstellung zur Zugänglichkeitsprüfung anzumelden.",
+    "sign": "Zur Sicherstellung der Zugänglichkeit sind neue Sitzgelegenheiten vor Aufstellung zur Zugänglichkeitsprüfung anzumelden. BANK-01"
+  }
+}
