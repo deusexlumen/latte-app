@@ -396,16 +396,20 @@ static func _end_day(tx: AmtTransaction) -> void:
 		tx.fail("Feierabend gibt es erst mit eröffneter Prüfung.")
 		return
 	_flush_until(tx, "abend")
-	_change_phase(tx, "abend", "hinterzimmer", line("day_end"),
-		[AmtWorld.op_set(["actors", "mertens", "location_id"], "hinterzimmer")])
+	_change_phase(tx, "abend", "hinterzimmer", line("day_end"), [
+		AmtWorld.op_set(["actors", "mertens", "location_id"], "hinterzimmer"),
+		AmtWorld.op_set(["actors", "seidel", "location_id"], "hinterzimmer"),
+	])
 
 
 static func _end_evening(tx: AmtTransaction) -> void:
 	if tx.state["phase"] != "abend":
 		tx.fail("Es ist nicht Abend.")
 		return
-	_change_phase(tx, "tag2", "vorhalle", line("evening_end"),
-		[AmtWorld.op_set(["actors", "mertens", "location_id"], "hausdienst")])
+	_change_phase(tx, "tag2", "vorhalle", line("evening_end"), [
+		AmtWorld.op_set(["actors", "mertens", "location_id"], "hausdienst"),
+		AmtWorld.op_set(["actors", "seidel", "location_id"], "registratur"),
+	])
 	_flush_until(tx, "tag2")
 
 
@@ -449,6 +453,8 @@ static func _start_minigame(tx: AmtTransaction) -> void:
 		# Die Widerlegung behält den Seed des Durchlaufs: Ein Abbruch würfelt keine neue Hand (Kap. 10.2).
 		"seed": BankWiderlegung.seed_for(s) if game == "widerlegung" else "%s-%s-%d" % [CASE_ID, game, n],
 		"status": "running", "outcome": "", "score": 0,
+		# Eine DAME-Partie trägt diese Kennung durch Spielstand und Ergebnis; nur ein Ergebnis mit ihr gehört zur Session.
+		"match_id": "%s-%s" % [CASE_ID, id],
 		"checkpoint": {"location": s["location"], "return_scene": spec["return_scene"], "plays": []},
 	}
 	tx.emit("minigame_started", "player", {
@@ -736,6 +742,11 @@ static func result_error(s: Dictionary, r: Variant) -> String:
 				if collapsed != (outcome == "won"):
 					return "Ausgang und Befund widersprechen sich."
 				return _replay_error(session, r, outcome)
+			# DAME lässt sich nicht nachspielen. Das Ergebnis muss zur Partie dieser Session gehören (match_id), außer als Debug-Stub.
+			if r.get("dev", false) == true and allow_dev_results:
+				return ""
+			if str(r.get("match_id", "")) != str(session["match_id"]):
+				return "Das Ergebnis gehört nicht zu dieser Partie."
 			return ""
 	return "Unbekannter Status."
 
@@ -990,6 +1001,66 @@ static func scene(s: Dictionary) -> Dictionary:
 		if s["actors"][actor]["location_id"] == loc:
 			people.append("%s (%s)" % [person_name(actor), content()["people"][actor]["rolle"]])
 	return {"name": location_name(loc), "text": " ".join(parts), "people": people}
+
+
+## Amtliche Fassung des Abschlusses (Kap. 13.1). Sie beschreibt das Erlebte anders, überschreibt aber nie die Ereignisse.
+static func official_summary(s: Dictionary) -> String:
+	var key := str(_c(s)["resolution"])
+	return str(content()["official"].get(key if not key.is_empty() else "open", content()["official"]["open"]))
+
+
+## Aktenhilfe (Kap. 11.3): beantwortet nur operative Fragen und nur aus dem, was der Spieler schon weiß.
+static func help_missing(s: Dictionary) -> String:
+	var h: Dictionary = content()["help"]
+	var lines := []
+	for antrag in ["formal", "ausnahme"]:
+		var missing := antrag_requirements(s, antrag).filter(func(r: Dictionary) -> bool: return not r["ok"])
+		if missing.is_empty():
+			continue
+		lines.append(str(h["missing_head"]) % str(content()["antraege"][antrag]["label"]))
+		for r in missing:
+			lines.append("  – %s" % r["label"])
+	return "\n".join(lines) if not lines.is_empty() else str(h["missing_none"])
+
+
+static func help_when(s: Dictionary, id: String) -> String:
+	if not has_ev(s, id):
+		return str(content()["help"]["when_none"])
+	var e: Dictionary = s["evidence"][id]
+	var def: Dictionary = content()["evidence"][id]
+	return "%s: %s, %s, %s." % [def["titel"], content()["kinds"][e["kind"]], time_label(e["observed_at"]), source_name(str(e["source_id"]))]
+
+
+## Welche Stellen der Spieler selbst angesprochen hat. Aufmerksamkeit und Benachrichtigungen bleiben unsichtbar (Kap. 12.2).
+static func help_requested(s: Dictionary) -> String:
+	var did := {}
+	for ev in s["events"]:
+		var office := ""
+		var how := ""
+		match str(ev["type"]):
+			"document_requested":
+				office = str(ev["payload"]["office"])
+				how = "angefordert"
+			"interviewed":
+				office = office_of(str(ev["payload"]["actor"]))
+				how = "befragt"
+			"observed":
+				office = office_at(str(ev["payload"]["location"]))
+				how = "beobachtet"
+		if office.is_empty():
+			continue
+		var list: Array = did.get(office, [])
+		if not list.has(how):
+			list.append(how)
+		did[office] = list
+	var h: Dictionary = content()["help"]
+	if did.is_empty():
+		return str(h["requested_none"])
+	var lines := []
+	for office in did:
+		lines.append("%s: %s" % [office_name(office), ", ".join(PackedStringArray(did[office]))])
+	lines.append(str(h["requested_tail"]))
+	return "\n".join(lines)
 
 
 static func status_line(s: Dictionary) -> String:

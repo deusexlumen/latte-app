@@ -1,8 +1,8 @@
 # PURPOSE: Akte-Seite: zeigt LatteAkte (ein Abschnitt je Spiel).
 # ARCHITECTURE: ui
-# DEPENDENCIES: LatteAkte, HoersaalStats, GameState, App
+# DEPENDENCIES: LatteAkte, HoersaalStats, GameState, App, AmtStore
 # PIPELINE: runtime
-# LAST_VALIDATED: 2026-10-12
+# LAST_VALIDATED: 2026-10-18
 extends Control
 
 
@@ -25,7 +25,10 @@ func _ready() -> void:
 	column.add_child(title)
 	var app := get_node_or_null("/root/App")
 	var dame: Dictionary = app.stats.values if app != null and app.stats != null else {}
-	for section in LatteAkte.build(GameState.get_run_stats(), HoersaalStats.load_stats(), dame):
+	var sections: Array = LatteAkte.build(GameState.get_run_stats(), HoersaalStats.load_stats(), dame)
+	# Der Vorgang des Innenhofs, falls einer begonnen wurde. Ein nicht ladbarer Stand erscheint hier nicht; der Innenhof meldet ihn selbst.
+	sections.append(LatteAkte.vorgang_section(AmtStore.load_state(AmtStore.default_path(), Bank01.CONTENT_VERSION)["state"]))
+	for section in sections:
 		var h := Label.new()
 		h.text = section["titel"]
 		h.add_theme_font_size_override("font_size", 20)

@@ -1,6 +1,6 @@
-# PURPOSE: Szenenfluss der App headless: Flur -> Karriere -> Flur -> Karriere (Wiedereintritt), Dialog offen blockiert den Rückweg, Hörsaal, Innenhof (BANK-01), Hinterzimmer, zurück. Gibt REENTRY_OK aus.
+# PURPOSE: Szenenfluss der App headless: Flur -> Karriere -> Flur -> Karriere (Wiedereintritt), Dialog offen blockiert den Rückweg, Hörsaal, Innenhof (BANK-01, inkl. DAME-Tisch und Rückkehr), Hinterzimmer, zurück. Gibt REENTRY_OK aus.
 # ARCHITECTURE: tools
-# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, DAME main_menu.tscn, amt/vorgang.tscn, AmtStore
+# DEPENDENCIES: FlurButton, Lobby-Loop main.tscn, DAME main_menu.tscn, amt/vorgang.tscn, AmtStore, VorgangDame
 # PIPELINE: test
 # LAST_VALIDATED: 2026-10-18
 extends SceneTree
@@ -82,6 +82,27 @@ func _run() -> void:
 	await _settle()
 	await _go(INNENHOF)
 	_expect(str(current_scene.state["cases"]["BANK-01"]["status"]) == "open", "Innenhof: Stand nach Wiedereintritt erhalten")
+	# E3: Abend im Hinterzimmer. Innenhof -> DAME-Tisch (eigene Partie des Vorgangs) -> Ergebnis -> zurück in den Innenhof.
+	current_scene.run("end_day")
+	current_scene.run("start_minigame", {"game": "dame"})
+	var session: Dictionary = Bank01.running_session(current_scene.state)
+	_expect(not session.is_empty(), "DAME-Session läuft")
+	current_scene.start_dame()
+	await _settle(20)
+	_expect(current_scene.scene_file_path == "res://addons/dame/scenes/table.tscn", "Innenhof startet den DAME-Tisch")
+	_expect(not fb.can_leave(), "am DAME-Tisch kein Rückweg-Knopf")
+	var vd: Node = root.get_node("VorgangDame")
+	_expect(str(vd.active.get("match_id", "")) == str(session["match_id"]), "VorgangDame kennt die Partie")
+	var table_app: Node = root.get_node("App")
+	# Eine fremde Partie ändert nichts am Vorgang.
+	table_app.match_finished.emit({"won": true, "score": 1, "online": false, "mode": "new", "match_id": "m42"})
+	_expect(vd.result.is_empty(), "fremde Partie wird ignoriert")
+	table_app.match_finished.emit({"won": true, "score": 9, "online": false, "mode": "new", "match_id": session["match_id"]})
+	table_app.goto(table_app.MAIN_MENU)
+	await _settle(8)
+	_expect(current_scene.scene_file_path == INNENHOF, "nach der Partie zurück in den Innenhof")
+	_expect(Bank01.running_session(current_scene.state).is_empty(), "Ergebnis der Partie verbucht")
+	_expect(current_scene.state["actors"]["mertens"]["commitments"].has("stuhl"), "Sieg im Hinterzimmer: Mertens sagt den Stuhl zu")
 	await _go(HINTERZIMMER)
 	_expect(fb.can_leave(), "DAME-Menü: Rückweg erlaubt")
 	# Am Tisch kein Rückweg-Knopf: Ein Fehlklick würde die Partie verlassen, DAME hat dort ein eigenes Menü.
