@@ -38,6 +38,8 @@ const FOLLOWUP_OF := {
 	"unresolved": "fu_case_filed",
 }
 
+## Entwicklungsergebnisse (ohne gespielte Karten, "dev": true) gibt es nur in Debug-Builds. Tests dürfen es abschalten.
+static var allow_dev_results := OS.is_debug_build()
 static var _content := {}
 
 
@@ -106,7 +108,7 @@ static func command(s: Dictionary, type: String, params: Dictionary = {}) -> Dic
 
 static func handle(tx: AmtTransaction) -> void:
 	var type := str(tx.command["type"])
-	if not running_session(tx.state).is_empty() and type != "minigame_result":
+	if not running_session(tx.state).is_empty() and type != "minigame_result" and type != "minigame_play":
 		tx.fail("Erst die laufende Partie beenden.")
 		return
 	match type:
@@ -122,6 +124,8 @@ static func handle(tx: AmtTransaction) -> void:
 			_end_day(tx)
 		"start_minigame":
 			_start_minigame(tx)
+		"minigame_play":
+			_minigame_play(tx)
 		"minigame_result":
 			_minigame_result(tx)
 		"end_evening":
@@ -442,13 +446,32 @@ static func _start_minigame(tx: AmtTransaction) -> void:
 	var session := {
 		"session_id": id, "game": game, "case_id": CASE_ID,
 		"ruleset_version": spec["ruleset_version"], "content_id": spec["content_id"],
-		"seed": "%s-%s-%d" % [CASE_ID, game, n], "status": "running", "outcome": "", "score": 0,
-		"checkpoint": {"location": s["location"], "return_scene": spec["return_scene"]},
+		# Die Widerlegung behält den Seed des Durchlaufs: Ein Abbruch würfelt keine neue Hand (Kap. 10.2).
+		"seed": BankWiderlegung.seed_for(s) if game == "widerlegung" else "%s-%s-%d" % [CASE_ID, game, n],
+		"status": "running", "outcome": "", "score": 0,
+		"checkpoint": {"location": s["location"], "return_scene": spec["return_scene"], "plays": []},
 	}
 	tx.emit("minigame_started", "player", {
 		"session_id": id, "game": game, "seed": session["seed"],
 		"text": line("dame_started") if game == "dame" else line("hearing_started"),
 	}, [AmtWorld.op_set(["sessions", id], session)])
+
+
+## Ein Zug der Widerlegung. Gilt nur, wenn die Karte beim Nachspielen auf dem Seed in der Hand liegt (Kap. 17.1: fortsetzbar).
+static func _minigame_play(tx: AmtTransaction) -> void:
+	var s := tx.state
+	var session := running_session(s)
+	if session.is_empty() or session["game"] != "widerlegung" or str(tx.params.get("session_id", "")) != session["session_id"]:
+		tx.fail("Es läuft keine Widerlegung.")
+		return
+	var card := str(tx.params.get("card", ""))
+	var plays: Array = session["checkpoint"]["plays"]
+	var replayed := BankWiderlegung.replay(str(session["seed"]), plays + [card])
+	if not replayed["ok"]:
+		tx.fail(str(replayed["error"]))
+		return
+	tx.emit("minigame_card_played", "player", {"session_id": session["session_id"], "card": card},
+		[AmtWorld.op_append(["sessions", session["session_id"], "checkpoint", "plays"], card)])
 
 
 static func _minigame_result(tx: AmtTransaction) -> void:
@@ -712,8 +735,30 @@ static func result_error(s: Dictionary, r: Variant) -> String:
 				var collapsed: bool = facts is Dictionary and facts.get("definition_collapsed", false) == true
 				if collapsed != (outcome == "won"):
 					return "Ausgang und Befund widersprechen sich."
+				return _replay_error(session, r, outcome)
 			return ""
 	return "Unbekannter Status."
+
+
+## Der Ausgang einer Widerlegung muss sich aus Seed und Kartenfolge ergeben. Ohne gespielte Karten gilt nur ein
+## Entwicklungsergebnis, und das nur in Debug-Builds.
+static func _replay_error(session: Dictionary, r: Dictionary, outcome: String) -> String:
+	var plays: Array = session["checkpoint"]["plays"]
+	if plays.is_empty():
+		if r.get("dev", false) == true and allow_dev_results:
+			return ""
+		return "Das Ergebnis ist nicht nachvollziehbar: Es wurden keine Karten gespielt."
+	var replayed := BankWiderlegung.replay(str(session["seed"]), plays)
+	if not replayed["ok"]:
+		return str(replayed["error"])
+	var o := BankWiderlegung.outcome(replayed["run"])
+	if not bool(o["finished"]):
+		return "Die Partie ist noch nicht entschieden."
+	if bool(o["collapsed"]) != (outcome == "won"):
+		return "Der Ausgang passt nicht zum Spielverlauf."
+	if int(r.get("score", 0)) != int(o["score"]):
+		return "Die Punkte passen nicht zum Spielverlauf."
+	return ""
 
 
 static func submission_error(s: Dictionary, p: Dictionary) -> String:
@@ -1062,6 +1107,7 @@ static func dev_result(s: Dictionary, outcome: String) -> Dictionary:
 		"schema_version": AmtWorld.SCHEMA_VERSION, "session_id": session.get("session_id", ""),
 		"game": session.get("game", ""), "case_id": CASE_ID, "ruleset_version": session.get("ruleset_version", ""),
 		"status": "aborted" if outcome == "aborted" else "completed",
+		"dev": true,
 	}
 	if outcome != "aborted":
 		r["outcome"] = outcome

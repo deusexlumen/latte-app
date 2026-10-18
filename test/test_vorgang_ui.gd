@@ -1,7 +1,7 @@
 # PURPOSE: Klickprototyp BANK-01 (amt/vorgang): Knöpfe gehen über den Weltkern, Stand bleibt beim Wiedereintritt, das Formular nennt fehlende Belege,
 # PURPOSE: Minispiel-Platzhalter nur in der Entwicklungsansicht, ein nicht ladbarer Stand wird gemeldet und beiseitegelegt statt überschrieben.
 # ARCHITECTURE: test
-# DEPENDENCIES: amt/vorgang.tscn, Bank01, AmtStore
+# DEPENDENCIES: amt/vorgang.tscn, Bank01, BankWiderlegung, AmtStore
 # PIPELINE: test
 # LAST_VALIDATED: 2026-10-18
 extends GutTest
@@ -125,3 +125,54 @@ func test_unloadable_save_is_reported_and_set_aside() -> void:
 	_press(v, "Alten Stand beiseitelegen und neu beginnen")
 	assert_true(FileAccess.file_exists(SAVE + ".alt"))
 	assert_eq(v.state["content_version"], Bank01.CONTENT_VERSION)
+
+
+func _to_hearing(v: Control) -> void:
+	_steps(v, [["move", {"to": "innenhof"}], ["open_case"], ["request_document", {"document_id": "bench_inventory"}],
+		["request_document", {"document_id": "repair_record"}], ["wait"], ["compare", {"evidence": ["B-02", "D-01"]}],
+		["end_day"], ["end_evening"], ["move", {"to": "ausschussraum"}]])
+
+
+func _pick(panel: PanelContainer) -> String:
+	var hand: Array = panel.hand_ids()
+	for id in hand:
+		if WiderlegungRules.judge(panel._lehre["card_map"][id], panel._run["inst"]["lehre"]) != "confirm":
+			return str(id)
+	return str(hand[0])
+
+
+func test_hearing_opens_the_real_panel_and_resumes_after_reload() -> void:
+	var v := _scene(true)
+	_to_hearing(v)
+	_press(v, "Einstufung anfechten (Widerlegung)")
+	assert_true(v._panel.visible, "das Panel öffnet sich")
+	assert_eq(v._panel.lehre_id(), BankWiderlegung.LEHRE_ID)
+	v._panel.play_card(_pick(v._panel))
+	v._panel.play_card(_pick(v._panel))
+	var hand: Array = v._panel.hand_ids()
+	assert_eq((Bank01.running_session(v.state)["checkpoint"]["plays"] as Array).size(), 2)
+	# App neu gestartet: Der Vorgang bietet die laufende Partie an, mit derselben Hand.
+	var again := _scene(true)
+	assert_false(again._panel.visible)
+	assert_string_contains(again._session_box.get_child(0).text, "Gespielte Karten: 2")
+	_press(again, "Partie fortsetzen")
+	assert_true(again._panel.visible)
+	assert_eq(again._panel.hand_ids(), hand, "Fortsetzen ergibt denselben Stand")
+	var guard := 0
+	while again._panel.is_playing() and guard < 30:
+		again._panel.play_card(_pick(again._panel))
+		guard += 1
+	assert_false(again._panel.is_playing())
+	again._panel.close()
+	assert_true(Bank01.running_session(again.state).is_empty(), "Ergebnis verbucht")
+	assert_ne(again.state["cases"]["BANK-01"]["definition"], "")
+	assert_false(again._panel.visible)
+
+
+func test_panel_without_objection_buttons_in_the_scene() -> void:
+	var v := _scene(true)
+	_to_hearing(v)
+	_press(v, "Einstufung anfechten (Widerlegung)")
+	for b in v._panel.find_children("*", "Button", true, false):
+		if (b as Button).text == "!":
+			assert_false((b as Button).visible)

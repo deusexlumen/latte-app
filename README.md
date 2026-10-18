@@ -1,17 +1,17 @@
 # Latte
 
-**Die Latte liegt am Boden** als eine App: Flur des Amts mit drei Türen.
+**Die Latte liegt am Boden** als eine App: Flur des Amts mit vier Türen.
 
 | Tür | Spiel | Quelle |
 |-----|-------|--------|
 | Karriere | Lobby-Loop (Point-and-Click-RPG mit KI-Spielleiter) | `../point and pen` |
 | Hörsaal | Widerlegung einzeln, Lehre frei wählbar, ohne Karriere-Effekte | eigener Code (`hoersaal/`) |
 | Hinterzimmer | DAME (Kartenspiel) | `../Dame-Card-Game/godot` |
-| Innenhof | Vorgang BANK-01 „Die gesperrte Bank“, Klickprototyp der gemeinsamen Welt (Etappe E1) | eigener Code (`world_core/`, `cases/`, `amt/`) |
+| Innenhof | Vorgang BANK-01 „Die gesperrte Bank“, Klickprototyp der gemeinsamen Welt (Etappen E1, E2: mit echter Widerlegung im Ausschuss) | eigener Code (`world_core/`, `cases/`, `amt/`) |
 
 Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt app-weit).
 
-Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`.
+Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`, `docs/e2-widerlegung.md`.
 
 ## Aufbau
 

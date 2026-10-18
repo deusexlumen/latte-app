@@ -1,11 +1,12 @@
-# PURPOSE: Vorgang BANK-01 als schlichter Klickprototyp (Etappe E1, Kap. 19): Ort, Personen, Handlungen, Aktenkoffer, Einreichung.
-# PURPOSE: Jede Handlung geht als Befehl an den Weltkern und wird danach gespeichert. Minispiel-Ausgänge setzt in E1 nur die Entwicklungsansicht.
+# PURPOSE: Vorgang BANK-01 als schlichter Klickprototyp (Etappen E1 und E2, Kap. 19): Ort, Personen, Handlungen, Aktenkoffer, Einreichung, Widerlegung im Ausschuss.
+# PURPOSE: Jede Handlung geht als Befehl an den Weltkern und wird danach gespeichert. Die Widerlegung läuft im echten Panel; DAME ist bis E3 ein Platzhalter der Entwicklungsansicht.
 # ARCHITECTURE: ui
-# DEPENDENCIES: Bank01, AmtWorld, AmtStore
+# DEPENDENCIES: Bank01, BankWiderlegung, AmtWorld, AmtStore, amt/bank_panel.gd
 # PIPELINE: runtime, test
 # LAST_VALIDATED: 2026-10-18
 extends Control
 
+const BankPanelScript := preload("res://amt/bank_panel.gd")
 ## Bedienziele mindestens 44 × 44 logische Pixel (Kap. 12.3).
 const MIN_TARGET := Vector2(44, 44)
 const BG := Color(0.078, 0.09, 0.114)
@@ -36,6 +37,7 @@ var _log: Label
 var _dev_info: Label
 var _session_box: VBoxContainer
 var _form: Control
+var _panel: PanelContainer
 var _f_antrag: OptionButton
 var _f_req: Label
 var _f_wording_pick: OptionButton
@@ -132,8 +134,10 @@ func _build_actions() -> void:
 func _act(a: Dictionary) -> void:
 	if a["type"] == "submit_form":
 		open_form()
-	else:
-		run(a["type"], a["params"])
+		return
+	var r := run(a["type"], a["params"])
+	if r["ok"] and a["type"] == "start_minigame" and a["params"].get("game") == "widerlegung":
+		open_hearing()
 
 
 func _build_akte() -> void:
@@ -156,22 +160,64 @@ func _build_akte() -> void:
 		_cmp_b.select((_cmp_a.selected + 1) % _cmp_b.item_count)
 
 
-## Laufende Partie: In E1 ein Platzhalter. Abbrechen darf jeder, Ausgänge setzen nur Entwickler (Kap. 19.1).
+## Laufende Partie. Die Widerlegung öffnet das Panel (auch nach einem Neustart, dann mit den gespielten Karten).
+## DAME ist bis E3 ein Platzhalter. Abbrechen darf jeder, Ausgänge ohne Spiel setzen nur Entwickler (Kap. 19.1).
 func _build_session() -> void:
 	_clear(_session_box)
 	var session := Bank01.running_session(state)
 	if session.is_empty():
 		return
+	var hearing: bool = session["game"] == "widerlegung"
+	var plays: int = (session["checkpoint"]["plays"] as Array).size()
 	var info := Label.new()
-	info.text = "Partie läuft (%s). In dieser Fassung ist sie ein Platzhalter." % ("DAME" if session["game"] == "dame" else "Widerlegung")
+	if hearing:
+		info.text = "Die Widerlegung läuft. Gespielte Karten: %d." % plays
+	else:
+		info.text = "Partie läuft (DAME). In dieser Fassung ist sie ein Platzhalter."
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_session_box.add_child(info)
 	var row := HFlowContainer.new()
+	row.add_theme_constant_override("h_separation", 8)
+	row.add_theme_constant_override("v_separation", 8)
 	_session_box.add_child(row)
+	if hearing:
+		row.add_child(_button("Partie fortsetzen" if plays > 0 else "Partie öffnen", open_hearing))
 	if dev_mode:
 		row.add_child(_button("[Entwicklung] gewonnen", _dev_result.bind("won")))
 		row.add_child(_button("[Entwicklung] verloren", _dev_result.bind("lost")))
 	row.add_child(_button("Partie abbrechen", _dev_result.bind("aborted")))
+
+
+## Öffnet das Panel für die laufende Widerlegung. Bereits gespielte Karten werden ohne Tor nachgespielt.
+func open_hearing() -> void:
+	var session := Bank01.running_session(state)
+	if session.is_empty() or session["game"] != "widerlegung":
+		return
+	_panel.replaying = true
+	_panel.start({"lehre": BankWiderlegung.LEHRE_ID, "seed": str(session["seed"])})
+	for card in session["checkpoint"]["plays"]:
+		_panel.play_card(str(card))
+	_panel.replaying = false
+
+
+## Tor des Panels: Der Vorgang verbucht den Zug, erst dann wird die Karte gespielt.
+func _on_card_gate(card_id: String) -> bool:
+	var session := Bank01.running_session(state)
+	if session.is_empty():
+		return false
+	return bool(run("minigame_play", {"session_id": session["session_id"], "card": card_id})["ok"])
+
+
+## Das Panel meldet sein Ergebnis. Der Vorgang prüft es durch Nachspielen; Effekte des Panels werden nie übernommen.
+func _on_hearing_finished(result: Dictionary) -> void:
+	var session := Bank01.running_session(state)
+	if session.is_empty():
+		return
+	var world := BankWiderlegung.world_result(session, result)
+	if world.is_empty():
+		_show_message("Das Ergebnis gehört nicht zu diesem Vorgang.", true)
+		return
+	run("minigame_result", {"result": world})
 
 
 func _dev_result(outcome: String) -> void:
@@ -393,6 +439,10 @@ func _build() -> void:
 		_tabs.add_child(_scrolled("Entwicklung", _dev_info))
 
 	_build_form()
+	_panel = BankPanelScript.new()
+	add_child(_panel)
+	_panel.gate = _on_card_gate
+	_panel.finished.connect(_on_hearing_finished)
 
 
 func _build_form() -> void:
