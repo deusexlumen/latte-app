@@ -21,10 +21,11 @@ Der Spieltest misst genau das Leitbild: ob Menschen eine eigene Handlung später
 
 ## 2. Eine App, wirklich eine
 
-- **DAME vollständig ins Hinterzimmer:** neu syncen (heute 5 PRs zurück), DAMEs eigenes Hauptmenü in Latte durch den Flur ersetzen, sodass es nur noch einen Einstieg gibt.
-- **Menschen am Tisch:** Online-Partien im Hinterzimmer prüfen und fertig machen. Dazu gehören der aufgeräumte Raum-Bildschirm, Namen statt „Gast 2“ und das abgesicherte TURN-Kontingent, damit Verbindungen im Mobilfunk halten. Online zählt weiter nie in der Karriere.
+- **Erledigt (18.10.):** DAME neu gesynct. Das Hinterzimmer ist jetzt ein Ort mit vier Handlungen statt DAMEs Hauptmenü, jedes „Zurück“ führt dorthin. Online heißt „Mit Menschen spielen“, der Raumcode ist der Hauptweg, Gäste tragen ihren eigenen Namen. Der „Mandat verloren“-Schirm erscheint jetzt auch nach einer verlorenen Hinterzimmer-Partie. Im Browser sichert die App die Spielstände beim Verbergen oder Schließen des Tabs zusätzlich synchron, eine Handlung geht nicht mehr verloren (in Chromium geprüft).
+- **TURN-Kontingent:** offen, braucht deine Entscheidung (siehe unten).
 - **Eine Adresse im Netz:** Die eigenständige DAME-Seite auf GitHub Pages wird durch den Web-Build der Latte-App ersetzt.
-- **Zwei bekannte Fehler:** Im Browser geht eine Handlung verloren, wenn der Tab schnell geschlossen wird. Nach einer verlorenen Hinterzimmer-Partie fehlt der „Mandat verloren“-Schirm.
+
+**TURN, warum es hängt:** Die Verbindung im Mobilfunk läuft über einen Vermittlungsserver (TURN) von ExpressTURN, kostenlos bis 1 TB im Monat. Die Zugangsdaten sind fest; wer sie einmal abruft, kann sie behalten und weiterverwenden. Eine Begrenzung pro Abruf schützt deshalb nichts. Was bei Überschreitung passiert (Abschaltung bis Monatsende oder Rechnung), steht auf keiner Seite, die ich erreichen kann. Wirklich schützen würden nur kurzlebige Zugangsdaten, etwa bei Cloudflare; dafür verlangt Cloudflare ein Zahlungsmittel.
 
 ## 3. Die Welt vertiefen (nach dem Spieltest)
 

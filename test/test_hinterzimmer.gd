@@ -86,3 +86,27 @@ func test_favor_costs_gefaelligkeiten_and_is_single() -> void:
 	assert_eq(app.profile.chips(), before - HZ.FAVOR_PRICE)
 	assert_has(GameState.inventory, HZ.FAVOR_ITEM)
 	assert_false(hz.claim_favor(), "nur einer gleichzeitig")
+
+
+# Ein Einstieg: Das Hinterzimmer ist ein Ort der App, DAMEs Hauptmenü kommt nicht mehr vor.
+func test_home_scene_is_the_room() -> void:
+	assert_eq(app.home_scene, HZ.ROOM, "DAME kehrt ins Hinterzimmer zurück")
+	assert_eq(load("res://flur/flur.gd").HINTERZIMMER, HZ.ROOM, "Flur-Tür führt in den Raum")
+
+
+func test_room_offers_four_actions_and_people_submenu() -> void:
+	var room: Control = load(HZ.ROOM).instantiate()
+	add_child_autofree(room)
+	assert_eq(room.content.get_children().filter(func(c): return c is Button).size(), 4, "höchstens vier Haupthandlungen (Kap. 12.2)")
+	assert_false(room.resume_button.visible, "ohne Spielstand kein Fortsetzen")
+	assert_false(room.people_box.visible, "Unterauswahl zu Beginn zu")
+	room.people_button.pressed.emit()
+	assert_true(room.people_box.visible, "Mit Menschen spielen klappt die Unterauswahl auf")
+	(room.people_box.get_child(1) as Button).pressed.emit()
+	assert_eq(app.last_goto, app.ONLINE, "Raumcode führt zum Online-Bildschirm")
+	room.colleagues_button.pressed.emit()
+	assert_eq(app.last_goto, app.SETUP)
+	assert_eq(str(app.pending.get("setup_mode", "")), "ai")
+	(room.people_box.get_child(0) as Button).pressed.emit()
+	assert_eq(str(app.pending.get("setup_mode", "")), "hotseat")
+	app.pending = {}

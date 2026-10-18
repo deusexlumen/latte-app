@@ -27,6 +27,9 @@ func _process(_delta: float) -> bool:
 		0:
 			if scene == null or scene.name != "MainMenu":
 				return _abort("Menue nicht geladen")
+			# DAMEs eigener Ablauf, auch in einer einbettenden App: deren Autoloads lenken
+			# home_scene erst nach _initialize um (Latte ins Hinterzimmer), darum erst hier.
+			app.home_scene = app.MAIN_MENU
 			if scene.resume_button.visible:
 				return _abort("Fortsetzen ohne Spielstand sichtbar")
 			scene.buttons[1].pressed.emit()

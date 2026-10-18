@@ -8,7 +8,8 @@ extends Node
 
 const VORGANG := "res://amt/vorgang.tscn"
 const FLUR := "res://flur/flur.tscn"
-const DAME_MENU := "res://addons/dame/scenes/main_menu.tscn"
+## Dorthin kehrt DAME nach der Partie zurück (App.home_scene, gesetzt vom Autoload Hinterzimmer).
+const HOME := "res://hinterzimmer/hinterzimmer.tscn"
 const ROOM := "room_amt"
 
 ## {"session_id", "match_id"} solange eine Partie dieses Vorgangs läuft.
@@ -32,7 +33,7 @@ func _process(_delta: float) -> void:
 		return
 	var scene := get_tree().current_scene
 	var path: String = scene.scene_file_path if scene != null else ""
-	if path == DAME_MENU:
+	if path == HOME:
 		return_pending = false
 		_go_back()
 	elif path == VORGANG or path == FLUR:

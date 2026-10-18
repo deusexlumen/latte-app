@@ -25,6 +25,9 @@ var run_stats := RunStats.new()
 
 ## Gesicherte Akte des zuletzt verlorenen Runs (Perma-Death) für den Karriere-Akte-Screen.
 var last_run_stats := {}
+## Perma-Death ausgelöst, Schirm noch nicht gezeigt (z. B. während einer externen Partie,
+## in der die Karriere-Szene nicht geladen ist). Die Hauptszene zeigt ihn beim nächsten Laden.
+var perma_death_pending := false
 
 ## Statischer Charakterbogen-Bonus, immer aktiv.
 var character_bonus := {"source": "berufspolitischer_bonus", "value": 3}
@@ -82,6 +85,7 @@ func _trigger_perma_death() -> void:
 	var fresh: Dictionary = SaveManager.perma_death()
 	run_stats = RunStats.new()
 	load_from_dict(fresh)
+	perma_death_pending = true
 	perma_death.emit()
 
 

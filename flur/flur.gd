@@ -7,7 +7,7 @@ extends Control
 
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
-const HINTERZIMMER := "res://addons/dame/scenes/main_menu.tscn"
+const HINTERZIMMER := "res://hinterzimmer/hinterzimmer.tscn"
 const AKTE := "res://akte/akte.tscn"
 ## Erster Vorgang der gemeinsamen Welt (Spezifikation 0.1, Kap. 9), Etappe E1.
 const INNENHOF := "res://amt/vorgang.tscn"
@@ -17,7 +17,7 @@ const EINSTELLUNGEN := "res://addons/dame/scenes/settings.tscn"
 const DOORS := [
 	["Karriere", "Lobby-Loop: Kommunalpolitik bis Untersuchungsausschuss.", KARRIERE],
 	["Hörsaal", "Widerlegung einzeln, Lehre frei wählbar. Zählt nicht für die Karriere.", HOERSAAL],
-	["Hinterzimmer", "DAME. Kartenspiel unter Kollegen.", HINTERZIMMER],
+	["Hinterzimmer", "Feierabend. DAME unter Kollegen.", HINTERZIMMER],
 	["Innenhof", "Vorgang BANK-01: Die gesperrte Bank. Prototyp.", INNENHOF],
 ]
 
