@@ -10,6 +10,8 @@ Das ist eine kleine formative Prüfung mit fünf Personen. Sie kann keine Aussag
 | Punkt | Vorgabe |
 |---|---|
 | Build | **Desktop-Export, Release** (nicht aus dem Editor). In Debug-Builds gibt es den Reiter „Entwicklung“ und Abkürzungen für die Minispiele; beides würde den Test verfälschen. Prüfen: Im Innenhof darf rechts kein Reiter „Entwicklung“ stehen. |
+| Bauen | Preset „Windows Desktop“ (in `export_presets.cfg`): `godot --headless --path . --export-release "Windows Desktop" build/windows/Latte.exe`. Braucht die Export-Templates 4.7.2 und einen vorhandenen Ordner `build/windows/`. Das Ergebnis ist eine einzelne, unsignierte `Latte.exe` mit eingebettetem Paket (rund 120 MB). Windows kann beim ersten Start eine SmartScreen-Warnung zeigen. |
+| Prüfung des Builds | Aus dem exportierten Paket wurde ein Linux-Release gestartet: Flur, Innenhof, Akte, Hörsaal und DAME-Menü laden ohne Fehler, alle Dateien des Vorgangs (Falldaten, Lehre, Szenen, Figuren, Ton) liegen im Paket. `Latte.exe` selbst wurde in der Build-Umgebung nicht gestartet (kein Windows). Beim ersten Test auf dem Zielrechner kurz durchklicken. |
 | Warum nicht Web | Der Spielstand liegt im Browser-Speicher und lässt sich nicht als Datei auswerten. Für die Auswertung (Abschnitt 5) braucht es die Datei. |
 | Gerät | Rechner mit Maus und Tastatur, Bildschirm mindestens 1280 × 720, Ton an |
 | Sprache | Deutsch (Einstellungen im Flur) |
