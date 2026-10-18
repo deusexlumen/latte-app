@@ -24,3 +24,9 @@
   **Nicht umgesetzt:** „Figuren als Beamte" bräuchte neue 3D-Kleidung/Texturen (Kunst-Assets), nicht per Code machbar.
   **Bekannt:** Führt eine verlorene Hinterzimmer-Partie zum Perma-Death, wird der Stand korrekt zurückgesetzt, der „Mandat verloren"-Schirm erscheint aber nicht (die Karriere-Szene ist während der Partie nicht geladen).
   **Tests:** DAME 9591/15 + FLOW_OK, Latte-Fluss (inkl. Karriere → DAME-Tisch → Karriere), Lobby-Loop 145, Latte 21. Headless schreibt die App nie in echte Spielstände.
+
+- [x] **2026-10-18 — Spezifikation 0.1 „gemeinsame Spielwelt“: E0 und E1 (Cloud-Sitzung, Linux, Godot 4.7.2):**
+  **E0** in `docs/e0-bestandspruefung.md`: Lobby-Loop eindeutig `deusexlumen/lobby-loop` master (lokal `../point and pen`, gleiche Historie). latte baut DAME aus `feat/online-webrtc` @ a84f2db, der Stand liegt nicht in DAME-`main`. Huhn-Port: `vendor/huhn` = Archiv bis auf eine dokumentierte Exportzeile, Golden-Test vorhanden. DAME kann Partien fortsetzen. Eine Bank-Lehre fehlt noch.
+  **E1** in `docs/e1-bank-01.md`: Weltkern `world_core/` (jede Änderung als Ereignis mit Operationen; Nachspielen ergibt denselben Zustand), Vorgang `cases/bank_01/`, Klickprototyp `amt/vorgang.tscn` hinter der neuen Flur-Tür „Innenhof“. T-01 bis T-08, Pfade A/B/C, QA-01 bis QA-17 als Tests; Minispiel-Ausgänge nur über die Entwicklungsansicht. 14 neue Entwurfsentscheidungen dort aufgelistet.
+  **Tests:** DAME 9495/15 (Notizen nannten 9591; unter Linux zweimal 9495) + FLOW_OK, Latte-Fluss inkl. Innenhof, Lobby-Loop 145, Latte 67 (vorher 21).
+  **Offen:** E2 (Bank-Lehre, Ergebnis-Adapter), `feat/online-webrtc` nach DAME-`main`, Sync-Pfad für beide Ordnernamen.

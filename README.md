@@ -7,8 +7,11 @@
 | Karriere | Lobby-Loop (Point-and-Click-RPG mit KI-Spielleiter) | `../point and pen` |
 | Hörsaal | Widerlegung einzeln, Lehre frei wählbar, ohne Karriere-Effekte | eigener Code (`hoersaal/`) |
 | Hinterzimmer | DAME (Kartenspiel) | `../Dame-Card-Game/godot` |
+| Innenhof | Vorgang BANK-01 „Die gesperrte Bank“, Klickprototyp der gemeinsamen Welt (Etappe E1) | eigener Code (`world_core/`, `cases/`, `amt/`) |
 
 Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt app-weit).
+
+Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`.
 
 ## Aufbau
 
@@ -16,6 +19,7 @@ Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt 
   Quelle ist jeweils der letzte Commit des Spiel-Repos; `sync-manifest.json` hält die Hashes fest.
   DAMEs Dienste (`json_store`, `save_service`, `settings_service`, …) und `i18n.gd` landen als gemeinsamer Kern in `addons/amt_core/`.
 - Eigener Code: `app/` (Migration, SaveManager, Rückweg-Knopf, Akte, Hörsaal-Statistik), `flur/`, `hoersaal/`, `akte/`, `test/`.
+- Weltkern: `world_core/` (ein Zustand, jede Änderung als Ereignis mit Operationen, Uhr, Aufmerksamkeit, Speichern mit Rückfall). Vorgänge unter `cases/<id>/` (Texte als JSON, Regeln als GDScript), Oberfläche unter `amt/`.
 - `SaveManager` der App ersetzt Lobby-Loops Autoload (gleiche Schnittstelle, speichert über `JsonStore`), Lobby-Loops Code bleibt unverändert.
 - Beim ersten Start übernimmt `Migration` Daten der Einzel-Apps (`app_userdata/LOBBY-LOOP`, `app_userdata/Dame`). Kopiert nur, löscht nie.
 
@@ -25,5 +29,7 @@ Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt 
 npm run sync   # Spiele aus den Repos neu einbauen
 npm test       # Werkzeug-Tests, DAME-Runner + Szenenfluss, Lobby-Loop-GUT, latte-GUT
 ```
+
+`npm test` braucht `GODOT_BIN` (Godot 4.7.2). Unter Linux fehlt godot-sqlite als Binärdatei; ohne `addons/godot-sqlite` laufen alle Tests (JSON-Rückfall wie im Web-Export).
 
 Web-Export (Preset „Web", ohne Threads und ohne GDExtensions): `build/web/`, 49 MB.

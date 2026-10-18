@@ -1,14 +1,16 @@
-# PURPOSE: Flur des Amts: Startszene der App mit drei Türen (Karriere, Hörsaal, Hinterzimmer), dazu Akte und Einstellungen.
+# PURPOSE: Flur des Amts: Startszene der App mit vier Türen (Karriere, Hörsaal, Hinterzimmer, Innenhof), dazu Akte und Einstellungen.
 # ARCHITECTURE: ui
-# DEPENDENCIES: addons/lobby_loop, addons/dame, hoersaal, akte, Migration
+# DEPENDENCIES: addons/lobby_loop, addons/dame, hoersaal, akte, amt, Migration
 # PIPELINE: runtime
-# LAST_VALIDATED: 2026-10-12
+# LAST_VALIDATED: 2026-10-18
 extends Control
 
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
 const HINTERZIMMER := "res://addons/dame/scenes/main_menu.tscn"
 const AKTE := "res://akte/akte.tscn"
+## Erster Vorgang der gemeinsamen Welt (Spezifikation 0.1, Kap. 9), Etappe E1.
+const INNENHOF := "res://amt/vorgang.tscn"
 ## Eine Einstellungsseite für alle Spiele: DAMEs Seite (Sprache, Ton, Musik, Vollbild) gilt app-weit.
 const EINSTELLUNGEN := "res://addons/dame/scenes/settings.tscn"
 
@@ -16,6 +18,7 @@ const DOORS := [
 	["Karriere", "Lobby-Loop: Kommunalpolitik bis Untersuchungsausschuss.", KARRIERE],
 	["Hörsaal", "Widerlegung einzeln, Lehre frei wählbar. Zählt nicht für die Karriere.", HOERSAAL],
 	["Hinterzimmer", "DAME. Kartenspiel unter Kollegen.", HINTERZIMMER],
+	["Innenhof", "Vorgang BANK-01: Die gesperrte Bank. Prototyp.", INNENHOF],
 ]
 
 
@@ -39,7 +42,7 @@ func _ready() -> void:
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
 	var sub := Label.new()
-	sub.text = "Drei Türen. Hinter jeder liegt eine Akte, die nicht fertig wird."
+	sub.text = "Vier Türen. Hinter jeder liegt eine Akte, die nicht fertig wird."
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.modulate = Color(1, 1, 1, 0.7)
 	column.add_child(sub)
