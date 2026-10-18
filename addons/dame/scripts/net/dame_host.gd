@@ -18,6 +18,10 @@ signal peer_left(peer_id: int)
 var rules
 var link
 var seat_of_peer := {}
+# Wiedereintritts-Schluessel je Gast-Peer (geht nur ueber den verschluesselten Datenkanal).
+var token_of_peer := {}
+# Abwesenheitsstufe je Platz (siehe DameView.absence_text); geht in jede Sicht.
+var absence := {}
 var rev := 0
 var latest_view: Dictionary = {}
 # Plaetze, die an diesem Geraet gespielt werden.
@@ -46,9 +50,43 @@ func assign_seat(peer_id: int, seat: int) -> void:
 	_dispatch(_broadcast())
 
 
+# Stufe eines Platzes setzen; bei Aenderung bekommen alle eine neue Sicht.
+func set_absence(seat: int, stage: int) -> void:
+	if int(absence.get(seat, 0)) == stage:
+		return
+	if stage == 0:
+		absence.erase(seat)
+	else:
+		absence[seat] = stage
+	_dispatch(_broadcast())
+
+
 func remove_peer(peer_id: int) -> void:
 	if seat_of_peer.erase(peer_id):
 		peer_left.emit(peer_id)
+
+
+# Peer zu einem Wiedereintritts-Schluessel, sonst -1.
+func peer_of_token(token: String) -> int:
+	if token.is_empty():
+		return -1
+	for peer in token_of_peer:
+		if str(token_of_peer[peer]) == token:
+			return int(peer)
+	return -1
+
+
+static func new_token() -> String:
+	return Marshalls.raw_to_base64(Crypto.new().generate_random_bytes(18))
+
+
+# Host geht absichtlich: allen Gaesten Bescheid geben (best effort, vor dem Schliessen).
+func say_bye() -> void:
+	if link == null:
+		return
+	for peer in seat_of_peer:
+		if int(peer) != Protocol.HOST_PEER:
+			link.send(int(peer), Codec.encode(Protocol.bye()))
 
 
 # Aktion des Host-Spielers selbst. Gleiche Schnittstelle wie beim Gast.
@@ -100,6 +138,119 @@ func timeout_turn(ai) -> Dictionary:
 	return {"ok": true, "penalty": bool(pen.get("penalty", false))}
 
 
+# ---- Abwesenheit (CONCEPT_DECISIONS §11) --------------------------------
+
+# Stufe 1: Platz ist weg, die Wartezeit ist um. Vor dem Ziehen aussetzen (keine Strafkarte),
+# mitten im Zug neutral zu Ende spielen. Ein Dame-Zwangszug laeuft regulaer.
+func absent_turn(ai, seat: int) -> Dictionary:
+	if int(rules.state.current_index) != seat:
+		return {"ok": false}
+	if str(rules.state.turn_step) == "draw" and rules.state.drawn_card == null:
+		if rules.must_take_queen():
+			return _forced_queen(ai, seat)
+		var skip := {"type": "skip_turn", "seat": seat}
+		if bool(rules.apply_action(skip).get("ok", false)):
+			_dispatch(_broadcast({"type": "skip_turn", "seat": seat}))
+			return {"ok": true}
+	# Gezogene Dame nicht ablegen (das gaebe eine Strafkarte): eintauschen.
+	var drawn = rules.state.drawn_card
+	if str(rules.state.turn_step) == "play" and drawn != null and str(drawn.rank) == "Q":
+		_apply_public({"type": "swap", "seat": seat, "hand_index": worst_known_slot(seat)})
+	_finish_turn_safely(ai, seat)
+	return {"ok": true}
+
+
+# Stufe 2/3: vorsichtige Vertretung, ein Schritt pro Aufruf. Ruft nie Dame.
+func machine_step(ai, seat: int) -> Dictionary:
+	if int(rules.state.current_index) != seat:
+		return {"ok": false}
+	if str(rules.state.turn_step) == "draw" and rules.state.drawn_card == null and rules.must_take_queen():
+		return _forced_queen(ai, seat)
+	var drawn = rules.state.drawn_card
+	if drawn != null and str(drawn.rank) == "Q" and str(rules.state.turn_step) == "play":
+		return _apply_public({"type": "swap", "seat": seat, "hand_index": worst_known_slot(seat)})
+	var action: Dictionary = _cautious_action(ai, seat)
+	var res := _apply_public(action)
+	if not bool(res.get("ok", false)):
+		_finish_turn_safely(ai, seat)
+	return res
+
+
+# Strafkarte beim Wiedereinstieg (Stufe 2), zu Beginn der naechsten Ausgabe.
+func penalize_absence(seat: int) -> Dictionary:
+	var res: Dictionary = rules.give_absence_penalty(seat)
+	if bool(res.get("ok", false)):
+		_dispatch(_broadcast())
+	return res
+
+
+# Hoechste bekannte eigene Karte, sonst die erste.
+func worst_known_slot(seat: int) -> int:
+	var player: Dictionary = rules.state.players[seat]
+	var best := 0
+	var best_value := -1
+	for i in range(player.hand.size()):
+		if player.known.has(i) and int(player.hand[i].value) > best_value:
+			best_value = int(player.hand[i].value)
+			best = i
+	return best
+
+
+func _forced_queen(ai, seat: int) -> Dictionary:
+	if not bool(_apply_public({"type": "draw_discard", "seat": seat}).get("ok", false)):
+		_finish_turn_safely(ai, seat)
+		return {"ok": false}
+	_apply_public({"type": "swap", "seat": seat, "hand_index": worst_known_slot(seat)})
+	_finish_turn_safely(ai, seat)
+	return {"ok": true}
+
+
+func _finish_turn_safely(ai, seat: int) -> void:
+	var guard := 0
+	while guard < 10 and int(rules.state.current_index) == seat:
+		guard += 1
+		var phase := str(rules.state.phase)
+		if phase != "play" and phase != "dame_called":
+			return
+		if not bool(_apply_public(_cautious_action(ai, seat)).get("ok", false)):
+			if not _try_any_target(seat):
+				return
+
+
+func _cautious_action(ai, seat: int) -> Dictionary:
+	if str(rules.state.turn_step) == "extra":
+		return {"type": "end_turn", "seat": seat}
+	return ai.fallback_action(rules, seat)
+
+
+# Bube/Koenig: die Standardwahl kann scheitern. Dann irgendein gueltiges Ziel.
+func _try_any_target(seat: int) -> bool:
+	var step := str(rules.state.turn_step)
+	if step != "jack" and step != "king":
+		return false
+	for p in rules.state.players:
+		if bool(p.eliminated):
+			continue
+		for i in range(p.hand.size()):
+			if step == "jack":
+				if bool(_apply_public({"type": "look_card", "seat": seat, "target_seat": int(p.seat), "hand_index": i}).get("ok", false)):
+					return true
+			elif int(p.seat) != seat:
+				for mine in range(rules.state.players[seat].hand.size()):
+					var a := {"type": "king_swap", "seat": seat, "opponent_seat": int(p.seat), "opponent_index": i, "chosen_index": mine}
+					if bool(_apply_public(a).get("ok", false)):
+						return true
+	return false
+
+
+# Aktion der Vertretung anwenden und allen die neue Sicht schicken.
+func _apply_public(action: Dictionary) -> Dictionary:
+	var res: Dictionary = rules.apply_action(action)
+	if bool(res.get("ok", false)):
+		_dispatch(_broadcast(Protocol.public_action(action, int(action.seat))))
+	return res
+
+
 # Naechste Runde starten (nur der Host).
 func next_round() -> Dictionary:
 	var res: Dictionary = rules.apply_action({"type": "start_next_round"})
@@ -121,8 +272,11 @@ func handle_packet(from: int, bytes: PackedByteArray) -> Array:
 			var v = msg.get("v")
 			if typeof(v) != TYPE_INT or int(v) != Protocol.VERSION:
 				return [{"to": from, "msg": {"t": "reject", "reason": "Falsche Spielversion"}}]
+			# Bei einem Wiedereintritt behaelt der Peer seinen Schluessel.
+			if not token_of_peer.has(from):
+				token_of_peer[from] = new_token()
 			peer_joined.emit(from)
-			return [{"to": from, "msg": {"t": "welcome", "peer": from}}]
+			return [{"to": from, "msg": {"t": "welcome", "peer": from, "token": token_of_peer[from]}}]
 		"action":
 			return submit(from, msg.get("action"))
 	return []
@@ -158,7 +312,7 @@ func _broadcast(action: Dictionary = {}) -> Array:
 	rev += 1
 	var out: Array = []
 	for peer in seat_of_peer:
-		var view: Dictionary = DameViewScript.for_viewer(rules, int(seat_of_peer[peer]))
+		var view: Dictionary = DameViewScript.for_viewer(rules, int(seat_of_peer[peer]), absence)
 		out.append({"to": int(peer), "msg": {"t": "view", "rev": rev, "view": view, "action": action}})
 	return out
 

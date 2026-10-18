@@ -21,6 +21,10 @@ signal invite_ready(code: String)
 signal answer_ready(code: String)
 signal connected(link)
 signal failed(reason: String)
+# Mehrere Gaeste (Host): welcher Platz hat eine Einladung, ist verbunden, ist gescheitert.
+signal invite_for(peer_id: int, code: String)
+signal guest_connected(peer_id: int)
+signal slot_failed(peer_id: int)
 
 const HOST_PEER := 1
 const GATHER_MAX_MS := 8000        # ICE-Sammlung hoechstens so lange
@@ -74,7 +78,9 @@ func create_invite(guest_peer_id: int) -> void:
 		return
 	var old: Dictionary = _slot_by_peer(guest_peer_id)
 	if not old.is_empty():
-		if bool(old.connected):
+		# Ein noch verbundener Gast behaelt seinen Platz; ein getrennter (Wiedereintritt)
+		# bekommt eine neue Verbindung.
+		if bool(old.connected) and _mp.has_peer(guest_peer_id):
 			failed.emit(I18n.t(USED_TEXT))
 			return
 		_drop_slot(old)
@@ -163,6 +169,18 @@ func is_closed() -> bool:
 	return _closed
 
 
+# Host: Verbindung eines Gastes sofort abbauen (er meldet sich neu, die alte ist tot,
+# auch wenn WebRTC das noch nicht bemerkt hat). Loest peer_disconnected aus.
+func drop_peer(guest_peer_id: int) -> void:
+	if not _is_host or _closed:
+		return
+	var slot := _slot_by_peer(guest_peer_id)
+	if not slot.is_empty():
+		_drop_slot(slot)
+	elif _mp.has_peer(guest_peer_id):
+		_mp.remove_peer(guest_peer_id)
+
+
 # Sicherheitsnetz, falls der Besitzer close() vergisst.
 func _notification(what: int) -> void:
 	# Hier keine Methoden aufrufen (self ist beim Abbau schon ungueltig), nur Felder.
@@ -203,6 +221,7 @@ func _on_peer_connected(id: int) -> void:
 	if slot.is_empty() or bool(slot.connected):
 		return
 	slot.connected = true
+	guest_connected.emit(id)
 	connected.emit(_link)
 
 
@@ -256,6 +275,7 @@ func _check_gathering(slot: Dictionary, now: int) -> void:
 		_fail_slot(slot, I18n.t(SETUP_TEXT))
 		return
 	if _is_host:
+		invite_for.emit(int(slot.peer_id), code)
 		invite_ready.emit(code)
 	else:
 		# Gast: ab jetzt laeuft das Zeitlimit (der Host muss die Antwort noch einfuegen).
@@ -272,7 +292,9 @@ func _add_candidates(conn: WebRTCPeerConnection, cands: Array) -> void:
 # Einladung frei, der Gast schliesst den ganzen Connector.
 func _fail_slot(slot: Dictionary, reason: String) -> void:
 	if _is_host:
+		var peer := int(slot.peer_id)
 		_drop_slot(slot)
+		slot_failed.emit(peer)
 	else:
 		close()
 	failed.emit(reason)

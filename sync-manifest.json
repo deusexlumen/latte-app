@@ -1,17 +1,17 @@
 {
   "source": "repos",
-  "synced_at": "2026-10-18T17:18:05.347Z",
+  "synced_at": "2026-10-18T20:54:52.183Z",
   "games": [
     {
       "name": "dame",
       "branch": "main",
-      "ref": "a5e503d51883ebf879255460b087951227150529",
-      "files": 778
+      "ref": "de1c443211591bdd9c3e6e7c4683814575957ed4",
+      "files": 794
     },
     {
       "name": "lobby_loop",
       "branch": "master",
-      "ref": "dac5b0ba26f3ee56857e9938380e2b8133295090",
+      "ref": "c73335362d95faf57b774b39216c8818c8f1db46",
       "files": 125
     }
   ]

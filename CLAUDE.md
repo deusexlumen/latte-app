@@ -23,3 +23,9 @@ Der Nutzer gibt Routinearbeit komplett ab. Diese Regeln gelten wörtlich:
 - `addons/dame/`, `addons/lobby_loop/`, `addons/amt_core/` sind **erzeugt** (`tools/sync-games.mjs`), nie von Hand ändern. DAME wird in `Dame-Card-Game` geändert, Lobby-Loop in `lobby-loop`, danach hier neu syncen (`sync-manifest.json` hält die Stände).
 - Tests: `npm test` (DAME, DAME-Fluss, Latte-Fluss, Lobby-Loop, Latte, Node).
 - Code-Kommentare und Spieltexte deutsch, Bezeichner englisch.
+
+## Cloud-Sandbox (Claude Code im Web)
+
+- Godot: `/root/.cache/godot-4.7.2/…` per `GODOT_BIN` (Hook im DAME-Repo); `npm test` braucht `GODOT_BIN`.
+- **SQLite:** Lobby-Loop liefert die SQLite-Erweiterung nur für Windows. Unter Linux meldet der Latte-Fluss deshalb 3 Ladefehler (`libgdsqlite.linux…so`), sonst ist er grün; das Spiel fällt dann auf JSON zurück. Die Linux-Datei lässt sich hier nicht holen (GitHub ist auf die eigenen Repos beschränkt).
+- **WebRTC:** Mit `addons/webrtc/lib` laufen DAMEs Verbindungstests, die in der Sandbox (keine Netzwerkschnittstellen) zeitweise in Zeitüberschreitung laufen. Gegenprobe: `lib` kurz wegschieben, dann werden sie übersprungen und der Rest muss grün sein.
