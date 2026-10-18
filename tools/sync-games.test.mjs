@@ -5,7 +5,10 @@
 // LAST_VALIDATED: 2026-10-12
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { GAMES, rewritePath, rewriteText, targetOf } from './sync-games.mjs';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { GAMES, findRepo, rewritePath, rewriteText, targetOf } from './sync-games.mjs';
 
 const dame = GAMES.find((g) => g.name === 'dame').map;
 const lobby = GAMES.find((g) => g.name === 'lobby_loop').map;
@@ -36,4 +39,18 @@ test('Text: alle Vorkommen, auch nackter Präfix und Formatpfade', () => {
   assert.match(out, /"res:\/\/addons\/dame\/assets\/audio\/%s.ogg"/);
   assert.match(out, /_collect\("res:\/\/addons\/dame\/"\)/);
   assert.match(out, /path="res:\/\/addons\/dame\/scenes\/a.tscn"/);
+});
+
+test('Lobby-Loop-Repo wird unter beiden Ordnernamen gefunden, der erste vorhandene gewinnt', () => {
+  const base = mkdtempSync(join(tmpdir(), 'latte-repos-'));
+  try {
+    const names = ['point and pen', 'lobby-loop'];
+    assert.equal(findRepo(names, base), join(base, 'point and pen'), 'ohne Ordner: erster Name als Vorgabe');
+    mkdirSync(join(base, 'lobby-loop'));
+    assert.equal(findRepo(names, base), join(base, 'lobby-loop'));
+    mkdirSync(join(base, 'point and pen'));
+    assert.equal(findRepo(names, base), join(base, 'point and pen'));
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
 });

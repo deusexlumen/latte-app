@@ -22,6 +22,14 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PROJECTS = resolve(ROOT, '..');
 
+/** Das Lobby-Loop-Repo heißt je nach Arbeitsplatz „point and pen“ oder „lobby-loop“; der erste vorhandene Ordner gilt. */
+export function findRepo(candidates, base = PROJECTS) {
+  for (const name of candidates) {
+    if (existsSync(join(base, name))) return join(base, name);
+  }
+  return join(base, candidates[0]);
+}
+
 /** Pfade, die nie umgeschrieben werden: Godot-Cache und Fremd-Addons auf oberster Ebene. */
 const KEEP = ['res://.godot/', 'res://addons/gut/', 'res://addons/godot-sqlite/', 'res://addons/webrtc/'];
 
@@ -44,7 +52,7 @@ export const GAMES = [
   },
   {
     name: 'lobby_loop',
-    repo: join(PROJECTS, 'point and pen'),
+    repo: findRepo(['point and pen', 'lobby-loop']),
     branch: 'master',
     sub: '',
     map: [['res://', 'res://addons/lobby_loop/']],

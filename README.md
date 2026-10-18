@@ -4,14 +4,14 @@
 
 | Tür | Spiel | Quelle |
 |-----|-------|--------|
-| Karriere | Lobby-Loop (Point-and-Click-RPG mit KI-Spielleiter) | `../point and pen` |
+| Karriere | Lobby-Loop (Point-and-Click-RPG mit KI-Spielleiter) | `../point and pen` oder `../lobby-loop` |
 | Hörsaal | Widerlegung einzeln, Lehre frei wählbar, ohne Karriere-Effekte | eigener Code (`hoersaal/`) |
 | Hinterzimmer | DAME (Kartenspiel) | `../Dame-Card-Game/godot` |
 | Innenhof | Vorgang BANK-01 „Die gesperrte Bank“, Klickprototyp der gemeinsamen Welt (Etappen E1 bis E3: echte Widerlegung im Ausschuss, echte DAME-Partie im Hinterzimmer) | eigener Code (`world_core/`, `cases/`, `amt/`) |
 
 Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt app-weit).
 
-Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`, `docs/e2-widerlegung.md`, `docs/e3-gemeinsame-erfahrung.md`. Anleitung für den ersten Spieltest: `docs/spieltest-bank-01.md`.
+Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`, `docs/e2-widerlegung.md`, `docs/e3-gemeinsame-erfahrung.md`, `docs/e4-konsolidierung.md`. Anleitung für den ersten Spieltest: `docs/spieltest-bank-01.md`.
 
 ## Aufbau
 
