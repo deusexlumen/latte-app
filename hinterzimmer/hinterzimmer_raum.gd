@@ -6,6 +6,7 @@
 # LAST_VALIDATED: 2026-10-18
 extends "res://addons/dame/scripts/screens/screen_base.gd"
 
+const LatteText := preload("res://app/latte_text.gd")
 const TITLE_TEXT := "Hinterzimmer"
 const ROOM_TEXT := "Feierabend. Ein Tisch, ein Kartenspiel, zwei Gläser, die niemand abräumt."
 
@@ -20,28 +21,28 @@ var favors_label: Label
 func build() -> void:
 	var app := app_node()
 	# Kein eigener Zurück-Knopf: Der Rückweg in den Flur ist der Knopf der App (FlurButton, Esc).
-	frame(TITLE_TEXT, 560, false)
-	var room := label(ROOM_TEXT, 17)
+	frame(LatteText.t(TITLE_TEXT), 560, false)
+	var room := label(LatteText.t(ROOM_TEXT), 17)
 	room.modulate = Color(1, 1, 1, 0.8)
 	content.add_child(room)
 	# Höchstens vier Haupthandlungen (Kap. 12.2), der Rest als Unterauswahl.
-	resume_button = _action("Partie fortsetzen", func() -> void: app.resume_match())
+	resume_button = _action(LatteText.t("Partie fortsetzen"), func() -> void: app.resume_match())
 	resume_button.visible = app != null and app.saves.has_save()
-	colleagues_button = _action("Mit den Kollegen spielen", func() -> void: _open_setup("ai"))
-	people_button = _action("Mit Menschen spielen", func() -> void: people_box.visible = not people_box.visible)
+	colleagues_button = _action(LatteText.t("Mit den Kollegen spielen"), func() -> void: _open_setup("ai"))
+	people_button = _action(LatteText.t("Mit Menschen spielen"), func() -> void: people_box.visible = not people_box.visible)
 	people_box = VBoxContainer.new()
 	people_box.visible = false
 	people_box.add_theme_constant_override("separation", 8)
 	content.add_child(people_box)
-	people_box.add_child(_sub("Am selben Tisch", func() -> void: _open_setup("hotseat")))
-	people_box.add_child(_sub("Über einen Raumcode", func() -> void: app.goto(app.ONLINE)))
-	rules_button = _action("Regeln", func() -> void: app.goto(app.RULES))
+	people_box.add_child(_sub(LatteText.t("Am selben Tisch"), func() -> void: _open_setup("hotseat")))
+	people_box.add_child(_sub(LatteText.t("Über einen Raumcode"), func() -> void: app.goto(app.ONLINE)))
+	rules_button = _action(LatteText.t("Regeln"), func() -> void: app.goto(app.RULES))
 	var more := HBoxContainer.new()
 	more.alignment = BoxContainer.ALIGNMENT_CENTER
 	more.add_theme_constant_override("separation", 12)
 	content.add_child(more)
-	more.add_child(button("Statistik", func() -> void: app.goto(app.STATS)))
-	more.add_child(button("Schrank", func() -> void: app.goto(app.SHOP)))
+	more.add_child(button(LatteText.t("Statistik"), func() -> void: app.goto(app.STATS)))
+	more.add_child(button(LatteText.t("Schrank"), func() -> void: app.goto(app.SHOP)))
 	favors_label = label("", 15)
 	favors_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	favors_label.modulate = Color(1, 1, 1, 0.7)

@@ -5,6 +5,7 @@
 # LAST_VALIDATED: 2026-10-12
 extends CanvasLayer
 
+const LatteText := preload("res://app/latte_text.gd")
 const FLUR := "res://flur/flur.tscn"
 ## DAME hat am Tisch ein eigenes Menü; ein Fehlklick auf "Zum Flur" würde die Partie verlassen.
 const HIDDEN_IN := [FLUR, "res://addons/dame/scenes/table.tscn"]
@@ -19,8 +20,8 @@ func _ready() -> void:
 	layer = 100
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_button = Button.new()
-	_button.text = "Zum Flur"
-	_button.tooltip_text = "Zurück in den Flur des Amts (Esc). Der Spielstand bleibt erhalten."
+	_button.text = LatteText.t("Zum Flur")
+	_button.tooltip_text = LatteText.t("Zurück in den Flur des Amts (Esc). Der Spielstand bleibt erhalten.")
 	# Unten rechts ist in allen drei Spielen frei (gemessen: Lobby-Inventar unten links, DAME-Hand unten Mitte).
 	_button.anchor_left = 1.0
 	_button.anchor_right = 1.0

@@ -5,6 +5,7 @@
 # LAST_VALIDATED: 2026-10-12
 extends Control
 
+const LatteText := preload("res://app/latte_text.gd")
 const PanelScript := preload("res://addons/lobby_loop/scripts/ui/widerlegung_panel.gd")
 
 ## Tests setzen eigene Ordner, bevor die Szene in den Baum kommt.
@@ -30,7 +31,7 @@ func _ready() -> void:
 	column.custom_minimum_size = Vector2(560, 0)
 	center.add_child(column)
 	var title := Label.new()
-	title.text = "Hörsaal"
+	title.text = LatteText.t("Hörsaal")
 	title.add_theme_font_size_override("font_size", 28)
 	column.add_child(title)
 	_status = Label.new()
@@ -60,10 +61,10 @@ func refresh() -> void:
 	for c in _list.get_children():
 		c.queue_free()
 	var s := HoersaalStats.load_stats(stats_path)
-	_status.text = "Wähle eine Lehre. Bisher %d Vorlesungen, %d Lehren eingestürzt." % [s["played"], s["collapsed"]]
+	_status.text = LatteText.t("Wähle eine Lehre. Bisher %d Vorlesungen, %d Lehren eingestürzt.") % [s["played"], s["collapsed"]]
 	for L in lehren():
 		var b := Button.new()
-		b.text = "%s%s" % [L["begriff"], "  (erfunden)" if L["erfunden"] else ""]
+		b.text = "%s%s" % [L["begriff"], LatteText.t("  (erfunden)") if L["erfunden"] else ""]
 		b.pressed.connect(start.bind(str(L["id"])))
 		_list.add_child(b)
 
