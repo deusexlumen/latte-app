@@ -1,0 +1,64 @@
+name: Web-Build veröffentlichen
+
+# Exportiert die App für den Browser und veröffentlicht sie über GitHub Pages.
+# Pull Requests bauen nur und prüfen, dass der Export gelingt.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  GODOT_VERSION: 4.7.2
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Godot und Export-Vorlagen holen
+        run: |
+          curl -sSL -o godot.zip https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          echo "GODOT_BIN=$PWD/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+          curl -sSL -o templates.tpz https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates
+          unzip -q templates.tpz -d tpl
+          mv tpl/templates ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Projekt importieren
+        run: $GODOT_BIN --headless --path . --import || true
+      - name: Web-Export
+        run: |
+          mkdir -p build/web
+          $GODOT_BIN --headless --path . --export-release "Web" build/web/index.html 2>&1 | tee export.log
+          test -s build/web/index.pck
+          test -s build/web/index.wasm
+          if grep -E "^(SCRIPT ERROR|ERROR):" export.log; then echo "Fehler beim Export"; exit 1; fi
+      - name: Pages-Artefakt hochladen
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/web
+
+  deploy:
+    # Veröffentlicht wird erst, wenn das Repo öffentlich ist (Pages ist sonst nur für Mitglieder sichtbar)
+    # und unter Einstellungen > Pages die Quelle „GitHub Actions“ gewählt ist.
+    if: github.event_name != 'pull_request' && github.event.repository.private == false
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Auf GitHub Pages veröffentlichen
+        id: deployment
+        uses: actions/deploy-pages@v5
