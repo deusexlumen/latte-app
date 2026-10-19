@@ -8,6 +8,26 @@ Latte ist ein Herzensprojekt, kein Produkt: Es soll Spaß machen und etwas zeige
 
 ![Der Flur des Amts mit den vier Türen](docs/bilder/flur.png)
 
+## Wie weit ist es?
+
+**Ehrlich vorab: Das ist ein früher Prototyp.** Die Regeln und Abläufe stehen und sind automatisch getestet. Das Spiel als Ganzes gibt es noch nicht. Hier siehst du, was schon geht und was du nicht suchen musst.
+
+Die Skala: ▰▱▱▱▱ erst Idee · ▰▰▱▱▱ Logik steht, Bedienung roh · ▰▰▰▱▱ spielbar, aber klein oder roh · ▰▰▰▰▱ rund spielbar · ▰▰▰▰▰ fertig
+
+| Bereich | Stand | Was du wissen solltest |
+|---|---|---|
+| Innenhof | ▰▰▰▱▱ | Ein einziger Vorgang („Die gesperrte Bank“), nur Text und Knöpfe, keine Figuren. Logik getestet, noch nie mit fremden Menschen ausprobiert. |
+| Karriere | ▰▰▰▱▱ | Spielbar. Im Browser nur die festen Szenen (kein KI-Spielleiter). Altes Aussehen, noch nicht auf Englisch. |
+| Hörsaal | ▰▰▰▱▱ | Spielbar, aber eine kleine Auswahl an Lehren. Altes Aussehen. |
+| Hinterzimmer: DAME gegen Kollegen | ▰▰▰▰▱ | Das Kartenspiel ist vollständig und stark getestet. |
+| Hinterzimmer: online mit Menschen | ▰▰▱▱▱ | Technisch gebaut und täglich automatisch geprüft, aber noch nie auf echten Geräten im Mobilfunk ausprobiert. Kann haken. |
+| Akte | ▰▰▱▱▱ | Zeigt den Stand jeder Tür nebeneinander. Führt sie noch nicht zu einem Ganzen zusammen. |
+| Zusammenspiel der Türen | ▰▰▱▱▱ | Zwei Verbindungen gibt es: eine Partie DAME gehört zum Vorgang im Innenhof, und Gefälligkeiten aus dem Hinterzimmer helfen in der Karriere. Das große Zusammenspiel fehlt noch. |
+| Aussehen | ▰▱▱▱▱ | Nur der Flur hat den neuen Look. Alles andere sieht noch aus wie vorher. |
+| Sprache | ▰▰▰▱▱ | Deutsch durchgehend. Englisch: Flur, Hörsaal, Hinterzimmer samt DAME und der Rahmen der Akte. |
+
+**Das gibt es noch nicht, such es nicht:** weitere Vorgänge neben der Bank, eigene Figuren und Bilder, Division 7B, die Orte aus dem Manifest (Garbo, Köpenick, Vasa, Poyais, Erfurt), das Denkspiel gegen Menschen, eine Werkstatt für eigene Lehren, ein Abschluss, der alle Spiele zusammenführt, Bedienung für Bildschirmleser.
+
 ## Ausprobieren
 
 **Im Browser, ohne Installation:** <https://deusexlumen.github.io/latte-app/>
@@ -19,11 +39,17 @@ Am Rechner mit Maus und Tastatur (mindestens 1280 × 720, Ton an). Das erste Lad
 
 ### I. Innenhof: der Vorgang „Die gesperrte Bank“
 
+**Stand:** ▰▰▰▱▱ spielbar, ein einziger Vorgang.
+
+
 Frau Kern wartet und möchte sich hinsetzen. Hier fängt man an: etwa 45 Minuten, am besten ohne Vorwissen. Du sammelst Belege, sprichst mit den Leuten im Amt und siehst, wie aus dem, was passiert ist, eine amtliche Fassung wird.
 
 ![Innenhof: Vorhalle mit Aktenkoffer](docs/bilder/innenhof.png)
 
 ### II. Karriere
+
+**Stand:** ▰▰▰▱▱ spielbar, im Browser nur feste Szenen.
+
 
 Lobby-Loop, ein Point-and-Click-Rollenspiel von der Kommunalpolitik bis zum Untersuchungsausschuss. Im Browser ohne KI-Spielleiter, dann spielen die vorgeschriebenen Szenen.
 
@@ -31,11 +57,17 @@ Lobby-Loop, ein Point-and-Click-Rollenspiel von der Kommunalpolitik bis zum Unte
 
 ### III. Hörsaal
 
+**Stand:** ▰▰▰▱▱ spielbar, kleine Auswahl.
+
+
 Widerlegung: Eine Lehre soll tragen, du suchst die Stelle, an der sie einstürzt. Frei wählbar, zählt nicht für die Karriere.
 
 ![Hörsaal: eine Lehre wählen](docs/bilder/hoersaal.png)
 
 ### IV. Hinterzimmer
+
+**Stand:** ▰▰▰▰▱ DAME gegen Kollegen · ▰▰▱▱▱ online mit Menschen (noch nicht auf echten Geräten erprobt).
+
 
 Feierabend. DAME, ein Kartenspiel aus Gedächtnis und Bluff, gegen Kollegen oder online mit Menschen (Raumcode).
 
