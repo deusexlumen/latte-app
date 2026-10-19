@@ -6,6 +6,8 @@ Du betrittst den Flur. Vier Türen, hinter jeder liegt eine Akte, die nicht fert
 
 Latte ist ein Herzensprojekt, kein Produkt: Es soll Spaß machen und etwas zeigen, nämlich den Unterschied zwischen Kulisse und Fundament. Es gibt keinen Shop, keine Werbung und kein Konto.
 
+![Der Flur des Amts mit den vier Türen](docs/bilder/flur.png)
+
 ## Ausprobieren
 
 **Im Browser, ohne Installation:** <https://deusexlumen.github.io/latte-app/>
@@ -15,14 +17,33 @@ Am Rechner mit Maus und Tastatur (mindestens 1280 × 720, Ton an). Das erste Lad
 
 ## Die vier Türen
 
-| Tür | Was dich erwartet |
-|-----|-------------------|
-| **Innenhof** | Der Vorgang „Die gesperrte Bank“. Frau Kern wartet und möchte sich hinsetzen. Hier fängt man an: etwa 45 Minuten, am besten ohne Vorwissen. |
-| **Karriere** | Lobby-Loop, ein Point-and-Click-Rollenspiel von der Kommunalpolitik bis zum Untersuchungsausschuss. Im Browser ohne KI-Spielleiter, dann spielen die vorgeschriebenen Szenen. |
-| **Hörsaal** | Widerlegung: Eine Lehre soll tragen, du suchst die Stelle, an der sie einstürzt. Frei wählbar, zählt nicht für die Karriere. |
-| **Hinterzimmer** | Feierabend. DAME, ein Kartenspiel aus Gedächtnis und Bluff, gegen Kollegen oder online mit Menschen (Raumcode). |
+### I. Innenhof: der Vorgang „Die gesperrte Bank“
 
-Dazu die **Akte**, in der jedes Spiel einen Abschnitt hat, und die **Einstellungen** (Sprache, Ton, Vollbild). Der Knopf „Zum Flur“ unten rechts, oder die Taste Esc, bringt dich jederzeit zurück.
+Frau Kern wartet und möchte sich hinsetzen. Hier fängt man an: etwa 45 Minuten, am besten ohne Vorwissen. Du sammelst Belege, sprichst mit den Leuten im Amt und siehst, wie aus dem, was passiert ist, eine amtliche Fassung wird.
+
+![Innenhof: Vorhalle mit Aktenkoffer](docs/bilder/innenhof.png)
+
+### II. Karriere
+
+Lobby-Loop, ein Point-and-Click-Rollenspiel von der Kommunalpolitik bis zum Untersuchungsausschuss. Im Browser ohne KI-Spielleiter, dann spielen die vorgeschriebenen Szenen.
+
+![Karriere: Kommunalpolitik](docs/bilder/karriere.png)
+
+### III. Hörsaal
+
+Widerlegung: Eine Lehre soll tragen, du suchst die Stelle, an der sie einstürzt. Frei wählbar, zählt nicht für die Karriere.
+
+![Hörsaal: eine Lehre wählen](docs/bilder/hoersaal.png)
+
+### IV. Hinterzimmer
+
+Feierabend. DAME, ein Kartenspiel aus Gedächtnis und Bluff, gegen Kollegen oder online mit Menschen (Raumcode).
+
+![Hinterzimmer mit Kartentisch](docs/bilder/hinterzimmer.png)
+
+Dazu die **Akte**, in der jedes Spiel einen Abschnitt hat (unten ein Blick hinein), und die **Einstellungen** (Sprache, Ton, Vollbild). Der Knopf „Zum Flur“ unten rechts, oder die Taste Esc, bringt dich jederzeit zurück.
+
+![Die Akte](docs/bilder/akte.png)
 
 ## Gut zu wissen
 
@@ -41,4 +62,4 @@ Besonders hilfreich: **Wo wusstest du nicht weiter? Woran erinnerst du dich spä
 
 Aufbau, Befehle, Tests, Sync der Spiele: [`docs/entwicklung.md`](docs/entwicklung.md). Stand und Entscheidungen: [`SESSION_NOTES.md`](SESSION_NOTES.md). Was als Nächstes kommt: [`docs/fahrplan-2026-10.md`](docs/fahrplan-2026-10.md).
 
-Die verwendeten Schriften, Töne und Figuren stehen mit ihren Lizenzen unter `addons/dame/assets/`.
+Die verwendeten Schriften, Töne und Figuren stehen mit ihren Lizenzen unter `addons/dame/assets/`. Die Bilder oben entstehen aus einem echten Lauf: `tools/screenshots.gd`.
