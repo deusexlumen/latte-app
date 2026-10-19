@@ -7,6 +7,8 @@ const TestContext = preload("res://addons/dame/tests/test_context.gd")
 const SUITES := [
 	"res://addons/dame/tests/test_stage1.gd",
 	"res://addons/dame/tests/test_rules_core.gd",
+	"res://addons/dame/tests/test_peek.gd",
+	"res://addons/dame/tests/test_throw_in.gd",
 	"res://addons/dame/tests/test_ai.gd",
 	"res://addons/dame/tests/test_table_ui.gd",
 	"res://addons/dame/tests/test_meta.gd",
