@@ -5,6 +5,7 @@
 # LAST_VALIDATED: 2026-10-18
 extends Control
 
+const LatteText := preload("res://app/latte_text.gd")
 const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
 const HINTERZIMMER := "res://hinterzimmer/hinterzimmer.tscn"
@@ -37,20 +38,20 @@ func _ready() -> void:
 	center.add_child(column)
 
 	var title := Label.new()
-	title.text = "Flur des Amts"
+	title.text = LatteText.t("Flur des Amts")
 	title.add_theme_font_size_override("font_size", 32)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(title)
 	var sub := Label.new()
-	sub.text = "Vier Türen. Hinter jeder liegt eine Akte, die nicht fertig wird."
+	sub.text = LatteText.t("Vier Türen. Hinter jeder liegt eine Akte, die nicht fertig wird.")
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.modulate = Color(1, 1, 1, 0.7)
 	column.add_child(sub)
 
 	for door in DOORS:
 		var b := Button.new()
-		b.text = door[0]
-		b.tooltip_text = door[1]
+		b.text = LatteText.t(door[0])
+		b.tooltip_text = LatteText.t(door[1])
 		b.custom_minimum_size = Vector2(0, 56)
 		b.add_theme_font_size_override("font_size", 22)
 		b.pressed.connect(_go.bind(door[2]))
@@ -62,14 +63,14 @@ func _ready() -> void:
 	column.add_child(row)
 	for extra in [["Akte", AKTE], ["Einstellungen", EINSTELLUNGEN]]:
 		var b := Button.new()
-		b.text = extra[0]
+		b.text = LatteText.t(extra[0])
 		b.pressed.connect(_go.bind(extra[1]))
 		row.add_child(b)
 
 	var migration := get_node_or_null("/root/Migration")
 	if migration != null and not (migration.report as Array).is_empty():
 		var note := Label.new()
-		note.text = "Übernommen aus den Einzel-Apps: %s" % ", ".join(PackedStringArray(migration.report))
+		note.text = LatteText.t("Übernommen aus den Einzel-Apps: %s") % ", ".join(PackedStringArray(migration.report))
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		note.modulate = Color(0.95, 0.85, 0.5)
 		column.add_child(note)

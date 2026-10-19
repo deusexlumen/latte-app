@@ -5,6 +5,8 @@
 # LAST_VALIDATED: 2026-10-18
 extends Control
 
+const LatteText := preload("res://app/latte_text.gd")
+
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -20,7 +22,7 @@ func _ready() -> void:
 	column.custom_minimum_size = Vector2(520, 0)
 	center.add_child(column)
 	var title := Label.new()
-	title.text = "Akte"
+	title.text = LatteText.t("Akte")
 	title.add_theme_font_size_override("font_size", 28)
 	column.add_child(title)
 	var app := get_node_or_null("/root/App")
@@ -42,12 +44,12 @@ func _ready() -> void:
 	var hz := get_node_or_null("/root/Hinterzimmer")
 	if hz != null and app != null:
 		var favor := Button.new()
-		favor.text = "Gefallen einfordern (%d Gefälligkeiten, Stand: %d)" % [hz.FAVOR_PRICE, app.profile.chips()]
-		favor.tooltip_text = "Einmal +2 auf den nächsten Wurf in der Karriere. Gefälligkeiten verdient man im Hinterzimmer."
+		favor.text = LatteText.t("Gefallen einfordern (%d Gefälligkeiten, Stand: %d)") % [hz.FAVOR_PRICE, app.profile.chips()]
+		favor.tooltip_text = LatteText.t("Einmal +2 auf den nächsten Wurf in der Karriere. Gefälligkeiten verdient man im Hinterzimmer.")
 		favor.disabled = not hz.can_claim_favor()
 		favor.pressed.connect(func() -> void:
 			if hz.claim_favor():
-				favor.text = "Gefallen eingefordert. Er gilt beim nächsten Wurf."
+				favor.text = LatteText.t("Gefallen eingefordert. Er gilt beim nächsten Wurf.")
 				favor.disabled = true
 		)
 		column.add_child(favor)

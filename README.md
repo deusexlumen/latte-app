@@ -28,7 +28,7 @@ Dazu die **Akte**, in der jedes Spiel einen Abschnitt hat, und die **Einstellung
 
 - **Es gibt kein Richtig oder Falsch.** Probier aus, hör auf, wenn du magst.
 - **Spielstand:** liegt im Browser (oder auf deinem Rechner bei der Windows-Version) und gehört dir. Wer im Browser die Websitedaten löscht, löscht auch den Spielstand.
-- **Sprache:** Das Amt spricht Deutsch. DAME gibt es auch auf Englisch, der Rest folgt. / The Office speaks German. Only the card game DAME is translated so far; the rest will follow.
+- **Sprache:** Das Amt spricht Deutsch. Auf Englisch umschaltbar (Einstellungen) sind bisher der Flur, der Hörsaal, das Hinterzimmer samt Kartenspiel DAME und der Rahmen der Akte; die Geschichten (Innenhof, Karriere) folgen. / The Office speaks German. You can switch to English in Settings: the corridor, lecture hall, back room with the card game DAME and the file frame are translated so far; the stories (courtyard, career) will follow.
 - **Es ist ein Prototyp.** Vieles ist unfertig, manches ist Absicht. Genau dazu brauche ich dich.
 
 ## Rückmeldung
