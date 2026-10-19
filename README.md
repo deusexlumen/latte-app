@@ -1,35 +1,44 @@
 # Latte
 
-**Die Latte liegt am Boden** als eine App: Flur des Amts mit vier Türen.
+**Die Latte liegt am Boden.** Eine Spielwelt über ein Amt, das so tut, als sei alles in Ordnung.
 
-| Tür | Spiel | Quelle |
-|-----|-------|--------|
-| Karriere | Lobby-Loop (Point-and-Click-RPG mit KI-Spielleiter) | `../point and pen` oder `../lobby-loop` |
-| Hörsaal | Widerlegung einzeln, Lehre frei wählbar, ohne Karriere-Effekte | eigener Code (`hoersaal/`) |
-| Hinterzimmer | DAME (Kartenspiel) | `../Dame-Card-Game/godot` |
-| Innenhof | Vorgang BANK-01 „Die gesperrte Bank“, Klickprototyp der gemeinsamen Welt (Etappen E1 bis E3: echte Widerlegung im Ausschuss, echte DAME-Partie im Hinterzimmer) | eigener Code (`world_core/`, `cases/`, `amt/`) |
+Du betrittst den Flur. Vier Türen, hinter jeder liegt eine Akte, die nicht fertig wird. Du wirst vieles verlieren. Die Frage ist, was du mitnimmst.
 
-Dazu **Akte** (ein Abschnitt je Spiel) und **Einstellungen** (DAMEs Seite, gilt app-weit).
+Latte ist ein Herzensprojekt, kein Produkt: Es soll Spaß machen und etwas zeigen, nämlich den Unterschied zwischen Kulisse und Fundament. Es gibt keinen Shop, keine Werbung und kein Konto.
 
-Bestandsprüfung und Stand der gemeinsamen Welt: `docs/e0-bestandspruefung.md`, `docs/e1-bank-01.md`, `docs/e2-widerlegung.md`, `docs/e3-gemeinsame-erfahrung.md`, `docs/e4-konsolidierung.md`. Anleitung für den ersten Spieltest: `docs/spieltest-bank-01.md`.
+## Ausprobieren
 
-## Aufbau
+**Im Browser, ohne Installation:** <https://deusexlumen.github.io/latte-app/>
+Am Rechner mit Maus und Tastatur (mindestens 1280 × 720, Ton an). Das erste Laden dauert einen Moment (rund 50 MB).
 
-- `addons/dame/`, `addons/lobby_loop/`, `addons/amt_core/` werden von `tools/sync-games.mjs` **erzeugt**, nie von Hand ändern.
-  Quelle ist jeweils der letzte Commit des Spiel-Repos; `sync-manifest.json` hält die Hashes fest.
-  DAMEs Dienste (`json_store`, `save_service`, `settings_service`, …) und `i18n.gd` landen als gemeinsamer Kern in `addons/amt_core/`.
-- Eigener Code: `app/` (Migration, SaveManager, Rückweg-Knopf, Akte, Hörsaal-Statistik), `flur/`, `hoersaal/`, `akte/`, `test/`.
-- Weltkern: `world_core/` (ein Zustand, jede Änderung als Ereignis mit Operationen, Uhr, Aufmerksamkeit, Speichern mit Rückfall). Vorgänge unter `cases/<id>/` (Texte als JSON, Regeln als GDScript), Oberfläche unter `amt/`.
-- `SaveManager` der App ersetzt Lobby-Loops Autoload (gleiche Schnittstelle, speichert über `JsonStore`), Lobby-Loops Code bleibt unverändert.
-- Beim ersten Start übernimmt `Migration` Daten der Einzel-Apps (`app_userdata/LOBBY-LOOP`, `app_userdata/Dame`). Kopiert nur, löscht nie.
+**Auf Windows:** unter [Releases](../../releases) die Datei `Latte.exe` laden und doppelklicken. Sie ist nicht signiert, Windows zeigt deshalb vielleicht eine Warnung: „Weitere Informationen“, dann „Trotzdem ausführen“. Installieren muss man nichts.
 
-## Befehle
+## Die vier Türen
 
-```bash
-npm run sync   # Spiele aus den Repos neu einbauen
-npm test       # Werkzeug-Tests, DAME-Runner + Szenenfluss, Lobby-Loop-GUT, latte-GUT
-```
+| Tür | Was dich erwartet |
+|-----|-------------------|
+| **Innenhof** | Der Vorgang „Die gesperrte Bank“. Frau Kern wartet und möchte sich hinsetzen. Hier fängt man an: etwa 45 Minuten, am besten ohne Vorwissen. |
+| **Karriere** | Lobby-Loop, ein Point-and-Click-Rollenspiel von der Kommunalpolitik bis zum Untersuchungsausschuss. Im Browser ohne KI-Spielleiter, dann spielen die vorgeschriebenen Szenen. |
+| **Hörsaal** | Widerlegung: Eine Lehre soll tragen, du suchst die Stelle, an der sie einstürzt. Frei wählbar, zählt nicht für die Karriere. |
+| **Hinterzimmer** | Feierabend. DAME, ein Kartenspiel aus Gedächtnis und Bluff, gegen Kollegen oder online mit Menschen (Raumcode). |
 
-`npm test` braucht `GODOT_BIN` (Godot 4.7.2). Unter Linux fehlt godot-sqlite als Binärdatei; ohne `addons/godot-sqlite` laufen alle Tests (JSON-Rückfall wie im Web-Export).
+Dazu die **Akte**, in der jedes Spiel einen Abschnitt hat, und die **Einstellungen** (Sprache, Ton, Vollbild). Der Knopf „Zum Flur“ unten rechts, oder die Taste Esc, bringt dich jederzeit zurück.
 
-Web-Export (Preset „Web", ohne Threads und ohne GDExtensions): `build/web/`, 49 MB.
+## Gut zu wissen
+
+- **Es gibt kein Richtig oder Falsch.** Probier aus, hör auf, wenn du magst.
+- **Spielstand:** liegt im Browser (oder auf deinem Rechner bei der Windows-Version) und gehört dir. Wer im Browser die Websitedaten löscht, löscht auch den Spielstand.
+- **Sprache:** Das Amt spricht Deutsch. DAME gibt es auch auf Englisch, der Rest folgt. / The Office speaks German. Only the card game DAME is translated so far; the rest will follow.
+- **Es ist ein Prototyp.** Vieles ist unfertig, manches ist Absicht. Genau dazu brauche ich dich.
+
+## Rückmeldung
+
+Beschreib kurz, was passiert ist und wo du hängengeblieben bist oder gelacht hast: [Rückmeldung geben](../../issues/new?template=rueckmeldung.yml). Ein Konto bei GitHub ist dafür nötig. Wer keins hat, sagt es dem Menschen, der ihm den Link geschickt hat.
+
+Besonders hilfreich: **Wo wusstest du nicht weiter? Woran erinnerst du dich später noch?**
+
+## Für Entwickler
+
+Aufbau, Befehle, Tests, Sync der Spiele: [`docs/entwicklung.md`](docs/entwicklung.md). Stand und Entscheidungen: [`SESSION_NOTES.md`](SESSION_NOTES.md). Was als Nächstes kommt: [`docs/fahrplan-2026-10.md`](docs/fahrplan-2026-10.md).
+
+Die verwendeten Schriften, Töne und Figuren stehen mit ihren Lizenzen unter `addons/dame/assets/`.

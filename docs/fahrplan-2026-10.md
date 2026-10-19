@@ -37,6 +37,20 @@ Der Spieltest misst genau das Leitbild: ob Menschen eine eigene Handlung später
 - **Weitere Orte aus dem Manifest:** Garbo, Köpenick, Vasa, Poyais, Erfurt 1184. Jeder wird ein eigener Mechanismus im selben Minispiel-Vertrag, jeder zeigt eine andere Seite von Kulisse gegen Fundament.
 - **Für alle spielbar:** durchgehend Tastatur, große Schrift, Bildschirmleser.
 
+## 3a. Testerreife (19.10.)
+
+Der Spieltest wartet auf Menschen, die den Nutzer erst finden muss. Bis dahin geht die Arbeit weiter, und jeder Reibungspunkt für Tester fällt weg.
+
+- **Erledigt (19.10.):** README als Einstieg für Tester (Link, Download, die vier Türen, Rückmeldung), Entwickler-Teil nach `docs/entwicklung.md`, Rückmelde-Vorlage, Web-Build-Workflow für GitHub Pages. Der Export wurde in einem frischen Checkout ohne die nicht versionierten Addons gebaut (11,5 MB Paket, 39,5 MB Wasm, keine Fehlerzeile). **Wirkt erst, wenn das Repo öffentlich ist und Pages auf „GitHub Actions“ steht** (Entscheidung des Nutzers).
+- **Mehrsprachigkeit, Reihenfolge:** DAME hat Deutsch und Englisch (`i18n.gd`, deutscher Text als Schlüssel). Zuerst die Hülle der App (Flur, Hörsaal, Hinterzimmer, Akte, Bedienflächen des Innenhofs) über denselben Weg, damit alles Neue von Anfang an übersetzbar ist. Falltexte (`cases/`) und Lobby-Loop-Inhalte erst nach dem Spieltest: Er ändert die Texte, eine Übersetzung davor wäre doppelte Arbeit.
+- **Look früh festlegen:** Texturen und Aussehen jetzt mitdenken, nicht nachträglich. Code allein kann keine Kunst-Assets liefern (z. B. Figuren als Beamte); hier braucht es Entscheidungen des Nutzers über Richtung und Quellen.
+
+## 3b. Ideen des Nutzers (19.10., noch nicht entschieden)
+
+- **Liebe im Detail** (Vorbild LucasArts): Easter Eggs in der ganzen Welt.
+- **KIMI** („Künstliche Intelligenz mit Intention“): Kunstfigur des Nutzers, auf seinem Discord als Bot und Sidekick unterwegs. Soll als eine der Nicht-Menschen in der Welt auftauchen, mal hier, mal dort, ohne mit dem Plot zu tun zu haben. Offen: Rolle, Aussehen, Stimme.
+- **Division 7B, Astralwesen:** Aus den Wesen des Bestiariums könnte ein eigenes Spiel nach Art von Pokémon oder Digimon werden. Offen, ob als Tür im Amt oder als eigene Abteilung; vorerst nur Idee.
+
 ## 4. Aufräumen (wenn du willst)
 
 Folgendes wird nicht mehr gebraucht: die React-App in `Dame-Card-Game/src/`, die Repos `dame-kartenspiel` und `Dame---Strategic-Card-Game` sowie PR Dame-Card-Game#11. Mein Vorschlag: die Repos archivieren, was sich rückgängig machen lässt, und den React-Code in einem eigenen PR entfernen. Gelöscht wird nur auf dein Wort.

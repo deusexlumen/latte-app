@@ -1,0 +1,38 @@
+name: Rückmeldung zum Spiel
+description: Was ist dir aufgefallen? Ein paar Sätze reichen.
+labels: ["rückmeldung"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fürs Ausprobieren. Es gibt kein Richtig oder Falsch, schreib einfach, wie es dir ging.
+  - type: dropdown
+    id: tuer
+    attributes:
+      label: Hinter welcher Tür warst du?
+      options:
+        - Innenhof (Die gesperrte Bank)
+        - Karriere
+        - Hörsaal
+        - Hinterzimmer (DAME)
+        - Flur, Akte oder Einstellungen
+        - Mehrere / weiß nicht
+    validations:
+      required: true
+  - type: textarea
+    id: erlebt
+    attributes:
+      label: Was ist passiert?
+      description: Wo bist du hängengeblieben, was hat dich überrascht, was hat Spaß gemacht?
+    validations:
+      required: true
+  - type: textarea
+    id: erinnerung
+    attributes:
+      label: Woran erinnerst du dich später noch?
+      description: Eine eigene Handlung, eine Figur, ein Satz. Auch „an nichts“ ist eine gute Antwort.
+  - type: input
+    id: umgebung
+    attributes:
+      label: Womit gespielt?
+      description: Zum Beispiel „Firefox am Laptop“ oder „Latte.exe, Windows 11“.
