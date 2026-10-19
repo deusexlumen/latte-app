@@ -22,10 +22,8 @@ Der Spieltest misst genau das Leitbild: ob Menschen eine eigene Handlung später
 ## 2. Eine App, wirklich eine
 
 - **Erledigt (18.10.):** DAME neu gesynct. Das Hinterzimmer ist jetzt ein Ort mit vier Handlungen statt DAMEs Hauptmenü, jedes „Zurück“ führt dorthin. Online heißt „Mit Menschen spielen“, der Raumcode ist der Hauptweg, Gäste tragen ihren eigenen Namen. Der „Mandat verloren“-Schirm erscheint jetzt auch nach einer verlorenen Hinterzimmer-Partie. Im Browser sichert die App die Spielstände beim Verbergen oder Schließen des Tabs zusätzlich synchron, eine Handlung geht nicht mehr verloren (in Chromium geprüft).
-- **TURN-Kontingent:** offen, braucht deine Entscheidung (siehe unten).
+- **TURN-Kontingent:** entschieden (19.10.): bleibt bei ExpressTURN mit festen Zugangsdaten, kostenlos bis 1 TB im Monat. Der Server wird nur gebraucht, wenn zwei Geräte sich nicht direkt finden, und für einen Freundeskreis ist die Grenze unerreichbar. Cloudflare mit kurzlebigen Zugangsdaten wäre Mehrarbeit und braucht ein Zahlungsmittel. Neu bewerten nur, wenn die App deutlich mehr Menschen erreicht.
 - **Eine Adresse im Netz:** Die eigenständige DAME-Seite auf GitHub Pages wird durch den Web-Build der Latte-App ersetzt.
-
-**TURN, warum es hängt:** Die Verbindung im Mobilfunk läuft über einen Vermittlungsserver (TURN) von ExpressTURN, kostenlos bis 1 TB im Monat. Die Zugangsdaten sind fest; wer sie einmal abruft, kann sie behalten und weiterverwenden. Eine Begrenzung pro Abruf schützt deshalb nichts. Was bei Überschreitung passiert (Abschaltung bis Monatsende oder Rechnung), steht auf keiner Seite, die ich erreichen kann. Wirklich schützen würden nur kurzlebige Zugangsdaten, etwa bei Cloudflare; dafür verlangt Cloudflare ein Zahlungsmittel.
 
 ## 3. Die Welt vertiefen (nach dem Spieltest)
 
