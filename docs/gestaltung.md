@@ -31,7 +31,7 @@ Die gnostische Linie dahinter: Demiurg und Archonten, Moloch und andere Dämonen
 Anspruch des Nutzers: Figuren und Räume in der Qualität eines großen Spiels, keine Platzhalter. Die jetzigen DAME-Figuren genügen dem nicht und werden ersetzt.
 
 - **Quellen, in dieser Reihenfolge:** (1) freie Grundlagen als Ausgangspunkt, (2) Eigenfertigung des Nutzers mit Blender, KI-Werkzeugen oder eigenen Scans, (3) gezielter Nachbau einer Idee im sauberen Verfahren („Clean Room“). **Keine 1:1-Kopie** fremder Werke.
-- **Herkunftsnachweis ist Pflicht:** Zu jedem Asset gehören Quelle, Lizenz und, bei KI-Werkzeugen, die Nutzungsbedingungen des Werkzeugs. Ohne Nachweis kommt nichts ins Repo. Das gilt auch für bestehende Dateien und gehört geprüft, bevor das Repo öffentlich wird.
+- **Herkunftsnachweis ist Pflicht:** Zu jedem Asset gehören Quelle, Lizenz und, bei KI-Werkzeugen, die Nutzungsbedingungen des Werkzeugs. Ohne Nachweis kommt nichts ins Repo. Das gilt auch für bestehende Dateien; die vorhandenen sind geprüft (19.10.): selbst erzeugt oder CC0 bzw. freie Schriften mit Lizenztext.
 - **Technische Grenzen, die jede Entscheidung mitträgt:**
   - Web-Build heute 50 MB, Ziel unter 70 MB (Notizen vom 12.10.). Hochwertige Modelle und Texturen kosten Platz; sie brauchen komprimierte Texturen, Detailstufen und gegebenenfalls Nachladen.
   - Renderer ist GL Compatibility (nötig für den Web-Export). Das begrenzt Schatten, Nachbearbeitung und Materialien.
