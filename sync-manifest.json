@@ -1,12 +1,12 @@
 {
   "source": "repos",
-  "synced_at": "2026-10-20T16:45:50.468Z",
+  "synced_at": "2026-10-20T17:34:51.647Z",
   "games": [
     {
       "name": "dame",
       "branch": "main",
-      "ref": "a0c9fa02d3e2f05cf8aaee8e46fc0b227eff8d90",
-      "files": 797
+      "ref": "3322c7851b8fb8590d0a1f86078e1aa0605f492c",
+      "files": 810
     },
     {
       "name": "lobby_loop",
