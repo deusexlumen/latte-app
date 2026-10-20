@@ -20,12 +20,13 @@ Der Nutzer gibt Routinearbeit komplett ab. Diese Regeln gelten wörtlich:
 
 ## Arbeiten im Repo
 
-- `addons/dame/`, `addons/lobby_loop/`, `addons/amt_core/` sind **erzeugt** (`tools/sync-games.mjs`), nie von Hand ändern. DAME wird in `Dame-Card-Game` geändert, Lobby-Loop in `lobby-loop`, danach hier neu syncen (`sync-manifest.json` hält die Stände).
-- Tests: `npm test` (DAME, DAME-Fluss, Latte-Fluss, Lobby-Loop, Latte, Node).
+- **Eine Codebasis (seit 2026-10-20).** DAME, Lobby-Loop und der gemeinsame Kern werden **hier** geändert: `addons/dame/`, `addons/lobby_loop/`, `addons/amt_core/`. Die Repos `Dame-Card-Game` und `lobby-loop` sind archiviert: dort nichts mehr ändern, keine PRs, kein Sync (`npm run sync` bricht ab). Eine Aufgabe, die dort startet, wird hier erledigt.
+- GM-Proxy (`gm-proxy/`), Node-Werkzeuge (`tools/*.ts`) und `vendor/` kommen aus `lobby-loop`. Docs der alten Repos: `docs/lobby-loop/`, `docs/dame/`; alte Pfade übersetzt `docs/README.md`.
+- Tests: `npm test` (DAME, DAME-Fluss, Latte-Fluss, Lobby-Loop, Latte, Node-Werkzeuge), `pnpm run test:node` (Proxy, Werkzeuge, Secret-Check), `pnpm run typecheck`.
 - Code-Kommentare und Spieltexte deutsch, Bezeichner englisch.
 
 ## Cloud-Sandbox (Claude Code im Web)
 
 - Godot: `/root/.cache/godot-4.7.2/…` per `GODOT_BIN` (Hook im DAME-Repo); `npm test` braucht `GODOT_BIN`.
-- **SQLite:** Lobby-Loop liefert die SQLite-Erweiterung nur für Windows. Unter Linux meldet der Latte-Fluss deshalb 3 Ladefehler (`libgdsqlite.linux…so`), sonst ist er grün; das Spiel fällt dann auf JSON zurück. Die Linux-Datei lässt sich hier nicht holen (GitHub ist auf die eigenen Repos beschränkt).
-- **WebRTC:** Mit `addons/webrtc/lib` laufen DAMEs Verbindungstests, die in der Sandbox (keine Netzwerkschnittstellen) zeitweise in Zeitüberschreitung laufen. Gegenprobe: `lib` kurz wegschieben, dann werden sie übersprungen und der Rest muss grün sein.
+- **SQLite:** Seit 2026-10-20 sind `addons/godot-sqlite/` samt Linux-Bibliothek versioniert. Die früheren 3 Ladefehler (`libgdsqlite.linux…so`) im Latte-Fluss sollten verschwinden; wenn nicht, hier vermerken.
+- **WebRTC:** `addons/webrtc/` ist seit 2026-10-20 versioniert, also liegt `lib` in jedem Checkout. Damit laufen DAMEs Verbindungstests, die in der Sandbox (keine Netzwerkschnittstellen) zeitweise in Zeitüberschreitung laufen. Gegenprobe: `lib` kurz wegschieben, dann werden sie übersprungen und der Rest muss grün sein.

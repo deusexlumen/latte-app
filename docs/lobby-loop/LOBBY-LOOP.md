@@ -59,4 +59,4 @@ Verliert der Spieler, sinkt der Charakter-Wert "Fraktionsdisziplin". Fällt dies
    - **Architektur:** Godot 4.x (Client) ↔ lokaler GM-Proxy (Node, localhost:8787) ↔ LLM-API. Der Proxy nutzt das Routing von `llm-router-blueprint` (Model×Key-Kaskade, Free-Tier-Quota-Arbitrage, Provider-Keys nur serverseitig).
    - **Offline-Modus:** Vollständiger Fallback — statische Dialogbäume und feste DCs aus einer SQLite-DB, die aus deklarativem Content-JSON compiliert wird (JSON ist die einzige Content-Quelle).
    - **Persistenz:** Spielstand als JSON in `user://` (Autosave bei Szenenwechsel/Minispiel-Ende); Perma-Death überschreibt mit frischem Start-State.
-   - **Doku:** Glossar in `CONTEXT.md`, Architekturentscheidungen in `docs/adr/`.
+   - **Doku:** Glossar in `CONTEXT.md`, Architekturentscheidungen in `docs/lobby-loop/adr/`.
