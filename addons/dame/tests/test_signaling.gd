@@ -106,9 +106,9 @@ func _pump_server() -> void:
 					ws.send_text(JSON.stringify({"topic": "phoenix", "event": "phx_reply", "ref": j.ref, "payload": {"status": "ok"}}))
 
 
-func _wait(clients: Array, cond: Callable, what: String) -> bool:
+func _wait(clients: Array, cond: Callable, what: String, limit_ms := 5000) -> bool:
 	var start := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - start < 5000:
+	while Time.get_ticks_msec() - start < limit_ms:
 		_pump_server()
 		for c in clients:
 			c.poll()
@@ -191,5 +191,6 @@ func _check_unreachable() -> void:
 	var c = _client("ABC234")
 	var reasons: Array = []
 	c.failed.connect(func(r): reasons.append(r))
-	_wait([c], func(): return not reasons.is_empty(), "unerreichbarer Dienst")
+	# Windows meldet eine abgelehnte Verbindung nie als geschlossen; dann greift erst JOIN_TIMEOUT_MS.
+	_wait([c], func(): return not reasons.is_empty(), "unerreichbarer Dienst", Signaling.JOIN_TIMEOUT_MS + 2000)
 	t.expect(reasons.size() == 1 and c.is_closed(), "Signaling: unerreichbar meldet failed genau einmal")

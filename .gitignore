@@ -1,7 +1,14 @@
 .godot/
 build/
 node_modules/
-# Fremd-Addons kommen per tools/sync-games.mjs aus den Quell-Repos (Binärdateien nicht versioniert)
-addons/gut/
-addons/godot-sqlite/
-addons/webrtc/
+# Fremd-Addons sind seit 2026-10-20 versioniert: latte-app ist die einzige Quelle.
+# Ausnahme: iOS-Abhaengigkeiten von godot-sqlite (je >100 MB, GitHub-Limit; kein iOS-Export).
+# Bei Bedarf aus dem godot-sqlite-Release (passend zu Godot 4.7) nachladen.
+addons/godot-sqlite/bin/libgodot-cpp.ios.*.xcframework/
+addons/gut/_repo/
+# Laufzeit-State des GM-Proxy und lokale Secrets
+gm-proxy/router-state.json
+gm-proxy/data/
+.env
+dist/
+!vendor/llm-router-blueprint/dist/

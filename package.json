@@ -5,6 +5,24 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "sync": "node tools/sync-games.mjs",
-    "test": "node --test tools/*.test.mjs && node tools/test-all.mjs"
+    "test": "node --test tools/*.test.mjs && node tools/test-all.mjs",
+    "test:node": "pnpm run test:proxy && pnpm run test:tools && pnpm run check:secrets",
+    "test:proxy": "tsx --test \"gm-proxy/tests/*.test.ts\"",
+    "test:tools": "tsx --test \"tools/tests/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "proxy:dev": "tsx gm-proxy/src/server.ts",
+    "build:fallback": "tsx tools/compile-fallback.ts",
+    "build:widerlegung": "tsx tools/export-widerlegung.ts",
+    "check:secrets": "tsx tools/check-no-secrets.ts",
+    "postinstall": "node -e \"require('fs').writeFileSync('node_modules/.gdignore','')\""
+  },
+  "dependencies": {
+    "@google/genai": "^2.23.0",
+    "llm-router-blueprint": "file:vendor/llm-router-blueprint"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
   }
 }

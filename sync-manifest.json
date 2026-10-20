@@ -1,5 +1,5 @@
 {
-  "source": "repos",
+  "source": "latte-app",
   "synced_at": "2026-10-20T17:34:51.647Z",
   "games": [
     {
@@ -14,5 +14,6 @@
       "ref": "992f788224465560fd7739076f809f2990aa16f2",
       "files": 125
     }
-  ]
+  ],
+  "switched_at": "2026-10-20"
 }

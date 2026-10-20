@@ -233,7 +233,7 @@ Dann `project.godot` im Godot-Editor öffnen — und ab in den Ausschuss.
 | `content/` | 📦 Deklarativer Spiel-Content (Szenen, Items, Dialoge) |
 | `data/fallback.sqlite` | 🗄 Kompilierte Fallback-Datenbank |
 | `CONTEXT.md` | 📖 Glossar |
-| `docs/adr/` | 🏛 Architekturentscheidungen |
+| `docs/lobby-loop/adr/` | 🏛 Architekturentscheidungen |
 
 ## 🧰 Tech-Stack
 
