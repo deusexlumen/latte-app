@@ -6,3 +6,9 @@ node_modules/
 # Bei Bedarf aus dem godot-sqlite-Release (passend zu Godot 4.7) nachladen.
 addons/godot-sqlite/bin/libgodot-cpp.ios.*.xcframework/
 addons/gut/_repo/
+# Laufzeit-State des GM-Proxy und lokale Secrets
+gm-proxy/router-state.json
+gm-proxy/data/
+.env
+dist/
+!vendor/llm-router-blueprint/dist/

@@ -1,0 +1,252 @@
+/*
+ * PURPOSE: Unit-Tests der hand-gerollten Payload-Validatoren (akzeptiert/lehnt ab)
+ * ARCHITECTURE: gm-proxy/tests
+ * DEPENDENCIES: node:test, node:assert/strict, ../src/validate.js
+ * PIPELINE: test
+ * LAST_VALIDATED: 2026-09-17
+ */
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {
+  validateActionRequest,
+  validateEpitaphRequest,
+  validateEpitaphResponse,
+  validateGmResponse,
+  validateMinigameJudgeRequest,
+  validateMinigameJudgeResponse,
+  validateMinigameRoundRequest,
+  validateMinigameRoundResponse,
+  validateResultRequest,
+  validateTriggerEvent,
+} from '../src/validate.js';
+
+const VALID_ACTION = {
+  player_inventory: ['unschuldsvermutung', 'schwarzer_koffer'],
+  current_scene: 'untersuchungsausschuss',
+  alignment_score: -4,
+  fraktionsdisziplin: 5,
+  player_input: 'Ich biete dem Vorsitzenden einen Aufsichtsratsposten an.',
+};
+
+test('validateActionRequest akzeptiert gültigen Request', () => {
+  const parsed = validateActionRequest(VALID_ACTION);
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.current_scene, 'untersuchungsausschuss');
+  assert.equal(parsed!.fraktionsdisziplin, 5);
+});
+
+test('validateActionRequest akzeptiert fehlende fraktionsdisziplin', () => {
+  const { fraktionsdisziplin: _omit, ...rest } = VALID_ACTION;
+  const parsed = validateActionRequest(rest);
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.fraktionsdisziplin, undefined);
+});
+
+test('validateActionRequest lehnt fehlende Felder ab', () => {
+  assert.equal(validateActionRequest({ ...VALID_ACTION, player_input: '' }), null);
+  assert.equal(validateActionRequest({ ...VALID_ACTION, current_scene: 42 }), null);
+  assert.equal(validateActionRequest({ ...VALID_ACTION, player_inventory: 'koffer' }), null);
+  assert.equal(validateActionRequest({ ...VALID_ACTION, alignment_score: 'sehr korrupt' }), null);
+});
+
+const VALID_ROLL = {
+  dice: 'W20',
+  value: 13,
+  bonuses: [{ source: 'berufspolitischer_bonus', value: 3 }],
+  total: 16,
+  difficulty_class: 12,
+  success: true,
+};
+
+test('validateResultRequest akzeptiert Action-Request plus Roll', () => {
+  const parsed = validateResultRequest({ ...VALID_ACTION, roll: VALID_ROLL });
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.roll.total, 16);
+  assert.equal(parsed!.roll.bonuses[0].source, 'berufspolitischer_bonus');
+});
+
+test('validateResultRequest lehnt kaputten Roll ab', () => {
+  assert.equal(validateResultRequest({ ...VALID_ACTION, roll: { ...VALID_ROLL, difficulty_class: 99 } }), null);
+  assert.equal(validateResultRequest({ ...VALID_ACTION, roll: { ...VALID_ROLL, success: 'ja' } }), null);
+  assert.equal(validateResultRequest({ ...VALID_ACTION, roll: { ...VALID_ROLL, bonuses: [{ source: '', value: 1 }] } }), null);
+});
+
+const VALID_GM_RESPONSE = {
+  gm_dialogue: 'Ein brillanter Schachzug.',
+  required_roll: 'W20',
+  difficulty_class: 12,
+  trigger_event: null,
+};
+
+test('validateGmResponse akzeptiert Minimal-Response mit trigger_event null', () => {
+  const parsed = validateGmResponse(VALID_GM_RESPONSE);
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.trigger_event, null);
+});
+
+test('validateGmResponse akzeptiert alle Enum-Events, lehnt unbekannte ab', () => {
+  const events = [
+    { type: 'add_item', item: 'konfetti_der_straffreiheit' },
+    { type: 'remove_item', item: 'schwarzer_koffer' },
+    { type: 'change_scene', scene: 'untersuchungsausschuss' },
+    { type: 'modify_stat', stat: 'alignment', delta: -2 },
+    { type: 'start_minigame' },
+  ];
+  for (const trigger_event of events) {
+    const parsed = validateGmResponse({ ...VALID_GM_RESPONSE, trigger_event });
+    assert.notEqual(parsed, null, `Event ${trigger_event.type} muss gültig sein`);
+  }
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, trigger_event: { type: 'nuke_berlin' } }), null);
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, trigger_event: { type: 'add_item' } }), null);
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, trigger_event: { type: 'modify_stat', stat: 'chaos', delta: 1 } }), null);
+});
+
+test('validateGmResponse lehnt DC außerhalb 1-20 und leere Dialoge ab', () => {
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, difficulty_class: 0 }), null);
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, difficulty_class: 21 }), null);
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, gm_dialogue: '   ' }), null);
+  assert.equal(validateGmResponse({ ...VALID_GM_RESPONSE, required_roll: 'W' }), null);
+});
+
+test('validateGmResponse akzeptiert required_roll none', () => {
+  const parsed = validateGmResponse({ ...VALID_GM_RESPONSE, required_roll: 'none' });
+  assert.notEqual(parsed, null);
+});
+
+test('validateTriggerEvent ist ein geschlossenes Enum', () => {
+  assert.deepEqual(validateTriggerEvent({ type: 'start_minigame' }), { type: 'start_minigame' });
+  assert.deepEqual(validateTriggerEvent({ type: 'change_scene', scene: 'kommunalpolitik' }), {
+    type: 'change_scene',
+    scene: 'kommunalpolitik',
+  });
+  assert.equal(validateTriggerEvent(null), null);
+  assert.equal(validateTriggerEvent('add_item'), null);
+});
+
+test('validateMinigameRoundRequest akzeptiert gültigen Request', () => {
+  const parsed = validateMinigameRoundRequest({
+    current_scene: 'untersuchungsausschuss',
+    alignment_score: -4,
+    round: 1,
+    won_rounds: 0,
+    lost_rounds: 0,
+  });
+  assert.notEqual(parsed, null);
+});
+
+test('validateMinigameRoundRequest lehnt Rundenzähler < 1 ab', () => {
+  assert.equal(
+    validateMinigameRoundRequest({ current_scene: 'x', alignment_score: 0, round: 0, won_rounds: 0, lost_rounds: 0 }),
+    null,
+  );
+});
+
+test('validateMinigameJudgeRequest akzeptiert gewählten Index 0-2', () => {
+  assert.notEqual(validateMinigameJudgeRequest({ accusation: 'Vorwurf', chosen_index: 2, phrase: 'PR-Satz' }), null);
+  assert.equal(validateMinigameJudgeRequest({ accusation: 'Vorwurf', chosen_index: 3, phrase: 'PR-Satz' }), null);
+  assert.equal(validateMinigameJudgeRequest({ accusation: '', chosen_index: 0, phrase: 'PR-Satz' }), null);
+});
+
+test('validateMinigameRoundResponse verlangt genau 3 Phrasen', () => {
+  assert.notEqual(
+    validateMinigameRoundResponse({ accusation: 'A', phrases: ['p1', 'p2', 'p3'] }),
+    null,
+  );
+  assert.equal(validateMinigameRoundResponse({ accusation: 'A', phrases: ['p1', 'p2'] }), null);
+  assert.equal(validateMinigameRoundResponse({ accusation: 'A', phrases: ['p1', 'p2', ''] }), null);
+});
+
+test('validateMinigameJudgeResponse prüft Felder', () => {
+  const valid = { correct: true, correct_index: 0, commentary: 'Formal einwandfrei.' };
+  assert.notEqual(validateMinigameJudgeResponse(valid), null);
+  assert.equal(validateMinigameJudgeResponse({ ...valid, correct: 'ja' }), null);
+  assert.equal(validateMinigameJudgeResponse({ ...valid, correct_index: 5 }), null);
+  assert.equal(validateMinigameJudgeResponse({ ...valid, commentary: '' }), null);
+});
+
+test('validateActionRequest akzeptiert optionale session_id', () => {
+  const parsed = validateActionRequest({ ...VALID_ACTION, session_id: 'savegame_1' });
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.session_id, 'savegame_1');
+  assert.equal(validateActionRequest({ ...VALID_ACTION, session_id: '' }), null);
+  assert.equal(validateActionRequest({ ...VALID_ACTION, session_id: 42 }), null);
+});
+
+test('validateResultRequest erbt session_id', () => {
+  const parsed = validateResultRequest({ ...VALID_ACTION, session_id: 'run-7', roll: VALID_ROLL });
+  assert.notEqual(parsed, null);
+  assert.equal(parsed!.session_id, 'run-7');
+});
+
+const VALID_EPITAPH_STATS = {
+  rolls: [{ dice: 'W20', value: 3, total: 3, difficulty_class: 14, success: false }],
+  items_burned: ['schwarzer_koffer'],
+  minigame: { won: 1, lost: 3 },
+  alignment_timeline: [0, -2, -4, -9],
+  started_at: '2026-09-17T10:00:00.000Z',
+};
+
+test('validateEpitaphRequest akzeptiert gültige Stats mit und ohne session_id', () => {
+  const withSession = validateEpitaphRequest({ session_id: 'savegame_1', stats: VALID_EPITAPH_STATS });
+  assert.notEqual(withSession, null);
+  assert.equal(withSession!.session_id, 'savegame_1');
+  assert.equal(withSession!.stats.items_burned.length, 1);
+
+  const withoutSession = validateEpitaphRequest({ stats: VALID_EPITAPH_STATS });
+  assert.notEqual(withoutSession, null);
+  assert.equal(withoutSession!.session_id, undefined);
+});
+
+test('validateEpitaphRequest lehnt kaputte Stats ab', () => {
+  assert.equal(validateEpitaphRequest({ stats: 'keine stats' }), null);
+  assert.equal(validateEpitaphRequest({ stats: { ...VALID_EPITAPH_STATS, rolls: 'viele' } }), null);
+  assert.equal(validateEpitaphRequest({ stats: { ...VALID_EPITAPH_STATS, items_burned: [1] } }), null);
+  assert.equal(validateEpitaphRequest({ stats: { ...VALID_EPITAPH_STATS, alignment_timeline: ['böse'] } }), null);
+  assert.equal(validateEpitaphRequest({ stats: { ...VALID_EPITAPH_STATS, started_at: '' } }), null);
+  assert.equal(validateEpitaphRequest({ stats: VALID_EPITAPH_STATS, session_id: '' }), null);
+});
+
+test('validateEpitaphResponse verlangt epitaph und genau 3 highlights', () => {
+  const valid = {
+    epitaph: 'Das Mandat erlosch um 14:32 Uhr, ordnungsgemäß vermerkt.',
+    highlights: ['Dümmste Verfehlung: der Koffer.', 'Zynismus: steil.', 'Todesursache: Disziplin.'],
+  };
+  assert.notEqual(validateEpitaphResponse(valid), null);
+  assert.equal(validateEpitaphResponse({ ...valid, epitaph: '' }), null);
+  assert.equal(validateEpitaphResponse({ ...valid, highlights: ['nur eins'] }), null);
+  assert.equal(validateEpitaphResponse({ ...valid, highlights: ['a', 'b', ''] }), null);
+});
+
+test('start_minigame: game und lehre werden geprüft, seed verworfen', () => {
+  assert.deepEqual(validateTriggerEvent({ type: 'start_minigame' }), { type: 'start_minigame' });
+  assert.deepEqual(
+    validateTriggerEvent({ type: 'start_minigame', game: 'widerlegung', params: { lehre: 'amt', seed: 'VOM-MODELL' } }),
+    { type: 'start_minigame', game: 'widerlegung', params: { lehre: 'amt' } },
+  );
+  assert.deepEqual(
+    validateTriggerEvent({ type: 'start_minigame', game: 'widerlegung', params: { lehre: 'gibtsnicht' } }),
+    { type: 'start_minigame', game: 'widerlegung' },
+  );
+  assert.deepEqual(validateTriggerEvent({ type: 'start_minigame', game: 'beleidigungsfechten' }), {
+    type: 'start_minigame',
+    game: 'beleidigungsfechten',
+  });
+  assert.equal(validateTriggerEvent({ type: 'start_minigame', game: 'schach' }), null);
+  assert.equal(validateTriggerEvent({ type: 'start_minigame', game: 7 }), null);
+});
+
+test('epitaph: minigames wird durchgereicht, kaputte Liste abgelehnt', () => {
+  const base = {
+    stats: { rolls: [], items_burned: [], minigame: {}, alignment_timeline: [], started_at: '2026-10-12T10:00:00' },
+  };
+  const ok = validateEpitaphRequest({ ...base, stats: { ...base.stats, minigames: [{ game: 'widerlegung', won: true }] } });
+  assert.deepEqual(ok?.stats.minigames, [{ game: 'widerlegung', won: true }]);
+  assert.equal(validateEpitaphRequest({ ...base, stats: { ...base.stats, minigames: 'nein' } }), null);
+  assert.equal(validateEpitaphRequest(base)?.stats.minigames, undefined);
+});
+
+test('start_minigame dame wird akzeptiert, Parameter verworfen (nur Gesamt-App)', async () => {
+  const { validateTriggerEvent } = await import('../src/validate.js');
+  assert.deepEqual(validateTriggerEvent({ type: 'start_minigame', game: 'dame', params: { lehre: 'amt' } }), { type: 'start_minigame', game: 'dame' });
+  assert.equal(validateTriggerEvent({ type: 'start_minigame', game: 'schach' }), null);
+});

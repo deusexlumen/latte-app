@@ -1,0 +1,31 @@
+# VCS + lokale Umgebung (Secrets gehören nie ins Image)
+.git
+.env
+.env.*
+
+# Dependencies werden im Image frisch per pnpm install gezogen
+node_modules
+
+# Laufzeit-State des GM-Proxy (Chroniken, Router-State)
+gm-proxy/data
+gm-proxy/router-state.json
+
+# Godot-/Editor-Artefakte, Session-Dumps, user://-Artefakte
+.godot
+user://
+kimi-debug-session_*.zip
+
+# Das Image braucht nur den Proxy: Godot-Teile von latte-app bleiben draussen
+addons
+app
+flur
+hoersaal
+amt
+cases
+hinterzimmer
+akte
+innenhof
+world_core
+test
+build
+docs
