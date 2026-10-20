@@ -1,3 +1,7 @@
+// STILLGELEGT seit 2026-10-20: latte-app ist die Quelle (sync-manifest.json "source": "latte-app").
+// Code unter addons/dame, addons/lobby_loop, addons/amt_core wird jetzt direkt hier bearbeitet.
+// Das Skript bleibt nur als Nachweis der Pfadtabelle; ein Aufruf bricht ab.
+//
 // PURPOSE: Baut die Spiele DAME und Lobby-Loop aus ihren Quell-Repos in latte-app ein (Phase 3, M3/M4).
 // ARCHITECTURE: tools
 // DEPENDENCIES: git, tar (Git for Windows), node:fs
