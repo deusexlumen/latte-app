@@ -79,3 +79,8 @@
   **Entscheidung:** Stop-Kriterium greift. Kein Ausbau der Karriere um eine zweite Wahlzeit, keine Oberfläche, kein Umzug auf `world_core/`. Erste Wahlzeit unverändert.
   **Offen (Entscheidung des Nutzers):** nächster Nachweis über Mertens zwischen Karriere und Innenhof (Vorschlag im Dokument, nicht gebaut). Menschlicher Spieltest steht weiter aus.
   **Tests:** Latte 147, Lobby-Loop 146, DAME 8041/22 (ohne WebRTC-Bibliothek), DAME-Fluss OK, Latte-Fluss REENTRY_OK, Node 10.
+- **2026-11-16 — Mertens-Probe (`docs/mertens-probe-2026-11.md`):** Vom Nutzer freigegeben als isolierter Kausaltest. `Bank01.new_state(run_seed, world)` nimmt optional `{"mertens": "ausgefallen"}`; das Spiel übergibt nichts. Abwesenheit steht im vorhandenen Feld `location_id` (`abwesend`), Spielstand-Form und Inhaltsfassung `bank_01@1` unverändert. Abgesichert: Tageswechsel, Abendhandlungen, Abendgespräch, DAME-Start, Reparaturakte bei unbesetzter Stelle. Testannahmen: Hausmeister der Sporthalle = Mertens vom Hausdienst; Wahlzeit vor BANK-01.
+  **Befund:** Kausalwirkung nachgewiesen, Ursache an Türzettel und Frau Seidel erkennbar. Ohne Mertens sind alle fünf Wege zu einem Sitzplatz zu, es bleibt nur „ohne Lösung“. Erfolgskriterium (andere Entscheidung mit Kosten oder Alternativen) **nicht erfüllt**. Fund: BANK-01 hängt an einer Person (Reparaturnachweis, Stuhl, Absperrband).
+  **Entscheidung:** nicht weiterbauen; Absicherung und Probe bleiben.
+  **Offen (Spielregel, Nutzer):** ob BANK-01 einen Weg zum Reparaturnachweis ohne Mertens bekommt, der etwas kostet (Zettel an der Pinnwand oder Abschrift der Registratur). Die fünf Spieltests von BANK-01 stehen aus.
+  **Tests:** Latte 155, Lobby-Loop 146, DAME 8041/22 (ohne WebRTC-Bibliothek), DAME-Fluss OK, Latte-Fluss REENTRY_OK.

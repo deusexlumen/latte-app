@@ -79,3 +79,7 @@ Die Spezifikation ließ diese Punkte offen. Sie sind **Entwurfsentscheidungen**,
 - Schmale Darstellung: Das Projekt skaliert 1280 × 720 logisch (`canvas_items`, `keep`); eine eigene Ansicht ab 360 logischen Pixeln ist ungeprüft.
 - Screenreader: nicht geprüft (Kap. 12.3 verlangt einen eigenen Befund).
 - Kein Sprachmodell, kein Netz, keine Telemetrie.
+
+## Nachtrag 16.11.2026
+
+`Bank01.new_state` nimmt optional eine Ausgangslage (`world`). Ohne sie ist alles wie beschrieben. Mit `{"mertens": "ausgefallen"}` beginnt der Vorgang ohne besetzten Hausdienst; Tageswechsel, Abend und Aktenanforderung achten darauf. Nur die Mertens-Probe nutzt das (`mertens-probe-2026-11.md`).
