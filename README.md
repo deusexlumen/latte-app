@@ -73,6 +73,8 @@ Feierabend. DAME, ein Kartenspiel aus Gedächtnis und Bluff, gegen Kollegen oder
 
 ![Hinterzimmer mit Kartentisch](docs/bilder/hinterzimmer.png)
 
+Unten im Flur steht außerdem **Versuch**: eine Wahlzeit im Stadtrat in neun Schritten, nur Text und Knöpfe. Er probiert aus, wie die Karriere einmal funktionieren könnte, und gehört noch nicht zu ihr ([was er zeigt](docs/karriere-versuch-2026-11.md)).
+
 Dazu die **Akte**, in der jedes Spiel einen Abschnitt hat (unten ein Blick hinein), und die **Einstellungen** (Sprache, Ton, Vollbild). Der Knopf „Zum Flur“ unten rechts, oder die Taste Esc, bringt dich jederzeit zurück.
 
 ![Die Akte](docs/bilder/akte.png)
