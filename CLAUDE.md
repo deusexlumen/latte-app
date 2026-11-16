@@ -1,6 +1,6 @@
 # CLAUDE.md – Latte
 
-Die Latte-App ist **das** Projekt: eine Godot-App (4.7.2, GL Compatibility), der Flur des Amts mit Karriere (Lobby-Loop), Hörsaal (Widerlegung), Hinterzimmer (DAME) und Innenhof (gemeinsame Welt, Vorgänge). Aufbau und Türen: `README.md`. Stand und Entscheidungen: `SESSION_NOTES.md`. Was als Nächstes kommt: `docs/fahrplan-2026-10.md`. Karriere: Bestand, Versuch „Zwei Bücher“ und Übergabe in `docs/karriere-versuch-2026-11.md`. Grundlagen (Spezifikation 0.1, systemisches Design-Framework, systemtheoretische Analyse): `docs/grundlagen/`.
+Die Latte-App ist **das** Projekt: eine Godot-App (4.7.2, GL Compatibility), der Flur des Amts mit Karriere (Lobby-Loop), Hörsaal (Widerlegung), Hinterzimmer (DAME) und Innenhof (gemeinsame Welt, Vorgänge). Aufbau und Türen: `README.md`. Stand und Entscheidungen: `SESSION_NOTES.md`. Was als Nächstes kommt: `docs/fahrplan-2026-10.md`. Karriere: Bestand, Versuch „Zwei Bücher“ und Übergabe in `docs/karriere-versuch-2026-11.md`. Zweite Wahlzeit (geprüft, widerlegt, kein Ausbau): `docs/karriere-zweite-wahlzeit-2026-11.md`. Grundlagen (Spezifikation 0.1, systemisches Design-Framework, systemtheoretische Analyse): `docs/grundlagen/`.
 
 ## Leitbild (verbindlich, vom Nutzer, gilt vor allen anderen Dokumenten)
 

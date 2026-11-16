@@ -51,7 +51,7 @@ Der Spieltest wartet auf Menschen, die den Nutzer erst finden muss. Bis dahin ge
 
 ## 3c. Karriere (16.11.)
 
-Die Karriere hat heute keine eigene Logik: Handlungen haben ohne Spielleiter keine Folgen, der Aufstieg ist ein freier Rundgang. Der Versuch „Zwei Bücher“ (`karriere-versuch-2026-11.md`) zeigt einen tragfähigen Kern und verwirft den einen verborgenen Gewinnweg. **Wartet auf deine Entscheidung:** Beginnt ein neuer Anlauf in der Welt, die der letzte hinterlassen hat? Danach Ausbau nach Abschnitt 8 des Dokuments.
+Die Karriere hat heute keine eigene Logik: Handlungen haben ohne Spielleiter keine Folgen, der Aufstieg ist ein freier Rundgang. Der Versuch „Zwei Bücher“ (`karriere-versuch-2026-11.md`) zeigt einen tragfähigen Kern und verwirft den einen verborgenen Gewinnweg. **Entschieden (Issue #27):** Ein neuer Anlauf beginnt in der hinterlassenen Welt, zuerst isoliert geprüft. **Geprüft und widerlegt** (`karriere-zweite-wahlzeit-2026-11.md`): Die zweite Wahlzeit bietet mit den vorhandenen Regeln keine Entscheidung. Kein Ausbau der Karriere auf dieser Grundlage. **Wartet auf deine Entscheidung:** ob als Nächstes geprüft wird, was ein in der Karriere ausgefallener Mertens im Innenhof ändert.
 
 ## 4. Aufräumen (wenn du willst)
 
