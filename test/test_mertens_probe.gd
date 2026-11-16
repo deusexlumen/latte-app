@@ -114,3 +114,23 @@ func test_probe_writes_no_save() -> void:
 	Probe.walk(GONE, Probe.WAYS["Formelle Freigabe (T-04)"])
 	assert_eq(FileAccess.file_exists(AmtStore.default_path()), before)
 	assert_eq(Bank01.CONTENT_VERSION, "bank_01@1", "Inhaltsfassung unverändert: vorhandene Spielstände laden weiter")
+
+
+## Gegencheck nach dem Review vom 16.11.: Ohne Sitzplatz ist nicht ohne Unterschied. Die ungelösten Wege hinterlassen
+## verschiedene Akten und verschiedene Folgen im Nachgang (amtlich unterscheidbar). Ob Spieler das bemerken, prüft kein Test.
+func test_unresolved_ways_without_mertens_differ_in_record_and_followups() -> void:
+	var profiles := {}
+	var followups := {}
+	for way in Probe.UNRESOLVED_WAYS:
+		var r := Probe.walk(GONE, Probe.UNRESOLVED_WAYS[way])
+		assert_eq(r["refused"], [], "%s: jeder Schritt möglich" % way)
+		var p := Probe.profile(r["state"])
+		assert_eq(str(p["resolution"]), "unresolved", way)
+		assert_eq(str(r["seat"]), "", "%s: Frau Kern steht" % way)
+		profiles[JSON.stringify(p)] = way
+		followups[JSON.stringify(p["folgeereignisse"])] = way
+	assert_eq(profiles.size(), Probe.UNRESOLVED_WAYS.size(), "jeder ungelöste Weg hinterlässt eine andere Akte")
+	assert_eq(followups.size(), 4, "vier verschiedene Folgen im Nachgang")
+	var t08 := Probe.profile(Probe.walk(GONE, Probe.UNRESOLVED_WAYS["U4 Bericht ohne Antrag, Verdacht Verschleierung (T-08)"])["state"])
+	assert_eq(str(t08["rueckfrage"]), "offen", "T-08 ist auch ohne Mertens erreichbar: Die Registratur fragt nach")
+	assert_has(t08["folgeereignisse"], "registry_inquiry")

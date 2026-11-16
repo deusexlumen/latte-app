@@ -44,6 +44,55 @@ const WAYS := {
 }
 
 
+## Ungelöste Wege in der Welt ohne Mertens (Gegencheck nach dem Review vom 16.11., nur diagnostisch).
+## Verglichen werden die Felder und Folgeereignisse, nicht nur resolution.
+const UNRESOLVED_WAYS := {
+	"U1 sofort schließen (T-07)": [["move", {"to": "innenhof"}], ["open_case", {}], ["close_case", {}], ["advance", {}]],
+	"U2 Registratur angefragt, dann schließen": [["move", {"to": "innenhof"}], ["open_case", {}],
+		["request_document", {"document_id": "bench_inventory"}], ["observe", {}], ["close_case", {}], ["advance", {}]],
+	"U3 Bericht ohne Antrag, Einstufung belegt": [["move", {"to": "innenhof"}], ["open_case", {}],
+		["request_document", {"document_id": "bench_inventory"}], ["move", {"to": "registratur"}], ["observe", {}], ["compare", {"evidence": ["B-02", "D-01"]}],
+		["end_day", {}], ["end_evening", {}], ["move", {"to": "ausschussraum"}], ["start_minigame", {"game": "widerlegung"}], ["DEV", "won"],
+		["submit", {"antrag": "keiner", "findings": ["B-02", "B-03"], "conclusion": "zweck_gegen_einstufung", "open_questions": ["zustaendigkeit"], "wording": ""}], ["advance", {}]],
+	"U4 Bericht ohne Antrag, Verdacht Verschleierung (T-08)": [["move", {"to": "innenhof"}], ["open_case", {}],
+		["request_document", {"document_id": "bench_inventory"}], ["move", {"to": "registratur"}], ["observe", {}],
+		["end_day", {}], ["end_evening", {}],
+		["submit", {"antrag": "keiner", "findings": ["B-06"], "conclusion": "verschleierung", "open_questions": ["originale"], "wording": ""}], ["advance", {}]],
+	"U5 wie U4, Rückfrage beantwortet": [["move", {"to": "innenhof"}], ["open_case", {}],
+		["request_document", {"document_id": "bench_inventory"}], ["move", {"to": "registratur"}], ["observe", {}],
+		["end_day", {}], ["end_evening", {}],
+		["submit", {"antrag": "keiner", "findings": ["B-06"], "conclusion": "verschleierung", "open_questions": ["originale"], "wording": ""}], ["advance", {}],
+		["correct_report", {"conclusion": "umlagerung_regulaer", "findings": ["B-05", "B-06"]}]],
+	"U6 Verdacht mit Verfahrensblatt (keine Rückfrage)": [["move", {"to": "innenhof"}], ["open_case", {}],
+		["request_document", {"document_id": "bench_inventory"}], ["move", {"to": "registratur"}], ["observe", {}], ["interview", {"actor": "seidel", "topic": "bank"}],
+		["end_day", {}], ["end_evening", {}],
+		["submit", {"antrag": "keiner", "findings": ["B-06"], "conclusion": "verschleierung", "open_questions": ["keine"], "wording": ""}], ["advance", {}]],
+}
+
+
+## Die Felder eines Abschlusses, die über resolution hinausgehen. Gleiche Werte = für die Welt derselbe Abschluss.
+static func profile(s: Dictionary) -> Dictionary:
+	var c: Dictionary = s["cases"][Bank01.CASE_ID]
+	var report: Dictionary = c["report"]
+	var docs: Array = (s["documents"] as Dictionary).keys()
+	docs.sort()
+	var after := false
+	var followups: Array = []
+	for e in s["events"]:
+		if str(e["type"]) == "case_resolved":
+			after = true
+			continue
+		if after and not ["phase_changed", "moved"].has(str(e["type"])):
+			followups.append(str(e["type"]))
+	return {
+		"resolution": str(c["resolution"]), "bericht_eingereicht": not report.is_empty(),
+		"schlussfolgerung": str(report.get("conclusion", "")), "status_schlussfolgerung": str(report.get("conclusion_status", "")),
+		"rueckfrage": str(report.get("inquiry", "")), "pruefung_angekuendigt": bool(c["audit_announced"]),
+		"definition": str(c["definition"]), "originale": str(s["objects"]["originals"]["location"]),
+		"nachgang": c["applied_followups"], "folgeereignisse": followups, "dokumente": docs,
+	}
+
+
 func _initialize() -> void:
 	var results := {}
 	for name in HISTORIES:
@@ -59,6 +108,23 @@ func _initialize() -> void:
 			print("  %-36s %s" % [way, summary(r)])
 			for refusal in r["refused"]:
 				print("      abgelehnt: %s" % refusal)
+	print("\n== Gegencheck: ungelöste Wege ohne Mertens, verglichen über Felder und Folgeereignisse ==")
+	var seen := {}
+	var visible := {}
+	var all_unresolved := true
+	for way in UNRESOLVED_WAYS:
+		var r := walk({"mertens": "ausgefallen"}, UNRESOLVED_WAYS[way])
+		var p := profile(r["state"])
+		all_unresolved = all_unresolved and str(p["resolution"]) == "unresolved" and str(r["seat"]) == ""
+		visible[JSON.stringify(p["folgeereignisse"])] = true
+		var k := JSON.stringify(p)
+		print("  %s" % way)
+		print("      abgelehnt: %s" % str(r["refused"]))
+		print("      %s" % k)
+		if seen.has(k):
+			print("      gleich wie: %s" % seen[k])
+		seen[k] = way
+	print("  unterscheidbare Abschlüsse nach Feldern: %d von %d · unterscheidbare Folgen im Nachgang: %d · alle ungelöst, Frau Kern stehend: %s" % [seen.size(), UNRESOLVED_WAYS.size(), visible.size(), all_unresolved])
 	print("MERTENS_OK")
 	quit(0)
 
