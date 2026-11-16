@@ -86,9 +86,12 @@ static func period_choices(state: Dictionary, path: Array) -> Dictionary:
 
 
 ## Breitensuche über die Perioden. Gleiche Weltzustände werden zusammengelegt, ihre Wege gezählt.
-static func sweep(overrides: Dictionary) -> Dictionary:
-	var start := Kern.new_game(overrides)
-	Kern.begin_period(start)
+## full: Enden nach vollem Weltzustand getrennt halten statt nach Kurzform (nötig, wenn danach weitergespielt wird).
+## start: von diesem Zustand aus statt von einer frischen Welt.
+static func sweep(overrides: Dictionary, full: bool = false, start: Dictionary = {}) -> Dictionary:
+	if start.is_empty():
+		start = Kern.new_game(overrides)
+		Kern.begin_period(start)
 	# Schlüssel -> [Zustand, Anzahl Wege, Beispielweg]
 	var frontier := {Kern.key(start): [start, 1, []]}
 	var finished := {}
@@ -104,7 +107,7 @@ static func sweep(overrides: Dictionary) -> Dictionary:
 				if not bool(s["over"]):
 					Kern.begin_period(s)
 				var target: Dictionary = finished if bool(s["over"]) else next
-				var k := Kern.outcome(s) if bool(s["over"]) else Kern.key(s)
+				var k := (Kern.key(s) if full else Kern.outcome(s)) if bool(s["over"]) else Kern.key(s)
 				if target.has(k):
 					target[k][1] = int(target[k][1]) + int(entry[1])
 					# Als Beispiel den Weg mit den wenigsten Handlungen behalten.

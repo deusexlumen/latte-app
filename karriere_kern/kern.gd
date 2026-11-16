@@ -47,7 +47,9 @@ static func new_game(overrides: Dictionary = {}) -> Dictionary:
 	for k in overrides:
 		params[k] = overrides[k]
 	var s := {
-		"params": params, "period": 0, "points": 0, "over": false, "end": "", "end_reasons": [],
+		"params": params, "term": 1, "period": 0, "points": 0, "over": false, "end": "", "end_reasons": [],
+		# Wahlzeit 2 und später: Die Spielfigur ist neu (Testannahme, Issue #27). "absent": Die Welt läuft ohne Spielfigur weiter.
+		"figure": "", "absent": false, "archive": {},
 		"rank": {PLAYER: 0, RIVAL: 0}, "gone": {PLAYER: false, RIVAL: false},
 		"things": {}, "ledger": {}, "malus": {PLAYER: 0, RIVAL: 0}, "signed": {},
 		"counting": false, "budget_used": false, "seen": {}, "log": [],
@@ -156,8 +158,6 @@ static func begin_period(s: Dictionary) -> void:
 		t["damage"] = int(t["damage"]) + 1
 		if int(t["damage"]) >= int(s["params"]["collapse"]):
 			_collapse(s, id)
-			if bool(s["over"]):
-				return
 		else:
 			t["pending"] = true
 			_log(s, "buerger", "case", id, "Meldung: %s." % _case_text(id, int(t["damage"])))
@@ -339,7 +339,13 @@ static func _checkpoint(s: Dictionary) -> void:
 	var bs := bilanz(s, PLAYER)
 	var winner := PLAYER
 	var text := ""
-	if bool(s["gone"][RIVAL]):
+	if bool(s["gone"][PLAYER]):
+		# Die Spielfigur hat ihr Mandat verloren; die Fraktion entscheidet ohne sie.
+		if bool(s["gone"][RIVAL]):
+			return
+		winner = RIVAL
+		text = "Fraktionsvorsitzende: Bilanz Brandt %d. Sonst steht niemand zur Wahl." % bilanz(s, RIVAL)
+	elif bool(s["gone"][RIVAL]):
 		if bs < 0:
 			_log(s, "fraktion", "checkpoint", "", "Fraktionsvorsitzende: Ihre Bilanz steht bei %d. Mit einer Akte im Minus rückt niemand auf." % bs)
 			return
@@ -403,6 +409,8 @@ static func _final(s: Dictionary) -> void:
 	if bool(s["over"]):
 		return
 	s["over"] = true
+	if bool(s["absent"]):
+		return
 	var b := bilanz(s, PLAYER)
 	if int(s["rank"][PLAYER]) == 2:
 		s["end"] = "dezernent"
@@ -416,7 +424,7 @@ static func _final(s: Dictionary) -> void:
 
 
 static func _log(s: Dictionary, who: String, kind: String, thing: String, text: String) -> void:
-	(s["log"] as Array).append({"period": int(s["period"]), "who": who, "kind": kind, "thing": thing, "text": text})
+	(s["log"] as Array).append({"term": int(s["term"]), "period": int(s["period"]), "who": who, "kind": kind, "thing": thing, "text": text})
 
 
 # ---------------------------------------------------------------- Texte und Auswertung
@@ -493,7 +501,10 @@ static func trace(s: Dictionary, id: String) -> Array:
 	var out: Array = []
 	for e in s["log"]:
 		if str(e["thing"]) == id and ["done", "aushilfe", "open", "reject", "fund", "defer", "report", "carrier_out", "repair", "collapse", "removed", "order", "request"].has(str(e["kind"])):
-			out.append("Periode %d: %s" % [int(e["period"]), str(e["text"])])
+			var when := "Periode %d" % int(e["period"])
+			if int(s["term"]) > 1:
+				when = "Wahlzeit %d, %s" % [int(e.get("term", 1)), when]
+			out.append("%s: %s" % [when, str(e["text"])])
 	return out
 
 
@@ -503,3 +514,73 @@ static func key(s: Dictionary) -> String:
 	copy.erase("log")
 	copy.erase("seen")
 	return JSON.stringify(copy)
+
+
+# ---------------------------------------------------------------- Über die Wahlzeit hinaus (Issue #27)
+
+## Gibt es noch etwas, das verfällt, gemeldet oder entschieden werden kann?
+static func has_matter(s: Dictionary) -> bool:
+	for id in THINGS:
+		if is_live(s["things"][id]):
+			return true
+	return false
+
+
+## Verliert die Spielfigur ihr Mandat vor dem Ende der Wahlzeit, läuft die Welt nach denselben Regeln ohne sie weiter.
+static func run_out(s: Dictionary) -> void:
+	if int(s["period"]) >= PERIODS or not bool(s["over"]):
+		return
+	s["absent"] = true
+	s["over"] = false
+	_hand_over(s, PLAYER)
+	# Die Periode, in der das Mandat verloren ging, läuft für die anderen zu Ende.
+	end_period(s)
+	while not bool(s["over"]):
+		begin_period(s)
+		end_period(s)
+
+
+## Die nächste Wahlzeit beginnt in der Welt, die die vorige hinterlassen hat. Aus dem vollen Zustand, nicht aus outcome().
+## Bleibt: Bauwerke, Schäden, beschlossene Sanierungen, Ausfälle, die Akte je Sache, Gutachten, Unterschriften, Brandts Stellung, das Protokoll.
+## Neu je Wahlzeit: Periode, Diensthandlungen, Bilanz.
+## Bleibt die Spielfigur im Amt, spielt man sie weiter: mit ihrem Rang und ihren Unterschriften.
+## Testannahme: Hat sie ihr Mandat verloren, spielt man eine neue Figur im selben Bezirk. Die alte bleibt mit ihren
+## Unterschriften in der Akte ("archive") und ist nicht aus der Welt.
+static func next_term(prev: Dictionary, figure: String = "Nachrückerin (Testannahme)") -> Dictionary:
+	if not bool(prev["over"]):
+		return {}
+	var s: Dictionary = prev.duplicate(true)
+	var lost := ["ausschuss", "liste"].has(str(prev["end"]))
+	run_out(s)
+	s["term"] = int(s["term"]) + 1
+	s["period"] = 0
+	s["points"] = 0
+	s["over"] = false
+	s["absent"] = false
+	s["end"] = ""
+	s["end_reasons"] = []
+	s["seen"] = {}
+	s["budget_used"] = false
+	for person in PERSONS:
+		s["malus"][person] = 0
+		for id in THINGS:
+			s["ledger"][person][id] = {"done": 0, "open": 0}
+	for id in THINGS:
+		var t: Dictionary = s["things"][id]
+		t["requested"] = ""
+		# Eine beschlossene Sanierung wird ausgeführt, auch wenn dazwischen gewählt wurde.
+		if int(t["due"]) > 0 and is_live(t):
+			t["due"] = 1
+	if not lost:
+		_log(s, "fraktion", "term", "", "Neue Wahlzeit. Sie bleiben: %s." % RANKS[int(s["rank"][PLAYER])])
+		return s
+	(s["archive"] as Dictionary)["Wahlzeit %d: %s" % [int(s["term"]) - 1, "Ihre Vorgängerin" if str(s["figure"]) == "" else str(s["figure"])]] = (s["signed"][PLAYER] as Dictionary).duplicate()
+	s["figure"] = figure
+	s["gone"][PLAYER] = false
+	s["rank"][PLAYER] = 0
+	for id in THINGS:
+		s["signed"][PLAYER][id] = 0
+	# Die neue Figur übernimmt den Bezirk mit der Sporthalle von der, die ihn zuletzt betreut hat.
+	s["things"]["halle"]["keeper"] = PLAYER
+	_log(s, "fraktion", "term", "", "Neue Wahlzeit. Sie übernehmen den Bezirk mit der Sporthalle.")
+	return s

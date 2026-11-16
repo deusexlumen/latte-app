@@ -133,6 +133,8 @@ Was davon bleibt, ist stärker: Die Frage „Was heißt hier gewinnen?“ beantw
 4. Das Hinterzimmer als der Ort, an dem Sicht und Befugnis sich begegnen: Wer unten die Brücke gesehen hat, kann es dem Dezernenten nur am Kartentisch sagen. Dort hätte ein wiederkehrender Wortlaut einen Urheber, einen Empfänger und einen Grund. Nur als Anschlussstelle benannt.
 5. Die Zahlen (Grenzen, Belastbarkeit, Gewichte) sind gesetzt, nicht erprobt. Befund 2 hängt auch daran, dass die Kämmerei je Periode nur eine Sanierung freigibt.
 
+> **Nachtrag 16.11.:** Frage 1 ist geprüft. Ergebnis und Folgen für die Übergabe: `karriere-zweite-wahlzeit-2026-11.md`. Die Reihenfolge in Abschnitt 8 ist damit ausgesetzt.
+
 ## 8. Übergabe an Opus
 
 **Geändert:**
