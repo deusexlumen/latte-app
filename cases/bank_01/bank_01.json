@@ -37,6 +37,7 @@
     }
   },
   "scene": {
+    "hinterzimmer_abend_absent": "Frau Seidel sitzt allein am Tisch, die Karten gestapelt vor sich. Ein Stuhl ist an die Wand gerückt. »Seit Mertens fehlt, spielt hier keiner mehr.«",
     "bench_blocked": "Um die Bank ist rot-weißes Absperrband gewickelt. Daran ein laminiertes Schild: »Gesperrt. Vorgang BANK-01. Auskunft: Registratur.«",
     "bench_open": "Das Absperrband ist weg. Die Bank ist eine Bank.",
     "bench_temporary": "Das Absperrband liegt aufgerollt auf der Lehne. Ein Zettel: »Vorläufig freigegeben (Ausnahme). Verlängerung beantragen.«",
@@ -86,6 +87,10 @@
     "registratur_leer": " Das Regalfach »Bestand Innenhof« ist leer. Der Prüfschrank ist abgeschlossen."
   },
   "lines": {
+    "hausdienst_absent": "Die Werkbank ist aufgeräumt, das Licht aus. An der Tür ein Zettel der Personalstelle: »Hausdienst nicht besetzt. Hr. Mertens ausgefallen seit dem vierten Einsatz in der Sporthalle. Vertretung: keine.« An der Pinnwand hängt noch sein Zettel: »Bank Innenhof – erledigt«. Er hängt hinter der abgeschlossenen Gittertür.",
+    "hausdienst_unstaffed": "Der Hausdienst ist nicht besetzt. Niemand gibt die Akte heraus.",
+    "day_end_absent": "Dienstschluss. Im Hinterzimmer sitzt Frau Seidel allein am Tisch.",
+    "dame_no_round": "Zu zweit kommt keine Runde zustande. Der dritte Stuhl ist der von Mertens.",
     "case_opened": "Aktenkoffer: Antrag auf Prüfung angenommen. Mit der Prüfung beauftragt: Antragsteller. Acht Diensthandlungen bis Dienstschluss. Lesen, Vergleichen und Gehen kosten keine.",
     "kern_before": "»Ich muss noch warten. Stehen habe ich schon.«",
     "kern_open": "»Ist das jetzt Ihre Sache mit der Bank? Ich hätte nur gern gesessen.«",

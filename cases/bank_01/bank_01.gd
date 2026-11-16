@@ -50,7 +50,14 @@ static func content() -> Dictionary:
 
 
 ## Kanonischer Ausgangsfall (Kap. 9.2): Bank repariert, Bestand "Exponat", Band hängt. Keine Zufallswerte.
-static func new_state(run_seed: String = "BANK-01-A") -> Dictionary:
+## Ort eines Akteurs, der nicht im Dienst ist. Kein eigenes Feld: Der Spielstand behält seine Form.
+const ABSENT := "abwesend"
+
+
+## world: Lage, in der der Vorgang beginnt. Das Spiel übergibt nichts. Die Mertens-Probe (docs/mertens-probe-2026-11.md)
+## übergibt {"mertens": "ausgefallen"}: Er ist seit einer früheren Wahlzeit nicht im Dienst. Was er vorher getan hat, bleibt
+## (die Bank ist repariert, der Zettel hängt an der Pinnwand).
+static func new_state(run_seed: String = "BANK-01-A", world: Dictionary = {}) -> Dictionary:
 	var s := AmtWorld.new_state(CONTENT_VERSION, "RUN-" + run_seed)
 	s["phase"] = "tag1"
 	s["location"] = "vorhalle"
@@ -85,7 +92,13 @@ static func new_state(run_seed: String = "BANK-01-A") -> Dictionary:
 		"hof_schild": {"text": ""},
 		"nebeneingang": {"wartet": false},
 	}
+	if str(world.get("mertens", "")) == "ausgefallen":
+		s["actors"]["mertens"]["location_id"] = ABSENT
 	return s
+
+
+static func mertens_present(s: Dictionary) -> bool:
+	return str(s["actors"]["mertens"]["location_id"]) != ABSENT
 
 
 static func _actor(id: String, location: String, goals: Array) -> Dictionary:
@@ -172,7 +185,7 @@ static func _talk(tx: AmtTransaction) -> void:
 	var actor := str(tx.params.get("actor", ""))
 	if actor == "kern" and s["actors"]["kern"]["location_id"] == s["location"]:
 		tx.emit("talked", "kern", {"actor": "kern", "text": kern_line(s)})
-	elif actor == "mertens" and s["phase"] == "abend":
+	elif actor == "mertens" and s["phase"] == "abend" and mertens_present(s):
 		var ops := []
 		var text := line("mertens_evening_again")
 		if str(tx.params.get("topic", "bank")) != "bank":
@@ -320,6 +333,9 @@ static func _request(tx: AmtTransaction) -> void:
 		tx.fail("Liegt schon im Aktenkoffer.")
 		return
 	var office: String = req["office"]
+	if office == "hausdienst" and not mertens_present(s):
+		tx.fail(line("hausdienst_unstaffed"))
+		return
 	tx.emit("document_requested", "player", {
 		"document_id": key,
 		"office": office,
@@ -396,20 +412,20 @@ static func _end_day(tx: AmtTransaction) -> void:
 		tx.fail("Feierabend gibt es erst mit eröffneter Prüfung.")
 		return
 	_flush_until(tx, "abend")
-	_change_phase(tx, "abend", "hinterzimmer", line("day_end"), [
-		AmtWorld.op_set(["actors", "mertens", "location_id"], "hinterzimmer"),
-		AmtWorld.op_set(["actors", "seidel", "location_id"], "hinterzimmer"),
-	])
+	# Wer nicht im Dienst ist, sitzt abends auch nicht am Tisch.
+	var here := mertens_present(tx.state)
+	_change_phase(tx, "abend", "hinterzimmer", line("day_end") if here else line("day_end_absent"),
+		([AmtWorld.op_set(["actors", "mertens", "location_id"], "hinterzimmer")] if here else [])
+		+ [AmtWorld.op_set(["actors", "seidel", "location_id"], "hinterzimmer")])
 
 
 static func _end_evening(tx: AmtTransaction) -> void:
 	if tx.state["phase"] != "abend":
 		tx.fail("Es ist nicht Abend.")
 		return
-	_change_phase(tx, "tag2", "vorhalle", line("evening_end"), [
-		AmtWorld.op_set(["actors", "mertens", "location_id"], "hausdienst"),
-		AmtWorld.op_set(["actors", "seidel", "location_id"], "registratur"),
-	])
+	_change_phase(tx, "tag2", "vorhalle", line("evening_end"),
+		([AmtWorld.op_set(["actors", "mertens", "location_id"], "hausdienst")] if mertens_present(tx.state) else [])
+		+ [AmtWorld.op_set(["actors", "seidel", "location_id"], "registratur")])
 	_flush_until(tx, "tag2")
 
 
@@ -695,6 +711,8 @@ static func minigame_error(s: Dictionary, game: String) -> String:
 		"dame":
 			if s["phase"] != "abend":
 				return "DAME gibt es abends im Hinterzimmer."
+			if not mertens_present(s):
+				return line("dame_no_round")
 			return ""
 		"widerlegung":
 			if s["phase"] != "tag2" or s["location"] != "ausschussraum":
@@ -950,6 +968,8 @@ static func office_of(actor: String) -> String:
 
 ## Was man beim Umsehen sieht. Bei Stellen hängt es von der Aufmerksamkeit ab, nie rückwirkend.
 static func observation_text(s: Dictionary, loc: String) -> String:
+	if loc == "hausdienst" and not mertens_present(s):
+		return line("hausdienst_absent")
 	var texts: Array = content()["observe"][loc]
 	var office := office_at(loc)
 	var text := str(texts[mini(int(s["offices"][office]["attention"]), texts.size() - 1)]) if not office.is_empty() else str(texts[0])
@@ -992,7 +1012,10 @@ static func scene(s: Dictionary) -> Dictionary:
 			if (int(s["turn"]) + str(s["phase"]).length()) % 3 == 0:
 				parts.append(sc["spatz"])
 		"hinterzimmer":
-			parts.append(sc["hinterzimmer_abend"] if s["phase"] == "abend" else sc["hinterzimmer_tag"])
+			if s["phase"] == "abend":
+				parts.append(sc["hinterzimmer_abend"] if mertens_present(s) else sc["hinterzimmer_abend_absent"])
+			else:
+				parts.append(sc["hinterzimmer_tag"])
 		"registratur":
 			if s["objects"]["originals"]["location"] == "pruefschrank":
 				parts.append(str(content()["observe"]["registratur_leer"]).strip_edges())
@@ -1099,12 +1122,15 @@ static func available_actions(s: Dictionary) -> Array:
 		out.append(_a("hier", "Zeit verstreichen lassen (1)", "wait"))
 		for key in content()["requests"]:
 			var req: Dictionary = content()["requests"][key]
+			if req["office"] == "hausdienst" and not mertens_present(s):
+				continue
 			if not (c["requests"] as Dictionary).has(key) and not _all_held(s, req["documents"]):
 				out.append(_a("anfordern", "%s (%s) (1)" % [req["label"], office_name(req["office"])], "request_document", {"document_id": key}))
-	if phase == "abend":
+	if phase == "abend" and mertens_present(s):
 		if completed_sessions(s, "dame").is_empty():
 			out.append(_a("hier", "Mit Mertens spielen (DAME)", "start_minigame", {"game": "dame"}))
 		out.append(_a("hier", "Mit Mertens über die Bank sprechen", "talk", {"actor": "mertens", "topic": "bank"}))
+	if phase == "abend":
 		out.append(_a("vorgang", "Abend beenden", "end_evening"))
 	if phase == "tag2" and minigame_error(s, "widerlegung").is_empty():
 		out.append(_a("hier", "Einstufung anfechten (Widerlegung)", "start_minigame", {"game": "widerlegung"}))
