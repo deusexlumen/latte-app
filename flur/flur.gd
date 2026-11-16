@@ -12,6 +12,8 @@ const KARRIERE := "res://addons/lobby_loop/scenes/main.tscn"
 const HOERSAAL := "res://hoersaal/hoersaal.tscn"
 const HINTERZIMMER := "res://hinterzimmer/hinterzimmer.tscn"
 const AKTE := "res://akte/akte.tscn"
+## Versuch „Zwei Bücher“ (docs/karriere-versuch-2026-11.md). Rückbau: diese Zeile, den Eintrag unten und karriere_kern/ entfernen.
+const VERSUCH := "res://karriere_kern/versuch.tscn"
 ## Erster Vorgang der gemeinsamen Welt (Spezifikation 0.1, Kap. 9), Etappe E1.
 const INNENHOF := "res://amt/vorgang.tscn"
 ## Eine Einstellungsseite für alle Spiele: DAMEs Seite (Sprache, Ton, Musik, Vollbild) gilt app-weit.
@@ -76,7 +78,7 @@ func _ready() -> void:
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 24)
 	column.add_child(row)
-	for extra in [["Akte", AKTE], ["Einstellungen", EINSTELLUNGEN]]:
+	for extra in [["Akte", AKTE], ["Einstellungen", EINSTELLUNGEN], ["Versuch", VERSUCH]]:
 		var b := Button.new()
 		b.text = LatteText.t(extra[0])
 		b.custom_minimum_size = Vector2(190, 44)
@@ -98,6 +100,8 @@ func _portal(numeral: String, door: Array) -> Button:
 	var b := Button.new()
 	b.text = LatteText.t(door[0])
 	b.tooltip_text = LatteText.t(door[1])
+	# Ohne diese Zeile ist die Tür nur ein Bild (so geschehen beim neuen Look, behoben 2026-11-16).
+	b.pressed.connect(_go.bind(door[2]))
 	b.custom_minimum_size = Vector2(250, 300)
 	b.add_theme_font_size_override("font_size", 28)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:

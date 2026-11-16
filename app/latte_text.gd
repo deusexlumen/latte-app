@@ -23,6 +23,7 @@ const EN := {
 	"Vorgang BANK-01: Die gesperrte Bank. Prototyp.": "Case BANK-01: The Blocked Bank. Prototype. (German only for now)",
 	"Akte": "File",
 	"Einstellungen": "Settings",
+	"Versuch": "Experiment",
 	"Übernommen aus den Einzel-Apps: %s": "Imported from the stand-alone apps: %s",
 	# Zum-Flur-Knopf
 	"Zum Flur": "To the corridor",

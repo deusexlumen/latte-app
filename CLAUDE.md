@@ -1,6 +1,6 @@
 # CLAUDE.md – Latte
 
-Die Latte-App ist **das** Projekt: eine Godot-App (4.7.2, GL Compatibility), der Flur des Amts mit Karriere (Lobby-Loop), Hörsaal (Widerlegung), Hinterzimmer (DAME) und Innenhof (gemeinsame Welt, Vorgänge). Aufbau und Türen: `README.md`. Stand und Entscheidungen: `SESSION_NOTES.md`. Was als Nächstes kommt: `docs/fahrplan-2026-10.md`. Grundlagen (Spezifikation 0.1, systemisches Design-Framework, systemtheoretische Analyse): `docs/grundlagen/`.
+Die Latte-App ist **das** Projekt: eine Godot-App (4.7.2, GL Compatibility), der Flur des Amts mit Karriere (Lobby-Loop), Hörsaal (Widerlegung), Hinterzimmer (DAME) und Innenhof (gemeinsame Welt, Vorgänge). Aufbau und Türen: `README.md`. Stand und Entscheidungen: `SESSION_NOTES.md`. Was als Nächstes kommt: `docs/fahrplan-2026-10.md`. Karriere: Bestand, Versuch „Zwei Bücher“ und Übergabe in `docs/karriere-versuch-2026-11.md`. Grundlagen (Spezifikation 0.1, systemisches Design-Framework, systemtheoretische Analyse): `docs/grundlagen/`.
 
 ## Leitbild (verbindlich, vom Nutzer, gilt vor allen anderen Dokumenten)
 
@@ -27,6 +27,7 @@ Der Nutzer gibt Routinearbeit komplett ab. Diese Regeln gelten wörtlich:
 
 ## Cloud-Sandbox (Claude Code im Web)
 
-- Godot: `/root/.cache/godot-4.7.2/…` per `GODOT_BIN` (Hook im DAME-Repo); `npm test` braucht `GODOT_BIN`.
-- **SQLite:** Seit 2026-10-20 sind `addons/godot-sqlite/` samt Linux-Bibliothek versioniert. Die früheren 3 Ladefehler (`libgdsqlite.linux…so`) im Latte-Fluss sollten verschwinden; wenn nicht, hier vermerken.
+- Godot: `/root/.cache/godot-4.7.2/…` per `GODOT_BIN`; `npm test` braucht `GODOT_BIN`. Ist der Ordner leer (so am 2026-11-16, der Hook lag im archivierten DAME-Repo): Godot 4.7.2 von den GitHub-Releases laden, wie in `.github/workflows/pages.yml`, dann einmal `--headless --import`.
+- **SQLite:** Seit 2026-10-20 sind `addons/godot-sqlite/` samt Linux-Bibliothek versioniert. Die früheren 3 Ladefehler (`libgdsqlite.linux…so`) im Latte-Fluss sind weg (geprüft 2026-11-16).
+- **Latte-Fluss und WebRTC:** Der Latte-Fluss zählt jede ERROR-Zeile; mit weggeschobener `lib` meldet er 3 Ladefehler. Ihn also mit vorhandener `lib` laufen lassen.
 - **WebRTC:** `addons/webrtc/` ist seit 2026-10-20 versioniert, also liegt `lib` in jedem Checkout. Damit laufen DAMEs Verbindungstests, die in der Sandbox (keine Netzwerkschnittstellen) zeitweise in Zeitüberschreitung laufen. Gegenprobe: `lib` kurz wegschieben, dann werden sie übersprungen und der Rest muss grün sein.

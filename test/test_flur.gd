@@ -38,6 +38,28 @@ func test_flur_builds_door_buttons() -> void:
 		assert_has(texts, t)
 
 
+## Jede Tür und jeder Knopf des Flurs führt beim Klick in seine Szene. Der neue Look hatte die vier Türen
+## ohne Verbindung gelassen: Sie waren zu sehen, taten aber nichts.
+func test_every_door_button_leads_to_its_scene() -> void:
+	var flur: Control = load("res://flur/flur.tscn").instantiate()
+	add_child_autofree(flur)
+	var expected := {"Akte": FlurScript.AKTE, "Einstellungen": FlurScript.EINSTELLUNGEN, "Versuch": FlurScript.VERSUCH}
+	for door in FlurScript.DOORS:
+		expected[door[0]] = door[2]
+	var seen := 0
+	for b in flur.find_children("*", "Button", true, false):
+		var text := (b as Button).text
+		if not expected.has(text):
+			continue
+		seen += 1
+		var connections: Array = (b as Button).pressed.get_connections()
+		assert_eq(connections.size(), 1, "%s: genau eine Verbindung" % text)
+		if connections.size() == 1:
+			var target: Callable = connections[0]["callable"]
+			assert_eq(target.get_bound_arguments(), [expected[text]], "%s führt nach %s" % [text, expected[text]])
+	assert_eq(seen, expected.size(), "alle Knöpfe gefunden")
+
+
 func test_hoersaal_lists_lehren_and_plays_without_career_effects() -> void:
 	var h: Control = load("res://hoersaal/hoersaal.tscn").instantiate()
 	h.library_dir = "user://test_hoersaal_leer/"

@@ -49,6 +49,10 @@ Der Spieltest wartet auf Menschen, die den Nutzer erst finden muss. Bis dahin ge
 - **KIMI** („Künstliche Intelligenz mit Intention“): Kunstfigur des Nutzers, auf seinem Discord als Bot und Sidekick unterwegs. Soll als eine der Nicht-Menschen in der Welt auftauchen, mal hier, mal dort, ohne mit dem Plot zu tun zu haben. Offen: Rolle, Aussehen, Stimme.
 - **Division 7B, Astralwesen:** Aus den Wesen des Bestiariums könnte ein eigenes Spiel nach Art von Pokémon oder Digimon werden. Offen, ob als Tür im Amt oder als eigene Abteilung; vorerst nur Idee.
 
+## 3c. Karriere (16.11.)
+
+Die Karriere hat heute keine eigene Logik: Handlungen haben ohne Spielleiter keine Folgen, der Aufstieg ist ein freier Rundgang. Der Versuch „Zwei Bücher“ (`karriere-versuch-2026-11.md`) zeigt einen tragfähigen Kern und verwirft den einen verborgenen Gewinnweg. **Wartet auf deine Entscheidung:** Beginnt ein neuer Anlauf in der Welt, die der letzte hinterlassen hat? Danach Ausbau nach Abschnitt 8 des Dokuments.
+
 ## 4. Aufräumen (wenn du willst)
 
 Folgendes wird nicht mehr gebraucht: die React-App in `Dame-Card-Game/src/`, die Repos `dame-kartenspiel` und `Dame---Strategic-Card-Game` sowie PR Dame-Card-Game#11. Mein Vorschlag: die Repos archivieren, was sich rückgängig machen lässt, und den React-Code in einem eigenen PR entfernen. Gelöscht wird nur auf dein Wort.
